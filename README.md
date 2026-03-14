@@ -1,4 +1,5 @@
 # 2603 Team01
+- Zachary P Nash
 
 Class project template — React Native app. Keep this README updated with your team name, members, and a short plan.
 
