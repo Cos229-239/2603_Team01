@@ -1,4 +1,7 @@
 {
-  "name": "2603_Team01",
-  "displayName": "2603 Team01"
+  "name": "DevReflect",
+  "displayName": "DevReflect",
+  "expo": {
+    "slug": "devreflect"
+  }
 }
