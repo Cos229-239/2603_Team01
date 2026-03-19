@@ -5,41 +5,69 @@
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
+import React from 'react';
+import { Text, StyleSheet, TextInput, Button } from 'react-native';
+//import { Text, StyleSheet, TextInput } from 'react-native';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+const TextInputExample = () => {
+    //const [text, onChangeText] = React.useState('Enter user');
+    const [username, onSetUsername] = React.useState('Enter username');
+    const [password, onSetPassword] = React.useState('Enter Password');
+    const [displayText, setDisplayText] = React.useState('');
+   // const [number, onChangeNumber] = React.useState('');
 
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
+    const handleSubmit = () => {
+        const combinedText = `Username: ${username}, Password: ${password}`
+        setDisplayText(combinedText);
+    }
+
+    return (
+        <SafeAreaProvider>
+            <SafeAreaView>
+                <Text style={styles.text}> Username: </Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={onSetUsername} //onchangetext
+                    value={username} //text
+                />
+                <Text style={styles.text}> Password: </Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={onSetPassword} //onchangetext
+                    value={password} //text
+                />
+                <Button
+                    title="Log In"
+                    onPress={handleSubmit}
+                />
+                <Text>{displayText}</Text>
+                <Button
+                    title="Sign-Up"
+                />
+            </SafeAreaView>
+        </SafeAreaProvider>
+    );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+    },
+    container: {
+           flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        text: {
+           fontSize: 20,
+           color: '#333',
+        },
 });
 
-export default App;
+export default TextInputExample;
