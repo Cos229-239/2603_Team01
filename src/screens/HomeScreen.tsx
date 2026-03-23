@@ -1,24 +1,77 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const [lastEntry, setLastEntry] = useState<any>(null);
+  const [lastMood, setLastMood] = useState<any>(null);
+  const isFocused = useIsFocused();
+
+  const loadData = async () => {
+    try {
+      const savedEntries = await AsyncStorage.getItem('journal_entries');
+      if (savedEntries) {
+        const entries = JSON.parse(savedEntries);
+        if (entries.length > 0) {
+          setLastEntry(entries[0]); // Most recent entry
+        }
+      }
+
+      const savedMood = await AsyncStorage.getItem('last_mood');
+      if (savedMood) {
+        setLastMood(JSON.parse(savedMood));
+      }
+    } catch (error) {
+      console.error('Failed to load home data', error);
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      loadData();
+    }
+  }, [isFocused]);
+
+  const aiPrompts: Record<string, string> = {
+    'Stuck': "Have you tried taking a 15-minute break? Sometimes a fresh pair of eyes is all you need.",
+    'Burned Out': "It looks like you've been working hard. Have you eaten anything today or taken a walk?",
+    'Focused': "You're in the zone! Keep going, but remember to stretch every hour.",
+    'Frustrated': "Deep breaths. Maybe try explaining the problem out loud to a rubber duck?",
+    'Productive': "Great momentum! What's the next small win you can achieve?",
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Welcome back, Dev!</Text>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Recent Journal Entries</Text>
+        <Text style={styles.sectionTitle}>Recent Journal Entry</Text>
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Placeholder</Text>
-          <Text style={styles.cardText}>Placeholder</Text>
+          {lastEntry ? (
+            <>
+              <Text style={styles.cardTitle}>{lastEntry.title}</Text>
+              <Text style={styles.cardText} numberOfLines={2}>{lastEntry.solution}</Text>
+            </>
+          ) : (
+            <Text style={styles.cardText}>No entries yet. Start journaling your solutions!</Text>
+          )}
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Recent Mood Activity</Text>
+        <Text style={styles.sectionTitle}>Current Mood</Text>
         <View style={styles.card}>
-          <Text style={styles.cardText}>Mood: Focused 🚀</Text>
-          <Text style={styles.aiPrompt}>"Great work! Don't forget to stay hydrated."</Text>
+          {lastMood ? (
+            <>
+              <Text style={styles.cardText}>Mood: {lastMood.label} {lastMood.icon}</Text>
+              {aiPrompts[lastMood.label] && (
+                <Text style={styles.aiPrompt}>"{aiPrompts[lastMood.label]}"</Text>
+              )}
+            </>
+          ) : (
+            <Text style={styles.cardText}>How are you feeling today?</Text>
+          )}
         </View>
       </View>
     </ScrollView>

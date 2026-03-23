@@ -27,7 +27,7 @@ const JournalScreen = ({navigation}: any) => {
 
   const filteredEntries = entries.filter(e =>
     e.title.toLowerCase().includes(search.toLowerCase()) ||
-    e.tags.some((t: string) => t.toLowerCase().includes(search.toLowerCase()))
+    (e.tags && e.tags.some((t: string) => t.toLowerCase().includes(search.toLowerCase())))
   );
 
   return (
@@ -47,7 +47,7 @@ const JournalScreen = ({navigation}: any) => {
             <Text style={styles.cardTitle}>{item.title}</Text>
             <Text style={styles.cardSolution}>{item.solution}</Text>
             <View style={styles.tagContainer}>
-              {item.tags.map((tag: string) => (
+              {item.tags && item.tags.map((tag: string) => (
                 <View key={tag} style={styles.tag}>
                   <Text style={styles.tagText}>#{tag}</Text>
                 </View>
@@ -58,7 +58,7 @@ const JournalScreen = ({navigation}: any) => {
       />
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => navigation.navigate('JournalEntryScreen')}
+        onPress={() => navigation.navigate('JournalEntry')}
       >
         <Text style={styles.fabText}>+</Text>
       </TouchableOpacity>
