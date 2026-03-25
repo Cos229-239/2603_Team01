@@ -50,6 +50,14 @@
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
       padding: 1rem 0; border-bottom: 1px solid var(--surface2); margin-bottom: 1.25rem;
     }
+    .phase-kicker {
+      margin: 0 0 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
     .v2-header h1 { font-size: 1.35rem; font-weight: 700; margin: 0; }
     .v2-ref { font-size: 0.8rem; color: var(--text-muted); margin: 0.2rem 0 0; }
     .v2-ref a { color: var(--accent); }
@@ -366,6 +374,7 @@
   <div class="container">
     <header class="v2-header">
       <div>
+        <p class="phase-kicker" id="v2-phase-kicker" hidden></p>
         <h1 id="v2-header-title">— Dashboard V2</h1>
         <p class="v2-ref"><a id="link-v1-page" href="#">V1</a> · <a id="link-lms-table" href="#">LMS Data</a></p>
         <div class="v2-meta-block">
@@ -1149,16 +1158,26 @@
   </script>
 
   <script>
-    const data = {"report": {"generated": "03-24-2026 - 20:10", "period": "2026-03-16 to 2026-03-22", "cycle": "2603", "week": 3, "team": "2603_Team01", "sourceUrl": "W03_2603_Team01_v1.html"}, "members": [], "branchHealth": [{"person": "Ben", "branch": "Ben", "status": "Ahead", "activity": "2d ago", "contribution": "\u2014", "aheadBehind": "1 / 0", "risk": "LOW", "suggestedSteps": []}, {"person": "Chayton", "branch": "Chayton", "status": "In Sync", "activity": "2d ago", "contribution": "\u2014", "aheadBehind": "0 / 0", "risk": "STABLE", "suggestedSteps": []}, {"person": "ChristopherCecil", "branch": "ChristopherCecil", "status": "Diverged", "activity": "1d ago", "contribution": "\u2014", "aheadBehind": "4 / 1", "risk": "HIGH", "suggestedSteps": []}, {"person": "Zach", "branch": "Zach", "status": "Ahead", "activity": "1d ago", "contribution": "\u2014", "aheadBehind": "8 / 0", "risk": "LOW", "suggestedSteps": []}], "filesTouched": [], "trello": {"assignments": {"Celestine E.": 1, "Chayton L.": 1, "Fox P.": 1, "Zachary N.": 2}, "actions": {"Benjamin S.": 0, "Celestine E.": 4, "Chayton L.": 0, "Fox P.": 0, "Zachary N.": 0}, "actionBreakdown": {"Celestine E.": {"Create card": 1, "Move card": 1}}, "status": "HEALTHY"}, "discord": [], "alerts": [{"type": "warn", "text": "Benjamin S. has no Trello activity this week. Update cards to reflect work done."}, {"type": "warn", "text": "Chayton L. has no Trello activity this week. Update cards to reflect work done."}, {"type": "warn", "text": "Fox P. has no Trello activity this week. Update cards to reflect work done."}, {"type": "warn", "text": "Zachary N. has no Trello activity this week. Update cards to reflect work done."}, {"type": "warn", "text": "CelestinePersonal has a diverged branch (merge conflict likely). Follow directions above."}, {"type": "warn", "text": "ChristopherCecil has a diverged branch (merge conflict likely). Follow directions above."}, {"type": "warn", "text": "Chayton L. has not posted standups this week. Post daily standups in the team standup channel."}, {"type": "warn", "text": "Celestine E. has not posted standups this week. Post daily standups in the team standup channel."}, {"type": "warn", "text": "Zachary N. has not posted standups this week. Post daily standups in the team standup channel."}, {"type": "warn", "text": "Benjamin S. has not posted standups this week. Post daily standups in the team standup channel."}, {"type": "warn", "text": "Fox P. has not posted standups this week. Post daily standups in the team standup channel."}]};
+    const data = {"report": {"generated": "03-25-2026 - 00:40", "period": "2026-03-16 to 2026-03-22", "cycle": "2603", "week": 3, "team": "2603_Team01", "sourceUrl": "W03_2603_Team01_v1.html", "assignmentTitle": "PNP2 \u2014 Week 03 Assignment Checks"}, "members": [], "branchHealth": [{"person": "Ben", "branch": "Ben", "status": "Ahead", "activity": "2d ago", "contribution": "\u2014", "aheadBehind": "1 / 0", "risk": "LOW", "suggestedSteps": []}, {"person": "Chayton", "branch": "Chayton", "status": "In Sync", "activity": "2d ago", "contribution": "\u2014", "aheadBehind": "0 / 0", "risk": "STABLE", "suggestedSteps": []}, {"person": "ChristopherCecil", "branch": "ChristopherCecil", "status": "Diverged", "activity": "1d ago", "contribution": "\u2014", "aheadBehind": "4 / 1", "risk": "HIGH", "suggestedSteps": []}, {"person": "Zach", "branch": "Zach", "status": "Ahead", "activity": "2d ago", "contribution": "\u2014", "aheadBehind": "8 / 0", "risk": "LOW", "suggestedSteps": []}], "filesTouched": [], "trello": {"assignments": {}, "actions": {}, "actionBreakdown": {}, "status": "HEALTHY"}, "discord": [], "alerts": [{"type": "warn", "text": "CelestinePersonal has a diverged branch (merge conflict likely). Follow directions above."}, {"type": "warn", "text": "ChristopherCecil has a diverged branch (merge conflict likely). Follow directions above."}]};
     try { sessionStorage.setItem('snapshotData', JSON.stringify(data)); } catch (e) {}
 
     (function setupHeaderLinks() {
+      var kickerEl = document.getElementById('v2-phase-kicker');
       var titleEl = document.getElementById('v2-header-title');
       if (titleEl && data.report) {
         var cycle = (data.report.cycle || '').toString();
         var team = (data.report.team || '').toString();
         var prefix = (team || cycle || '').trim();
         titleEl.textContent = prefix ? prefix + ' — Dashboard V2' : 'Dashboard V2';
+        var assignmentTitle = (data.report.assignmentTitle || '').toString().trim();
+        if (kickerEl) {
+          if (assignmentTitle) {
+            kickerEl.textContent = assignmentTitle;
+            kickerEl.hidden = false;
+          } else {
+            kickerEl.hidden = true;
+          }
+        }
       }
       var snapshotEl = document.getElementById('v2-snapshot-line');
       var generatedEl = document.getElementById('v2-generated-line');
