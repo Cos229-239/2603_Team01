@@ -1,8 +1,14 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 
+import Slider from '@react-native-community/slider';
+
 const MoodScreen = () => {
   const [currentMood, setCurrentMood] = useState<string | null>(null);
+
+  const [sliderValue, setSliderValue] = useState(0);
+
+  const [stressTips, setStressTips] = useState('');
 
   const moods = [
     { label: 'Productive', icon: '🚀' },
@@ -17,7 +23,26 @@ const MoodScreen = () => {
     'Burned Out': "It looks like you've been working hard. Have you eaten anything today or taken a walk?",
     'Focused': "You're in the zone! Keep going, but remember to stretch every hour.",
     'Frustrated': "Deep breaths. Maybe try explaining the problem out loud to a rubber duck?",
+    };
+
+
+   const handleSlidingComplete = (value: number) => {
+       setSliderValue(value)
+       if (value === 0) {
+           setStressTips('Stress Level 0: Doing Great\nKeep up the good work!')
+       } else if (value === 1) {
+           setStressTips('Stress Level 1: Feeling Anxious\nTry playing some instrumental music to help soothe your nerves.')
+       } else if (value === 2) {
+           setStressTips("Stress Level 2: Building Uncertainty\nDon't be afraid to ask for help from your peers if you begin to feel lost or confused.")
+       } else if (value === 3) {
+           setStressTips('Stress Level 3: Mentally Struggling\nMake sure you develop a healthy work-life balance to prevent your stress from increasing')
+       } else if (value === 4) {
+           setStressTips('Stress Level 4: Stressed Out\nSplitting your tasks into smaller parts can make a large workload easier to manage.')
+       } else if (value === 5) {
+           setStressTips('Stress Level 5: Completely Overwhelmed\nTaking a break from your work will help you reset, recharge, and approach the sitaution from a different angle. ')
+       }
   };
+
 
   return (
     <ScrollView style={styles.container}>
@@ -41,6 +66,32 @@ const MoodScreen = () => {
           <Text style={styles.aiText}>{aiPrompts[currentMood]}</Text>
         </View>
       )}
+
+
+       <Text style={styles.stressTitle}>Stress Level: {sliderValue}</Text>
+
+       <Slider
+              style={styles.slider}
+
+
+              minimumValue={0}
+              maximumValue={5}
+
+              step={1}
+
+              minimumTrackTintColor="#E00C0C"
+              maximumTrackTintColor="#008000"
+
+
+              thumbTintColor="#000000"
+
+              onValueChange={(value) => setSliderValue(value)}
+              value={sliderValue}
+
+
+              onSlidingComplete={handleSlidingComplete}
+       />
+       <Text>{stressTips}</Text>
     </ScrollView>
   );
 };
@@ -55,7 +106,12 @@ const styles = StyleSheet.create({
   moodLabel: { marginTop: 10, fontWeight: '600' },
   aiCard: { backgroundColor: '#e3f2fd', padding: 20, borderRadius: 12, marginTop: 20, borderLeftWidth: 5, borderLeftColor: '#007AFF' },
   aiTitle: { fontWeight: 'bold', color: '#007AFF', marginBottom: 5 },
-  aiText: { fontSize: 16, color: '#333', lineHeight: 22 }
+  aiText: { fontSize: 16, color: '#333', lineHeight: 22 },
+
+
+  stressTitle: { fontSize: 24, fontWeight: 'bold', marginTop: 20,  color: '#333', textAlign: 'center' },
+  slider: {width: 375, height: 100}
+
 });
 
 export default MoodScreen;
