@@ -3,85 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Meeting Snapshots — Cycle 2603</title>
+  <title>Meeting Snapshot — Week Status</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
-    :root{--bg:#f6f8fa;--text:#1f2328;--accent:#0969da;}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:0;background:var(--bg);color:var(--text);line-height:1.5;}
-    .app{display:flex;min-height:100vh;}
-    .sidebar{position:fixed;left:0;top:0;width:172px;height:100vh;overflow-y:auto;background:#141c28;color:#fff;padding:0.75rem 0;border-right:1px solid rgba(255,255,255,0.06);}
-    .sidebar a{display:block;color:rgba(230,237,243,0.82);text-decoration:none;padding:0.32rem 0.9rem;font-size:0.78rem;}
-    .sidebar a:hover{background:rgba(88,166,255,0.08);color:#fff;}
-    .sidebar a.active{background:rgba(88,166,255,0.18);color:#fff;}
-    .sidebar-brand{display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.75rem 0.75rem 0.85rem;border-bottom:1px solid rgba(255,255,255,0.08);text-align:center;}
-    .logo-link{flex-shrink:0;display:flex;justify-content:center;}
-    .sidebar-logo{width:34px;height:34px;display:block;}
-    .brand-text{display:flex;flex-direction:column;line-height:1.15;align-items:center;}
-    .brand-org{font-weight:700;font-size:0.74rem;letter-spacing:0.02em;}
-    .brand-cycle{font-size:0.68rem;opacity:0.82;}
-    .nav-week-group{margin-bottom:0.45rem;}
-    .nav-week{display:block;font-weight:600;font-size:0.98rem;margin-top:0.2rem;padding:0.28rem 0.9rem;}
-    .nav-team{display:flex;align-items:center;padding:0.14rem 0.9rem 0.14rem 1.15rem;font-size:0.62rem;}
-    .nav-team-bullet{display:inline-block;width:6px;height:6px;border-radius:50%;background:#f97316;margin-right:0.5rem;flex-shrink:0;}
-    .content{flex:1;margin-left:172px;padding:1.5rem;max-width:900px;}
-    .panel{background:#fff;border:1px solid #d0d7de;border-radius:10px;padding:1rem 1.25rem;}
-    h1{border-bottom:1px solid #ddd;padding-bottom:0.3em;}
-    ul{list-style:none;padding:0;}
-    li{margin:0.75rem 0;}
-    a{color:#0969da;text-decoration:none;}
-    a:hover{text-decoration:underline;}
+    .report-date { background: #24292f; color: #fff; padding: 0.75rem 1rem; margin: -1rem -1rem 1.5rem -1rem; font-size: 0.95rem; }
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 900px; margin: 0 auto; padding: 1.5rem; line-height: 1.5; }
+    h1 { border-bottom: 1px solid #ddd; padding-bottom: 0.3em; }
+    h2, h3 { margin-top: 1.5em; }
+    pre, code { background: #f6f8fa; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; }
+    pre { padding: 1em; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 0.5em; text-align: left; }
+    th { background: #f6f8fa; }
   </style>
 </head>
 <body>
-<div class="app">
-<nav class="sidebar">
-<div class="sidebar-brand">
-<a href="index.html" class="logo-link"><img src="logo.png" alt="Logo" class="sidebar-logo"></a>
-<div class="brand-text"><span class="brand-org">Cos229-239</span><span class="brand-cycle">2603</span></div>
-</div>
-<a href="index.html" class="nav-home">Home</a>
-<div class="nav-week-group">
-<a href="W01.html" class="nav-week">Week 01</a>
-<a href="W01_2603_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
-</div>
-<div class="nav-week-group">
-<a href="W02.html" class="nav-week">Week 02</a>
-<a href="W02_2603_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
-</div>
-<div class="nav-week-group">
-<a href="W03.html" class="nav-week">Week 03</a>
-<a href="W03_2603_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
-</div>
-<div class="nav-week-group">
-<a href="W04.html" class="nav-week">Week 04</a>
-<a href="W04_2603_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
-</div>
-<div class="nav-week-group">
-<a href="W05.html" class="nav-week">Week 05</a>
-<a href="W05_2603_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
-</div>
-<div class="nav-week-group">
-<a href="W06.html" class="nav-week">Week 06</a>
-<a href="W06_2603_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
-</div>
-<div class="nav-week-group">
-<a href="W07.html" class="nav-week">Week 07</a>
-<a href="W07_2603_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
-</div>
-<div class="nav-week-group">
-<a href="W08.html" class="nav-week">Week 08</a>
-<a href="W08_2603_Team01.html" class="nav-team"><span class="nav-team-bullet"></span>Team 01</a>
-</div>
-</nav>
-<main class="content">
-  <section class="panel">
-    <h1>Cycle 2603</h1>
-    <p>Cycle 2603 currently has <strong>1</strong> team published to GitHub Pages.</p>
-    <p>Select a team info page below, or use the weekly navigation in the sidebar.</p>
-    <ul>
-      <li><a href="Team01.html">Team 01</a></li>
-    </ul>
-  </section>
-</main>
-</div>
+  <div class="report-date">📅 Report generated: 2026-03-25 00:47</div>
+  <div id="content"></div>
+  <script>
+    const md = "# MEETING SNAPSHOT - Cycle 2603  - Week 1\n\n*Generated: 2026-03-25 00:47*\n\n---\n\n## GIT \u2014 Branch Health (Risk Audit)\n\n| **2603_Team01** |\n    Branch: Ben = Ahead of Dev\n    Activity: 2d ago\n    Ahead = 1\n    Behind = 0\n    Merge Risk = LOW\n\n| **2603_Team01** |\n    Branch: CelestinePersonal = Diverged\n    Activity: 3d ago\n    Ahead = 2\n    Behind = 4\n    Merge Risk = HIGH\n\n| **2603_Team01** |\n    Branch: Chayton = In Sync\n    Activity: 2d ago\n    Ahead = 0\n    Behind = 0\n    Merge Risk = STABLE\n\n| **2603_Team01** |\n    Branch: ChristopherCecil = Diverged\n    Activity: 1d ago\n    Ahead = 4\n    Behind = 1\n    Merge Risk = HIGH\n\n| **2603_Team01** |\n    Branch: Zach = Ahead of Dev\n    Activity: 2d ago\n    Ahead = 8\n    Behind = 0\n    Merge Risk = LOW\n\n\n### Quick Reference\n\n*Risk = HIGH:*\nHow likely you'll hit merge conflicts when merging up to dev. HIGH = diverged \u2014 act soon.\n\n*Behind Dev:*\ndev has commits you don't. Someone else advanced dev; pull dev to get their changes.\n\n*Ahead of Dev:*\nyour branch has commits dev doesn't. Your work isn't on dev yet; push, then merge to dev.\n\n*Diverged:*\nThe perfect storm. You updated your branch but haven't pulled dev; meanwhile dev moved. Merge conflict risk. The longer this goes on, the more of a pain it will be for you.\n\n*Activity:* when you last committed on this branch (e.g. 3d ago, TODAY)\n\n### GIT Plain-Language Status\n\nUSE the GUI in the IDE for the following \"fix\" actions, or use PowerShell (aka Terminal, aka Command Prompt). It's built into the IDE and should be on the bottom. If you don't see it, go to View \u2192 Terminal. I have included the commands for you to use in PowerShell.\n\n- Ben (Ben) \u2014 \n  Last commit: 2d ago.\n  1 commit not added to dev yet\n  Action: push/merge to dev when ready.\n  How to fix:\n  1. Push work from your personal branch up to dev (when it is solid).\n      Push your branch: `git push origin Ben`\n      Switch to dev: `git checkout dev`\n      Merge your branch into dev: `git merge Ben`\n      Push dev: `git push origin dev`\n      Switch back to your branch (don't stay on dev): `git checkout Ben`\n\n- CelestinePersonal (CelestinePersonal) \u2014 \n  Last commit: 3d ago.\n  2 commit(s) not on dev yet\n  4 commit(s) on dev you don't have\n  How to fix:\n  1. Pull dev (start of the day).\n      Switch to dev: `git checkout dev`\n      Pull latest dev: `git pull origin dev`\n      Switch back to your branch (don't stay on dev): `git checkout CelestinePersonal`\n      Merge dev into your branch: `git merge dev`\n  2. Resolve any merge conflicts (edit conflicted files, then `git add` and `git commit`).\n  3. Push to dev when work is solid (share with the team every few days).\n\n- Chayton (Chayton) \u2014 \n  Last commit: 2d ago.\n  In sync with dev.\n\n- ChristopherCecil (ChristopherCecil) \u2014 \n  Last commit: 1d ago.\n  4 commit(s) not on dev yet\n  1 commit on dev you don't have\n  How to fix:\n  1. Pull dev (start of the day).\n      Switch to dev: `git checkout dev`\n      Pull latest dev: `git pull origin dev`\n      Switch back to your branch (don't stay on dev): `git checkout ChristopherCecil`\n      Merge dev into your branch: `git merge dev`\n  2. Resolve any merge conflicts (edit conflicted files, then `git add` and `git commit`).\n  3. Push to dev when work is solid (share with the team every few days).\n\n- Zach (Zach) \u2014 \n  Last commit: 2d ago.\n  8 commit(s) not added to dev yet\n  Action: push/merge to dev when ready.\n  How to fix:\n  1. Push work from your personal branch up to dev (when it is solid).\n      Push your branch: `git push origin Zach`\n      Switch to dev: `git checkout dev`\n      Merge your branch into dev: `git merge Zach`\n      Push dev: `git push origin dev`\n      Switch back to your branch (don't stay on dev): `git checkout Zach`\n\n- gh-pages (gh-pages) \u2014 \n  Last commit: TODAY.\n  14 commit(s) not on dev yet\n  5 commit(s) on dev you don't have\n  How to fix:\n  1. Pull dev (start of the day).\n      Switch to dev: `git checkout dev`\n      Pull latest dev: `git pull origin dev`\n      Switch back to your branch (don't stay on dev): `git checkout gh-pages`\n      Merge dev into your branch: `git merge dev`\n  2. Resolve any merge conflicts (edit conflicted files, then `git add` and `git commit`).\n  3. Push to dev when work is solid (share with the team every few days).\n\n\n\n## GIT \u2014 Commits This Week\n\n2603_Team01: 45\n\n## TRELLO \u2014 Activity This Week\n\n```\n======== Week 1 (2026-03-02 \u2192 2026-03-08) ========\n\n-------------------------------------------------\n2603_Team01\nLast Activity:\n2026-03-21\n4 days ago\n\nMembers:\n- Benjamin S.\n- Celestine E.\n- Chayton L.\n- Fox P.\n- Zachary N.\n\nAssignments:\n* Benjamin S.: 0 cards\n  Celestine E.: 1 card\n  Chayton L.: 1 card\n  Fox P.: 1 card\n  Zachary N.: 2 cards\n\nActivity (Week 1: 2026-03-02 \u2192 2026-03-08):\nBenjamin S.:\n   20 actions\n   (Add:20 Move:0 Comment:0 Complete:0 Attach:0 Assigned:0 Label:0 Checklist:0)\nCelestine E.:\n   0 actions\nChayton L.:\n   0 actions\nFox P.:\n   0 actions\nZachary N.:\n   1 actions\n   (Add:1 Move:0 Comment:0 Complete:0 Attach:0 Assigned:0 Label:0 Checklist:0)\n\nStatus: HEALTHY\n-------------------------------------------------\n```\n\n## DISCORD \u2014 Standup Posts This Week\n\n*(no data \u2014 run Collect first)*\n\n## ISSUES / ALERTS\n\n- Celestine E. has no Trello activity this week. Update cards to reflect work done.\n- Chayton L. has no Trello activity this week. Update cards to reflect work done.\n- Fox P. has no Trello activity this week. Update cards to reflect work done.\n- CelestinePersonal has a diverged branch (merge conflict likely). Follow directions above.\n- ChristopherCecil has a diverged branch (merge conflict likely). Follow directions above.\n- Fox P. has not posted standups this week. Post daily standups in the team standup channel.\n- Chayton L. has not posted standups this week. Post daily standups in the team standup channel.\n- Benjamin S. has not posted standups this week. Post daily standups in the team standup channel.\n- Zachary N. has not posted standups this week. Post daily standups in the team standup channel.\n- Celestine E. has not posted standups this week. Post daily standups in the team standup channel.\n\n\n";
+    document.getElementById('content').innerHTML = marked.parse(md);
+  </script>
 </body>
 </html>
