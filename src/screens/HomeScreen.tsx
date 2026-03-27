@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import { supabase } from '../lib/supabase';
 
 const HomeScreen = () => {
   const [lastEntry, setLastEntry] = useState<any>(null);
   const [lastMood, setLastMood] = useState<any>(null);
+  const [username, setUsername] = useState<string>('');
   const isFocused = useIsFocused();
 
   const loadData = async () => {
@@ -27,6 +29,31 @@ const HomeScreen = () => {
     }
   };
 
+  const fetchUser = async () => {
+    try {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error('Error fetching user:', error);
+        setUsername('');
+        return;
+      }
+      
+      if (data?.user?.email) {
+        const extractedUsername = data.user.email.split('@')[0];
+        setUsername(extractedUsername);
+      } else {
+        setUsername('');
+      }
+    } catch (error) {
+      console.error('Failed to fetch user', error);
+      setUsername('');
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   useEffect(() => {
     if (isFocused) {
       loadData();
@@ -43,7 +70,9 @@ const HomeScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Welcome back, Dev!</Text>
+      <Text style={styles.title}>
+        Welcome back{username ? `, ${username}` : ''}!
+      </Text>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Recent Journal Entry</Text>
