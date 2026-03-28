@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native';
 
 const RubberDuckScreen = () => {
@@ -6,6 +6,7 @@ const RubberDuckScreen = () => {
   const [messages, setMessages] = useState([
     { id: '1', text: "Quack! I'm your debugging assistant. Tell me about the bug you're chasing.", isUser: false },
   ]);
+  const flatListRef = useRef<FlatList>(null);
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -22,6 +23,11 @@ const RubberDuckScreen = () => {
         isUser: false
       };
       setMessages(prev => [...prev, duckResponse]);
+
+      // Auto-scroll to bottom after duck responds
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 100);
     }, 1000);
   };
 
@@ -29,12 +35,14 @@ const RubberDuckScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
-      keyboardVerticalOffset={100}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
     >
       <FlatList
+        ref={flatListRef}
         data={messages}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.chatContainer}
+        onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
         renderItem={({item}) => (
           <View style={[styles.messageBubble, item.isUser ? styles.userBubble : styles.duckBubble]}>
             <Text style={[styles.messageText, item.isUser ? styles.userText : styles.duckText]}>
@@ -67,7 +75,7 @@ const styles = StyleSheet.create({
   messageText: { fontSize: 16 },
   userText: { color: '#fff' },
   duckText: { color: '#333' },
-  inputArea: { flexDirection: 'row', padding: 15, borderTopWidth: 1, borderTopColor: '#eee', alignItems: 'center' },
+  inputArea: { flexDirection: 'row', padding: 15, borderTopWidth: 1, borderTopColor: '#eee', alignItems: 'center', backgroundColor: '#fff' },
   input: { flex: 1, height: 40, backgroundColor: '#f9f9f9', borderRadius: 20, paddingHorizontal: 15, marginRight: 10 },
   sendButton: { paddingHorizontal: 15 },
   sendButtonText: { color: '#007AFF', fontWeight: 'bold' }

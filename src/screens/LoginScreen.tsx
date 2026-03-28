@@ -1,41 +1,111 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, TextInput, Button, View, SafeAreaView} from 'react-native';
+import {Text, StyleSheet, TextInput, Button, View, SafeAreaView, Alert} from 'react-native';
+import {supabase} from '../lib/supabase';
 
 const LoginScreen = ({navigation}: any) => {
-  const [username, onSetUsername] = useState('');
-  const [password, onSetPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // In a real app, you'd validate credentials here
-    console.log('Logging in...');
-    navigation.replace('MainTabs'); // Navigate to the Home screen (Tabs)
+  const [loading, setLoading] = useState(false);
+
+  // Handle user login with Supabase Auth
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const {data, error} = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        Alert.alert('Login Failed', error.message);
+      } else {
+        console.log('Login successful:', data.user?.email);
+        navigation.replace('MainTabs');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'An unexpected error occurred');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle user sign up with Supabase Auth
+  const handleSignUp = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const {error} = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        Alert.alert('Sign Up Failed', error.message);
+      } else {
+        Alert.alert(
+          'Success',
+          'Account created! Please check your email to verify your account, then log in.',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                setEmail('');
+                setPassword('');
+              },
+            },
+          ]
+        );
+      }
+    } catch (error) {
+      Alert.alert('Error', 'An unexpected error occurred');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>DevReflect</Text>
       <View style={styles.formGroup}>
-        <Text style={styles.label}>Username:</Text>
+        <Text style={styles.label}>Email:</Text>
         <TextInput
           style={styles.input}
-          onChangeText={onSetUsername}
-          value={username}
-          placeholder="Enter username"
+          onChangeText={setEmail}
+          value={email}
+          placeholder="Enter email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          editable={!loading}
         />
       </View>
       <View style={styles.formGroup}>
         <Text style={styles.label}>Password:</Text>
         <TextInput
           style={styles.input}
-          onChangeText={onSetPassword}
+          onChangeText={setPassword}
           value={password}
           placeholder="Enter password"
           secureTextEntry
+          editable={!loading}
         />
       </View>
-      <Button title="Log In" onPress={handleLogin} />
+      <Button title={loading ? "Loading..." : "Log In"} onPress={handleLogin} disabled={loading} />
       <View style={{marginTop: 10}}>
-        <Button title="Sign-Up" color="#666" onPress={() => {}} />
+        <Button title={loading ? "Loading..." : "Sign Up"} color="#666" onPress={handleSignUp} disabled={loading} />
       </View>
     </SafeAreaView>
   );

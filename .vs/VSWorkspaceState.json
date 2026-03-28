@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\android",
+    "\\android\\app",
+    "\\android\\app\\src",
+    "\\android\\app\\src\\main",
+    "\\android\\app\\src\\main\\res",
+    "\\android\\app\\src\\main\\res\\mipmap-mdpi",
+    "\\android\\app\\src\\main\\res\\mipmap-xhdpi",
+    "\\android\\app\\src\\main\\res\\mipmap-xxhdpi",
+    "\\android\\app\\src\\main\\res\\mipmap-xxxhdpi"
   ],
-  "SelectedNode": "\\App.tsx",
+  "SelectedNode": "\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png",
   "PreviewInSolutionExplorer": false
 }

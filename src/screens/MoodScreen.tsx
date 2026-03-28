@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MoodScreen = () => {
   const [currentMood, setCurrentMood] = useState<string | null>(null);
@@ -17,6 +18,32 @@ const MoodScreen = () => {
     'Burned Out': "It looks like you've been working hard. Have you eaten anything today or taken a walk?",
     'Focused': "You're in the zone! Keep going, but remember to stretch every hour.",
     'Frustrated': "Deep breaths. Maybe try explaining the problem out loud to a rubber duck?",
+    'Productive': "Great momentum! What's the next small win you can achieve?",
+  };
+
+  useEffect(() => {
+    loadMood();
+  }, []);
+
+  const loadMood = async () => {
+    try {
+      const savedMood = await AsyncStorage.getItem('last_mood');
+      if (savedMood) {
+        const moodData = JSON.parse(savedMood);
+        setCurrentMood(moodData.label);
+      }
+    } catch (error) {
+      console.error('Failed to load mood', error);
+    }
+  };
+
+  const handleMoodSelect = async (mood: { label: string, icon: string }) => {
+    try {
+      setCurrentMood(mood.label);
+      await AsyncStorage.setItem('last_mood', JSON.stringify(mood));
+    } catch (error) {
+      console.error('Failed to save mood', error);
+    }
   };
 
   return (
@@ -27,7 +54,7 @@ const MoodScreen = () => {
           <TouchableOpacity
             key={mood.label}
             style={[styles.moodCard, currentMood === mood.label && styles.selectedMood]}
-            onPress={() => setCurrentMood(mood.label)}
+            onPress={() => handleMoodSelect(mood)}
           >
             <Text style={styles.moodIcon}>{mood.icon}</Text>
             <Text style={styles.moodLabel}>{mood.label}</Text>

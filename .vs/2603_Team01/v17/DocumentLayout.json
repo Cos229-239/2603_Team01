@@ -1,10 +1,102 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Full Sail\\PNP 2\\2603_Team01\\",
+  "WorkspaceRootPath": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Full Sail\\PNP 2\\2603_Team01\\App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\values\\strings.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\values\\strings.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\values\\styles.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\values\\styles.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\app\\layout.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-app\\app\\layout.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\app\\page.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-app\\app\\page.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\app\\favicon.ico||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-app\\app\\favicon.ico||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\HomeScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\HomeScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\lib\\supabase.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\lib\\supabase.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\JournalEntryScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\JournalEntryScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\.eslintrc.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.eslintrc.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\.prettierrc.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.prettierrc.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\babel.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:babel.config.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\LoginScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\LoginScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,20 +106,311 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "App.tsx",
-              "DocumentMoniker": "C:\\Full Sail\\PNP 2\\2603_Team01\\App.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\App.tsx",
               "RelativeDocumentMoniker": "App.tsx",
-              "ToolTip": "C:\\Full Sail\\PNP 2\\2603_Team01\\App.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\App.tsx",
               "RelativeToolTip": "App.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-03-18T00:34:44.35Z",
+              "WhenOpened": "2026-03-22T22:45:03.598Z",
+              "IsPinned": true,
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "styles.xml",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\values\\styles.xml",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\values\\styles.xml",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\values\\styles.xml",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\values\\styles.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2026-03-28T20:17:27.183Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "strings.xml",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\values\\strings.xml",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\values\\strings.xml",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\values\\strings.xml",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\values\\strings.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2026-03-28T20:17:12.673Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ic_launcher.png - PNG [72x72, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png - PNG [72x72, 32 bit, PNG]",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png - PNG [72x72, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-28T19:21:44.497Z",
+              "EditorCaption": " - PNG [72x72, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ic_launcher.png - PNG [144x144, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png - PNG [144x144, 32 bit, PNG]",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png - PNG [144x144, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-28T19:22:01.357Z",
+              "EditorCaption": " - PNG [144x144, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ic_launcher_round.png - PNG [96x96, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png - PNG [96x96, 32 bit, PNG]",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png - PNG [96x96, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-28T19:21:57.889Z",
+              "EditorCaption": " - PNG [96x96, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ic_launcher.png - PNG [48x48, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png - PNG [48x48, 32 bit, PNG]",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png - PNG [48x48, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-28T19:21:53.253Z",
+              "EditorCaption": " - PNG [48x48, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ic_launcher_round.png - PNG [48x48, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png - PNG [48x48, 32 bit, PNG]",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png - PNG [48x48, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-28T19:21:54.346Z",
+              "EditorCaption": " - PNG [48x48, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ic_launcher.png - PNG [96x96, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png - PNG [96x96, 32 bit, PNG]",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png - PNG [96x96, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-28T19:21:57.022Z",
+              "EditorCaption": " - PNG [96x96, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ic_launcher_round.png - PNG [144x144, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png - PNG [144x144, 32 bit, PNG]",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png - PNG [144x144, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-28T19:22:02.144Z",
+              "EditorCaption": " - PNG [144x144, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ic_launcher.png - PNG [192x192, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png - PNG [192x192, 32 bit, PNG]",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png - PNG [192x192, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-28T19:22:04.57Z",
+              "EditorCaption": " - PNG [192x192, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ic_launcher_round.png - PNG [192x192, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png - PNG [192x192, 32 bit, PNG]",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png - PNG [192x192, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-28T19:22:05.293Z",
+              "EditorCaption": " - PNG [192x192, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ic_launcher_round.png - PNG [72x72, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png",
+              "RelativeDocumentMoniker": "android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png - PNG [72x72, 32 bit, PNG]",
+              "RelativeToolTip": "android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png - PNG [72x72, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-03-28T19:21:46.157Z",
+              "EditorCaption": " - PNG [72x72, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "page.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\app\\page.tsx",
+              "RelativeDocumentMoniker": "my-app\\app\\page.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\app\\page.tsx",
+              "RelativeToolTip": "my-app\\app\\page.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-03-28T19:20:56.597Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "layout.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\app\\layout.tsx",
+              "RelativeDocumentMoniker": "my-app\\app\\layout.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\app\\layout.tsx",
+              "RelativeToolTip": "my-app\\app\\layout.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-03-28T19:20:55.459Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "favicon.ico - Icon [16x16, 32 bit, BMP]",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\app\\favicon.ico",
+              "RelativeDocumentMoniker": "my-app\\app\\favicon.ico",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\app\\favicon.ico - Icon [16x16, 32 bit, BMP]",
+              "RelativeToolTip": "my-app\\app\\favicon.ico - Icon [16x16, 32 bit, BMP]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001525|",
+              "WhenOpened": "2026-03-28T19:20:51.265Z",
+              "EditorCaption": " - Icon [16x16, 32 bit, BMP]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": ".eslintrc.js",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\.eslintrc.js",
+              "RelativeDocumentMoniker": ".eslintrc.js",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\.eslintrc.js",
+              "RelativeToolTip": ".eslintrc.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-27T02:39:19.509Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": ".prettierrc.js",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\.prettierrc.js",
+              "RelativeDocumentMoniker": ".prettierrc.js",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\.prettierrc.js",
+              "RelativeToolTip": ".prettierrc.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-27T02:39:18.557Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "babel.config.js",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\babel.config.js",
+              "RelativeDocumentMoniker": "babel.config.js",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\babel.config.js",
+              "RelativeToolTip": "babel.config.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-27T02:06:20.227Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "HomeScreen.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\HomeScreen.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\HomeScreen.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\HomeScreen.tsx",
+              "RelativeToolTip": "src\\screens\\HomeScreen.tsx",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-03-27T01:21:09.917Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-22T23:01:08.609Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "LoginScreen.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\LoginScreen.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\LoginScreen.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\LoginScreen.tsx",
+              "RelativeToolTip": "src\\screens\\LoginScreen.tsx",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAQAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-03-22T21:53:48.475Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "supabase.ts",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\lib\\supabase.ts",
+              "RelativeDocumentMoniker": "src\\lib\\supabase.ts",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\lib\\supabase.ts",
+              "RelativeToolTip": "src\\lib\\supabase.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-03-22T21:53:22.747Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "JournalEntryScreen.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\JournalEntryScreen.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\JournalEntryScreen.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\JournalEntryScreen.tsx",
+              "RelativeToolTip": "src\\screens\\JournalEntryScreen.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-03-28T17:11:13.274Z"
             }
           ]
         }
