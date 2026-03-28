@@ -3,8 +3,9 @@
     "",
     "\\my-app",
     "\\src",
-    "\\src\\lib"
+    "\\src\\lib",
+    "\\src\\screens"
   ],
-  "SelectedNode": "\\App.tsx",
+  "SelectedNode": "\\src\\screens\\HomeScreen.tsx",
   "PreviewInSolutionExplorer": false
 }
