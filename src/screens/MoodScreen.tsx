@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 
 import Slider from '@react-native-community/slider';
 
@@ -9,6 +9,7 @@ const MoodScreen = () => {
   const [sliderValue, setSliderValue] = useState(0);
 
   const [stressTips, setStressTips] = useState('');
+
 
   const moods = [
     { label: 'Productive', icon: '🚀' },
@@ -28,17 +29,17 @@ const MoodScreen = () => {
 
    const handleSlidingComplete = (value: number) => {
        setSliderValue(value)
-       if (value === 0) {
+       if (value <= 0) {
            setStressTips('Stress Level 0: Doing Great\nKeep up the good work!')
-       } else if (value === 1) {
+       } else if (value <= 1) {
            setStressTips('Stress Level 1: Feeling Anxious\nTry playing some instrumental music to help soothe your nerves.')
-       } else if (value === 2) {
+       } else if (value <= 2) {
            setStressTips("Stress Level 2: Building Uncertainty\nDon't be afraid to ask for help from your peers if you begin to feel lost or confused.")
-       } else if (value === 3) {
+       } else if (value <= 3) {
            setStressTips('Stress Level 3: Mentally Struggling\nMake sure you develop a healthy work-life balance to prevent your stress from increasing')
-       } else if (value === 4) {
+       } else if (value <= 4) {
            setStressTips('Stress Level 4: Stressed Out\nSplitting your tasks into smaller parts can make a large workload easier to manage.')
-       } else if (value === 5) {
+       } else if (value <= 5) {
            setStressTips('Stress Level 5: Completely Overwhelmed\nTaking a break from your work will help you reset, recharge, and approach the sitaution from a different angle. ')
        }
   };
@@ -70,48 +71,48 @@ const MoodScreen = () => {
 
        <Text style={styles.stressTitle}>Stress Level: {sliderValue}</Text>
 
-       <Slider
+          <Slider
+
               style={styles.slider}
 
 
               minimumValue={0}
               maximumValue={5}
 
-              step={1}
+              step={.25}
 
               minimumTrackTintColor="#E00C0C"
-              maximumTrackTintColor="#008000"
+              maximumTrackTintColor="#00FF00"
 
-
-              thumbTintColor="#000000"
+              thumbTintColor = "#000000"
 
               onValueChange={(value) => setSliderValue(value)}
               value={sliderValue}
 
 
               onSlidingComplete={handleSlidingComplete}
-       />
-       <Text>{stressTips}</Text>
+          />
+          <Text style={styles.stressText}>{stressTips}</Text>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f5f5', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: '#333', textAlign: 'center' },
-  moodGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  moodCard: { backgroundColor: '#fff', width: '45%', padding: 20, borderRadius: 12, alignItems: 'center', marginBottom: 15, elevation: 2 },
-  selectedMood: { borderColor: '#007AFF', borderWidth: 2 },
-  moodIcon: { fontSize: 32 },
-  moodLabel: { marginTop: 10, fontWeight: '600' },
-  aiCard: { backgroundColor: '#e3f2fd', padding: 20, borderRadius: 12, marginTop: 20, borderLeftWidth: 5, borderLeftColor: '#007AFF' },
-  aiTitle: { fontWeight: 'bold', color: '#007AFF', marginBottom: 5 },
-  aiText: { fontSize: 16, color: '#333', lineHeight: 22 },
+    container: { flex: 1, backgroundColor: '#f5f5f5', padding: 20 },
+    title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: '#333', textAlign: 'center' },
+    moodGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+    moodCard: { backgroundColor: '#fff', width: '45%', padding: 20, borderRadius: 12, alignItems: 'center', marginBottom: 15, elevation: 2 },
+    selectedMood: { borderColor: '#007AFF', borderWidth: 2 },
+    moodIcon: { fontSize: 32 },
+    moodLabel: { marginTop: 10, fontWeight: '600' },
+    aiCard: { backgroundColor: '#e3f2fd', padding: 20, borderRadius: 12, marginTop: 20, borderLeftWidth: 5, borderLeftColor: '#007AFF' },
+    aiTitle: { fontWeight: 'bold', color: '#007AFF', marginBottom: 5 },
+    aiText: { fontSize: 16, color: '#333', lineHeight: 22 },
 
 
-  stressTitle: { fontSize: 24, fontWeight: 'bold', marginTop: 20,  color: '#333', textAlign: 'center' },
-  slider: {width: 375, height: 100}
-
+    stressTitle: { fontSize: 24, fontWeight: 'bold', marginTop: 20, color: '#333', textAlign: 'center' },
+    stressText: { fontSize: 16, color: '#333', textAlign: 'center' },
+    slider: { width: '100%', minHeight: 50 }
 });
 
 export default MoodScreen;
