@@ -73,3 +73,29 @@ useState -> nav to New Reflection entry
 Add tag Quick Idea
 Footer
 Bottom Nav bar
+
+//Settings psuedocode
+
+Page: Settings
+//Header
+Header
+Text “Settings” 
+Button (Menu icon)
+//Body
+//Settings items in standard cards
+Rectangle (12pt rounded, color: gray)
+Card1: “Account”
+Rectangle (12pt rounded, color: gray)
+Card2: ”Notifications”
+Rectangle (12pt rounded, color: gray)
+Card3: ”Appearance”
+Rectangle (12pt rounded, color: gray)
+Card4: ”Privacy and Security”
+Rectangle (12pt rounded, color: gray)
+Card5: ”Help and Support”
+Rectangle (12pt rounded, color: gray)
+Card6: “About App”
+Rectangle (12pt rounded, color: white, outline gray)
+Card7: ”Delete Data”
+Footer 
+Bottom nav bar
