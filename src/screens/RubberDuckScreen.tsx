@@ -13,6 +13,7 @@ const RubberDuckScreen = () => {
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
+      console.log("Voice module:", Voice);
     Voice.onSpeechStart = () => setIsListening(true);
     Voice.onSpeechEnd = () => setIsListening(false);
     Voice.onSpeechError = (e) => {
