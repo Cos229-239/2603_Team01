@@ -3,8 +3,8 @@
 package com.example.devreflect
 
 import android.os.Bundle
-import androidx.activeity.ComponentActivity
-import androidx.activeity.compose.setContent
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(saveInstanceState)
+        super.onCreate(savedInstanceState)
         setContent {
             DevReflectUI()
         }
     }
 }
-@composable
+@Composable
 fun DevReflectUI() {
     Column(
         modifier = Modifier
@@ -41,11 +41,11 @@ fun DevReflectUI() {
             modifier = Modifier.fillMaxWidth()
         ) {
 
-            Text("😤", fonSize = 28.sp)
-            Text("😕", fonSize = 28.sp)
-            Text("😐", fonSize = 28.sp)
-            Text("😄", fonSize = 28.sp)
-            Text("😍", fonSize = 28.sp)
+            Text("😤", fontSize = 28.sp)
+            Text("😕", fontSize = 28.sp)
+            Text("😐", fontSize = 28.sp)
+            Text("😄", fontSize = 28.sp)
+            Text("😍", fontSize = 28.sp)
         }
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -59,7 +59,8 @@ fun DevReflectUI() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("🦆" fontSize = 40.sp)
+            Text("🦆", fontSize = 40.sp)
+
             Text("No reflections yet")
             Text("Start logging your first thought", fontSize = 12.sp)
 
@@ -80,7 +81,7 @@ fun DevReflectUI() {
                 Text("🐞 Log a bug")
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.width(10.dp))
 
             Button(
                 onClick = {},
@@ -100,11 +101,11 @@ fun DevReflectUI() {
                 Text("🌙 End of day")
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.width(10.dp))
 
             Button(
                 onClick = {},
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.width(1f)
             ) {
                 Text("💡 Quick idea")
             }
@@ -115,4 +116,3 @@ fun DevReflectUI() {
 // Testing completed
 =======
 }
-
