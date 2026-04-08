@@ -1,11 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TextInput, Button, ScrollView, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const JournalEntryScreen = ({navigation}: any) => {
+const JournalEntryScreen = ({navigation, route}: any) => {
   const [title, setTitle] = useState('');
   const [solution, setSolution] = useState('');
   const [tags, setTags] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (route.params?.entry) {
+      const {entry} = route.params;
+      setTitle(entry.title);
+      setSolution(entry.solution);
+      setTags(entry.tags.join(', '));
+      setIsEditing(true);
+    }
+  }, [route.params]);
 
   const saveEntry = async () => {
     if (!title || !solution) {
@@ -14,20 +25,27 @@ const JournalEntryScreen = ({navigation}: any) => {
     }
 
     try {
-      const newEntry = {
-        id: Date.now().toString(),
-        title,
-        solution,
-        tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag !== ''),
-        date: new Date().toISOString(),
-      };
-
       const existingEntries = await AsyncStorage.getItem('journal_entries');
-      const entries = existingEntries ? JSON.parse(existingEntries) : [];
+      let entries = existingEntries ? JSON.parse(existingEntries) : [];
 
-      const updatedEntries = [newEntry, ...entries];
-      await AsyncStorage.setItem('journal_entries', JSON.stringify(updatedEntries));
+      if (isEditing) {
+        entries = entries.map((e: any) =>
+          e.id === route.params.entry.id
+            ? {...e, title, solution, tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '')}
+            : e
+        );
+      } else {
+        const newEntry = {
+          id: Date.now().toString(),
+          title,
+          solution,
+          tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag !== ''),
+          date: new Date().toISOString(),
+        };
+        entries = [newEntry, ...entries];
+      }
 
+      await AsyncStorage.setItem('journal_entries', JSON.stringify(entries));
       navigation.goBack();
     } catch (error) {
       console.error('Failed to save entry', error);
@@ -64,7 +82,10 @@ const JournalEntryScreen = ({navigation}: any) => {
       />
 
       <View style={styles.buttonContainer}>
-        <Button title="Save Entry" onPress={saveEntry} />
+        <Button title={isEditing ? "Update Entry" : "Save Entry"} onPress={saveEntry} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Cancel" onPress={() => navigation.goBack()} color="#666" />
       </View>
     </ScrollView>
   );
@@ -75,7 +96,7 @@ const styles = StyleSheet.create({
   label: { fontSize: 16, fontWeight: 'bold', marginTop: 15, color: '#333' },
   input: { borderBottomWidth: 1, borderColor: '#ccc', paddingVertical: 8, fontSize: 16, marginBottom: 10 },
   textArea: { textAlignVertical: 'top', height: 120, borderWidth: 1, borderRadius: 8, padding: 10, marginTop: 5 },
-  buttonContainer: { marginTop: 30 }
+  buttonContainer: { marginTop: 10 }
 });
 
 export default JournalEntryScreen;
