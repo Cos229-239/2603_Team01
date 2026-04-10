@@ -38,9 +38,16 @@ const HomeScreen = () => {
         return;
       }
       
-      if (data?.user?.email) {
-        const extractedUsername = data.user.email.split('@')[0];
-        setUsername(extractedUsername);
+      if (data?.user) {
+        // Priority 1: Check if username exists in user_metadata
+        let displayUsername = data.user.user_metadata?.username;
+        
+        // Priority 2: Fallback to email-based username
+        if (!displayUsername && data.user.email) {
+          displayUsername = data.user.email.split('@')[0];
+        }
+        
+        setUsername(displayUsername || '');
       } else {
         setUsername('');
       }
@@ -57,6 +64,7 @@ const HomeScreen = () => {
   useEffect(() => {
     if (isFocused) {
       loadData();
+      fetchUser();
     }
   }, [isFocused]);
 
