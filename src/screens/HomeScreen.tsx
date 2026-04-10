@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused, useNavigation, CommonActions } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { supabase } from '../lib/supabase';
 
 const HomeScreen = () => {
@@ -9,7 +9,6 @@ const HomeScreen = () => {
   const [lastMood, setLastMood] = useState<any>(null);
   const [username, setUsername] = useState<string>('');
   const isFocused = useIsFocused();
-  const navigation = useNavigation();
 
   const loadData = async () => {
     try {
@@ -48,29 +47,6 @@ const HomeScreen = () => {
     } catch (error) {
       console.error('Failed to fetch user', error);
       setUsername('');
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        Alert.alert('Error', 'Failed to logout. Please try again.');
-        console.error('Logout error:', error);
-        return;
-      }
-
-      // Navigate back to Login screen and reset navigation stack
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'Login' }],
-        })
-      );
-    } catch (error) {
-      Alert.alert('Error', 'An unexpected error occurred.');
-      console.error('Logout error:', error);
     }
   };
 
@@ -129,12 +105,6 @@ const HomeScreen = () => {
           </View>
         </View>
       </ScrollView>
-
-      <View style={styles.logoutContainer}>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -149,30 +119,6 @@ const styles = StyleSheet.create({
   cardTitle: { fontWeight: 'bold', fontSize: 16 },
   cardText: { color: '#666', marginTop: 5 },
   aiPrompt: { fontStyle: 'italic', color: '#007AFF', marginTop: 8 },
-  logoutContainer: {
-    position: 'absolute',
-    bottom: 70,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-    paddingBottom: 10,
-  },
-  logoutButton: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 40,
-    paddingVertical: 12,
-    borderRadius: 25,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  logoutText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 16,
-  },
 });
 
 export default HomeScreen;
