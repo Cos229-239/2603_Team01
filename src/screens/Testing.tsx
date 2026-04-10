@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const EntryScreen = () => {
+const TestingScreen = () => {
   return (
     <SafeAreaView style={styles.screenContainer}>
       <ScrollView>
@@ -180,4 +180,4 @@ const styles = StyleSheet.create({
 }
 });
 
-export default EntryScreen;
+export default TestingScreen;
