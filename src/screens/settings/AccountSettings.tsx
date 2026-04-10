@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation, CommonActions, useIsFocused } from '@react-navigation/native';
 import { supabase } from '../../lib/supabase';
+import { useTheme } from '../../context/ThemeContext';
 
 const AccountSettings = () => {
   const navigation = useNavigation();
@@ -20,6 +21,7 @@ const AccountSettings = () => {
   const [username, setUsername] = useState('');
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [tempUsername, setTempUsername] = useState('');
+  const { colors } = useTheme();
 
   useEffect(() => {
     if (isFocused) {
@@ -143,48 +145,49 @@ const AccountSettings = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
+      <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView style={styles.scrollView}>
         {/* Profile Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Profile Information</Text>
+        <View style={[styles.section, { backgroundColor: colors.card }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Profile Information</Text>
           
           {/* Email (Read-only) */}
           <View style={styles.fieldContainer}>
-            <Text style={styles.label}>Email</Text>
-            <View style={styles.readOnlyField}>
-              <Text style={styles.readOnlyText}>{email}</Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>Email</Text>
+            <View style={[styles.readOnlyField, { backgroundColor: colors.background }]}>
+              <Text style={[styles.readOnlyText, { color: colors.textSecondary }]}>{email}</Text>
             </View>
           </View>
 
           {/* Username (Editable) */}
           <View style={styles.fieldContainer}>
-            <Text style={styles.label}>Username</Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>Username</Text>
             {isEditingUsername ? (
               <View>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.text }]}
                   value={tempUsername}
                   onChangeText={setTempUsername}
                   placeholder="Enter username"
+                  placeholderTextColor={colors.textSecondary}
                   autoCapitalize="none"
                 />
                 <View style={styles.editButtonsContainer}>
                   <TouchableOpacity 
-                    style={[styles.editButton, styles.cancelButton]} 
+                    style={[styles.editButton, styles.cancelButton, { backgroundColor: colors.background }]} 
                     onPress={handleCancelEdit}
                   >
-                    <Text style={styles.cancelButtonText}>Cancel</Text>
+                    <Text style={[styles.cancelButtonText, { color: colors.text }]}>Cancel</Text>
                   </TouchableOpacity>
                   <TouchableOpacity 
-                    style={[styles.editButton, styles.saveButton]} 
+                    style={[styles.editButton, styles.saveButton, { backgroundColor: colors.primary }]} 
                     onPress={handleSaveUsername}
                   >
                     <Text style={styles.saveButtonText}>Save</Text>
@@ -193,14 +196,14 @@ const AccountSettings = () => {
               </View>
             ) : (
               <View style={styles.usernameContainer}>
-                <View style={styles.readOnlyField}>
-                  <Text style={styles.readOnlyText}>{username}</Text>
+                <View style={[styles.readOnlyField, { backgroundColor: colors.background }]}>
+                  <Text style={[styles.readOnlyText, { color: colors.textSecondary }]}>{username}</Text>
                 </View>
                 <TouchableOpacity 
                   style={styles.editIconButton} 
                   onPress={() => setIsEditingUsername(true)}
                 >
-                  <Text style={styles.editIconText}>Edit</Text>
+                  <Text style={[styles.editIconText, { color: colors.primary }]}>Edit</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -208,30 +211,30 @@ const AccountSettings = () => {
         </View>
 
         {/* Activity Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Activity</Text>
+        <View style={[styles.section, { backgroundColor: colors.card }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Activity</Text>
           <View style={styles.activityContainer}>
             <View style={styles.activityItem}>
-              <Text style={styles.activityCount}>0</Text>
-              <Text style={styles.activityLabel}>Reflections</Text>
+              <Text style={[styles.activityCount, { color: colors.primary }]}>0</Text>
+              <Text style={[styles.activityLabel, { color: colors.textSecondary }]}>Reflections</Text>
             </View>
-            <View style={styles.activityDivider} />
+            <View style={[styles.activityDivider, { backgroundColor: colors.border }]} />
             <View style={styles.activityItem}>
-              <Text style={styles.activityCount}>0</Text>
-              <Text style={styles.activityLabel}>Saved Snippets</Text>
+              <Text style={[styles.activityCount, { color: colors.primary }]}>0</Text>
+              <Text style={[styles.activityLabel, { color: colors.textSecondary }]}>Saved Snippets</Text>
             </View>
           </View>
         </View>
 
         {/* Account Actions Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account Actions</Text>
+        <View style={[styles.section, { backgroundColor: colors.card }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Account Actions</Text>
           
           <TouchableOpacity 
-            style={styles.actionButton} 
+            style={[styles.actionButton, { backgroundColor: colors.card, borderColor: colors.border }]} 
             onPress={handleChangePassword}
           >
-            <Text style={styles.actionButtonText}>Change Password</Text>
+            <Text style={[styles.actionButtonText, { color: colors.text }]}>Change Password</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -246,7 +249,7 @@ const AccountSettings = () => {
       </ScrollView>
 
       {/* Logout Button */}
-      <View style={styles.logoutContainer}>
+      <View style={[styles.logoutContainer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
         <TouchableOpacity 
           style={styles.logoutButton} 
           onPress={handleLogout}
@@ -259,164 +262,37 @@ const AccountSettings = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  section: {
-    backgroundColor: '#fff',
-    marginTop: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 15,
-  },
-  fieldContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#555',
-    marginBottom: 8,
-  },
-  readOnlyField: {
-    backgroundColor: '#f0f0f0',
-    padding: 12,
-    borderRadius: 8,
-  },
-  readOnlyText: {
-    fontSize: 16,
-    color: '#666',
-  },
-  usernameContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  editIconButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  editIconText: {
-    color: '#007AFF',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 12,
-    borderRadius: 8,
-    fontSize: 16,
-  },
-  editButtonsContainer: {
-    flexDirection: 'row',
-    gap: 10,
-    marginTop: 10,
-  },
-  editButton: {
-    flex: 1,
-    padding: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  cancelButton: {
-    backgroundColor: '#f0f0f0',
-  },
-  cancelButtonText: {
-    color: '#333',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  saveButton: {
-    backgroundColor: '#007AFF',
-  },
-  saveButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  activityContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 10,
-  },
-  activityItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  activityCount: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#007AFF',
-  },
-  activityLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 5,
-  },
-  activityDivider: {
-    width: 1,
-    backgroundColor: '#e0e0e0',
-  },
-  actionButton: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignItems: 'center',
-  },
-  actionButtonText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#333',
-  },
-  deleteButton: {
-    borderColor: '#FF3B30',
-  },
-  deleteButtonText: {
-    color: '#FF3B30',
-  },
-  logoutContainer: {
-    padding: 20,
-    paddingBottom: 40,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
-  },
-  logoutButton: {
-    backgroundColor: '#FF3B30',
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  logoutText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 16,
-  },
+  container: { flex: 1 },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  scrollView: { flex: 1 },
+  section: { marginTop: 20, paddingHorizontal: 20, paddingVertical: 15 },
+  sectionTitle: { fontSize: 18, fontWeight: '600', marginBottom: 15 },
+  fieldContainer: { marginBottom: 20 },
+  label: { fontSize: 14, fontWeight: '500', marginBottom: 8 },
+  readOnlyField: { padding: 12, borderRadius: 8 },
+  readOnlyText: { fontSize: 16 },
+  usernameContainer: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  editIconButton: { paddingHorizontal: 12, paddingVertical: 8 },
+  editIconText: { fontSize: 14, fontWeight: '500' },
+  input: { borderWidth: 1, padding: 12, borderRadius: 8, fontSize: 16 },
+  editButtonsContainer: { flexDirection: 'row', gap: 10, marginTop: 10 },
+  editButton: { flex: 1, padding: 10, borderRadius: 8, alignItems: 'center' },
+  cancelButton: {},
+  cancelButtonText: { fontSize: 14, fontWeight: '500' },
+  saveButton: {},
+  saveButtonText: { color: '#fff', fontSize: 14, fontWeight: '500' },
+  activityContainer: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10 },
+  activityItem: { alignItems: 'center', flex: 1 },
+  activityCount: { fontSize: 28, fontWeight: 'bold' },
+  activityLabel: { fontSize: 14, marginTop: 5 },
+  activityDivider: { width: 1 },
+  actionButton: { borderWidth: 1, padding: 15, borderRadius: 8, marginBottom: 10, alignItems: 'center' },
+  actionButtonText: { fontSize: 16, fontWeight: '500' },
+  deleteButton: { borderColor: '#FF3B30' },
+  deleteButtonText: { color: '#FF3B30' },
+  logoutContainer: { padding: 20, paddingBottom: 40, borderTopWidth: 1 },
+  logoutButton: { backgroundColor: '#FF3B30', paddingVertical: 12, borderRadius: 8, alignItems: 'center', elevation: 2 },
+  logoutText: { color: '#fff', fontWeight: '600', fontSize: 16 },
 });
 
 export default AccountSettings;

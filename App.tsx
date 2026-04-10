@@ -1,8 +1,11 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+// Import Theme Provider
+import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 
 // Import Screens
 import LoginScreen from './src/screens/LoginScreen';
@@ -35,9 +38,28 @@ const JournalStack = () => {
 };
 
 const SettingsStack = () => {
+  const { colors } = useTheme();
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: 'Settings' }} />
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.card,
+        },
+        headerTintColor: colors.primary,
+        headerTitleStyle: {
+          color: colors.text,
+        },
+      }}
+    >
+      <Stack.Screen 
+        name="Settings" 
+        component={SettingsScreen} 
+        options={{ 
+          title: 'Settings',
+          headerShown: false,
+        }} 
+      />
       <Stack.Screen name="AccountSettings" component={AccountSettings} options={{ title: 'Account Settings' }} />
       <Stack.Screen name="AppearanceSettings" component={AppearanceSettings} options={{ title: 'Appearance Settings' }} />
       <Stack.Screen name="NotificationsSettings" component={NotificationsSettings} options={{ title: 'Notifications Settings' }} />
@@ -50,8 +72,20 @@ const SettingsStack = () => {
 };
 
 const MainTabs = () => {
+  const { colors } = useTheme();
+  
   return (
-    <Tab.Navigator screenOptions={{ tabBarActiveTintColor: '#007AFF', headerShown: false }}>
+    <Tab.Navigator 
+      screenOptions={{ 
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarStyle: {
+          backgroundColor: colors.card,
+          borderTopColor: colors.border,
+        },
+        headerShown: false,
+      }}
+    >
       <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: true }} />
       <Tab.Screen name="Journal" component={JournalStack} />
       <Tab.Screen name="Mood" component={MoodScreen} options={{ headerShown: true }} />
@@ -61,23 +95,45 @@ const MainTabs = () => {
   );
 };
 
+const AppNavigator = () => {
+  const { theme, colors } = useTheme();
+
+  const navigationTheme = {
+    ...(theme === 'dark' ? DarkTheme : DefaultTheme),
+    colors: {
+      ...(theme === 'dark' ? DarkTheme.colors : DefaultTheme.colors),
+      background: colors.background,
+      card: colors.card,
+      text: colors.text,
+      border: colors.border,
+      primary: colors.primary,
+    },
+  };
+
+  return (
+    <NavigationContainer theme={navigationTheme}>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
 const App = () => {
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="MainTabs"
-            component={MainTabs}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ThemeProvider>
+        <AppNavigator />
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 };

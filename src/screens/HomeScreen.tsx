@@ -3,12 +3,14 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import { supabase } from '../lib/supabase';
+import { useTheme } from '../context/ThemeContext';
 
 const HomeScreen = () => {
   const [lastEntry, setLastEntry] = useState<any>(null);
   const [lastMood, setLastMood] = useState<any>(null);
   const [username, setUsername] = useState<string>('');
   const isFocused = useIsFocused();
+  const { colors } = useTheme();
 
   const loadData = async () => {
     try {
@@ -77,38 +79,38 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, { backgroundColor: colors.background }]}>
       <ScrollView style={styles.container}>
-        <Text style={styles.title}>
+        <Text style={[styles.title, { color: colors.text }]}>
           Welcome back{username ? `, ${username}` : ''}!
         </Text>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recent Journal Entry</Text>
-          <View style={styles.card}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Recent Journal Entry</Text>
+          <View style={[styles.card, { backgroundColor: colors.card }]}>
             {lastEntry ? (
               <>
-                <Text style={styles.cardTitle}>{lastEntry.title}</Text>
-                <Text style={styles.cardText} numberOfLines={2}>{lastEntry.solution}</Text>
+                <Text style={[styles.cardTitle, { color: colors.text }]}>{lastEntry.title}</Text>
+                <Text style={[styles.cardText, { color: colors.textSecondary }]} numberOfLines={2}>{lastEntry.solution}</Text>
               </>
             ) : (
-              <Text style={styles.cardText}>No entries yet. Start journaling your solutions!</Text>
+              <Text style={[styles.cardText, { color: colors.textSecondary }]}>No entries yet. Start journaling your solutions!</Text>
             )}
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Current Mood</Text>
-          <View style={styles.card}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Current Mood</Text>
+          <View style={[styles.card, { backgroundColor: colors.card }]}>
             {lastMood ? (
               <>
-                <Text style={styles.cardText}>Mood: {lastMood.label} {lastMood.icon}</Text>
+                <Text style={[styles.cardText, { color: colors.text }]}>Mood: {lastMood.label} {lastMood.icon}</Text>
                 {aiPrompts[lastMood.label] && (
-                  <Text style={styles.aiPrompt}>"{aiPrompts[lastMood.label]}"</Text>
+                  <Text style={[styles.aiPrompt, { color: colors.primary }]}>"{aiPrompts[lastMood.label]}"</Text>
                 )}
               </>
             ) : (
-              <Text style={styles.cardText}>How are you feeling today?</Text>
+              <Text style={[styles.cardText, { color: colors.textSecondary }]}>How are you feeling today?</Text>
             )}
           </View>
         </View>
@@ -118,15 +120,15 @@ const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: { flex: 1, backgroundColor: '#f5f5f5' },
+  wrapper: { flex: 1 },
   container: { flex: 1, padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: '#333' },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
   section: { marginBottom: 25 },
-  sectionTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10, color: '#555' },
-  card: { backgroundColor: '#fff', padding: 15, borderRadius: 10, elevation: 2 },
+  sectionTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10 },
+  card: { padding: 15, borderRadius: 10, elevation: 2 },
   cardTitle: { fontWeight: 'bold', fontSize: 16 },
-  cardText: { color: '#666', marginTop: 5 },
-  aiPrompt: { fontStyle: 'italic', color: '#007AFF', marginTop: 8 },
+  cardText: { marginTop: 5 },
+  aiPrompt: { fontStyle: 'italic', marginTop: 8 },
 });
 
 export default HomeScreen;
