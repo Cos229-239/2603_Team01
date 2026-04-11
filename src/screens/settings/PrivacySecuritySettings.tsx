@@ -1,15 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '../../context/ThemeContext';
 
 const PrivacySecuritySettings = () => {
   const navigation = useNavigation();
+  const { colors } = useTheme();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Privacy & Security Settings Placeholder</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.text, { color: colors.text }]}>Privacy & Security Settings Placeholder</Text>
       <TouchableOpacity
-        style={styles.backButton}
+        style={[styles.backButton, { backgroundColor: colors.primary }]}
         onPress={() => navigation.goBack()}
       >
         <Text style={styles.backButtonText}>Back to Settings</Text>
@@ -23,7 +25,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
   text: {
     fontSize: 18,
@@ -31,7 +32,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 10,
-    backgroundColor: '#007AFF',
     borderRadius: 5,
   },
   backButtonText: {

@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet, TextInput, Button, View, SafeAreaView, Alert} from 'react-native';
 import {supabase} from '../lib/supabase';
+import { useTheme } from '../context/ThemeContext';
 
 const LoginScreen = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [loading, setLoading] = useState(false);
+  const { colors } = useTheme();
 
   // Handle user login with Supabase Auth
   const handleLogin = async () => {
@@ -78,27 +79,30 @@ const LoginScreen = ({navigation}: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>DevReflect</Text>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}
+    >
+      <Text style={[styles.title, { color: colors.primary }]}>DevReflect</Text>
       <View style={styles.formGroup}>
-        <Text style={styles.label}>Email:</Text>
+        <Text style={[styles.label, { color: colors.text }]}>Email:</Text>
         <TextInput
-          style={styles.input}
+          style={[styles.input, { backgroundColor: colors.card, borderColor: colors.border, color: colors.text }]}
           onChangeText={setEmail}
           value={email}
           placeholder="Enter email"
+          placeholderTextColor={colors.textSecondary}
           keyboardType="email-address"
           autoCapitalize="none"
           editable={!loading}
         />
       </View>
       <View style={styles.formGroup}>
-        <Text style={styles.label}>Password:</Text>
+        <Text style={[styles.label, { color: colors.text }]}>Password:</Text>
         <TextInput
-          style={styles.input}
+          style={[styles.input, { backgroundColor: colors.card, borderColor: colors.border, color: colors.text }]}
           onChangeText={setPassword}
           value={password}
           placeholder="Enter password"
+          placeholderTextColor={colors.textSecondary}
           secureTextEntry
           editable={!loading}
         />
@@ -112,11 +116,11 @@ const LoginScreen = ({navigation}: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, justifyContent: 'center', backgroundColor: '#fff' },
-  title: { fontSize: 32, fontWeight: 'bold', textAlign: 'center', marginBottom: 40, color: '#007AFF' },
+  container: { flex: 1, padding: 20, justifyContent: 'center' },
+  title: { fontSize: 32, fontWeight: 'bold', textAlign: 'center', marginBottom: 40 },
   formGroup: { marginBottom: 15 },
-  label: { fontSize: 16, color: '#333' },
-  input: { height: 45, borderWidth: 1, padding: 10, borderColor: '#ccc', borderRadius: 8, marginTop: 5 },
+  label: { fontSize: 16 },
+  input: { height: 45, borderWidth: 1, padding: 10, borderRadius: 8, marginTop: 5 },
 });
 
 export default LoginScreen;
