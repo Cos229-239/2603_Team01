@@ -22,7 +22,7 @@ const MoodScreen = () => {
     'Burned Out': "It looks like you've been working hard. Have you eaten anything today or taken a walk?",
     'Focused': "You're in the zone! Keep going, but remember to stretch every hour.",
     'Frustrated': "Deep breaths. Maybe try explaining the problem out loud to a rubber duck?",
-  };
+    };
 
   const handleSlidingComplete = (value: number) => {
     setSliderValue(value)
