@@ -55,7 +55,14 @@ const MainTabs = () => {
       <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: true }} />
       <Tab.Screen name="Journal" component={JournalStack} />
       <Tab.Screen name="Mood" component={MoodScreen} options={{ headerShown: true }} />
-      <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} options={{ headerShown: true }} />
+      <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} options={{
+          tabBarIcon: ({ size }) => (
+              source={require('./src/assets/images/rubber duck.jpg')}
+              style={{ width: size, height: size }}
+              />
+              ),
+          }}
+      />
       <Tab.Screen name="Settings" component={SettingsStack} />
     </Tab.Navigator>
   );
