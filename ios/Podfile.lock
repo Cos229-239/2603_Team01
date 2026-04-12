@@ -1469,6 +1469,53 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - react-native-slider (5.2.0):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - react-native-slider/common (= 5.2.0)
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
+  - react-native-slider/common (5.2.0):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
+  - react-native-voice (3.2.4):
+    - React-Core
   - React-NativeModulesApple (0.84.1):
     - hermes-engine
     - React-callinvoker
@@ -1854,8 +1901,28 @@ PODS:
     - React-utils (= 0.84.1)
     - ReactNativeDependencies
   - ReactNativeDependencies (0.84.1)
-<<<<<<< Updated upstream
-=======
+  - RNCAsyncStorage (1.24.0):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - RNGestureHandler (2.30.0):
     - hermes-engine
     - RCTRequired
@@ -1925,7 +1992,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
->>>>>>> Stashed changes
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -1969,6 +2035,8 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
+  - "react-native-voice (from `../node_modules/@react-native-voice/voice`)"
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-networking (from `../node_modules/react-native/ReactCommon/react/networking`)
   - React-oscompat (from `../node_modules/react-native/ReactCommon/oscompat`)
@@ -2003,11 +2071,9 @@ DEPENDENCIES:
   - ReactCodegen (from `build/generated/ios/ReactCodegen`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeDependencies (from `../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec`)
-<<<<<<< Updated upstream
-=======
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
->>>>>>> Stashed changes
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
@@ -2090,6 +2156,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
+  react-native-voice:
+    :path: "../node_modules/@react-native-voice/voice"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-networking:
@@ -2158,13 +2228,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeDependencies:
     :podspec: "../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec"
-<<<<<<< Updated upstream
-=======
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNScreens:
     :path: "../node_modules/react-native-screens"
->>>>>>> Stashed changes
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -2208,6 +2277,8 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 45e088dfb58dc326ae20cca1814d3726553c4cad
   React-microtasksnativemodule: ab9d1a05fe1f58ea44a97d307ef1b53463f45a3f
   react-native-safe-area-context: 29044d05d61f2c60d0828c373bd0ebe17eed58d0
+  react-native-slider: a20ed17f350cbc9935f0dc9610e4cb29b9e7a4c7
+  react-native-voice: f5e8eec2278451d0017eb6a30a6ccc726aca34e0
   React-NativeModulesApple: b94faa2dce6d8c0a9d722ed7ee27b996d28b62d1
   React-networking: e409d8fb062162da6293e98b77f8d80cf4430e07
   React-oscompat: ff26abf0ae3e3fdbe47b44224571e3fc7226a573
@@ -2242,11 +2313,9 @@ SPEC CHECKSUMS:
   ReactCodegen: 4fa1b291ad275013e39212f2463c46480fb53afe
   ReactCommon: 309419492d417c4cbb87af06f67735afa40ecb9d
   ReactNativeDependencies: be8b4d45d5b1cdfdb8ad29ca1efa85ebcb0cc5a9
-<<<<<<< Updated upstream
-=======
+  RNCAsyncStorage: a170e342e83aa0180ec314f7212798dc04f529cc
   RNGestureHandler: 6d378fd1aa991c7ab62a4215ee6cc417895a6954
   RNScreens: 088d923c4327c63c9f8c942cae17a9d038f47d97
->>>>>>> Stashed changes
   Yoga: c0b3f2c7e8d3e327e450223a2414ca3fa296b9a2
 
 PODFILE CHECKSUM: 75f8d3261fc108c5837769d5f2e12f3b988caf17

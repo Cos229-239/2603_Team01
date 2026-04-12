@@ -24,6 +24,8 @@ import PrivacySecuritySettings from './src/screens/settings/PrivacySecuritySetti
 import HelpSupportSettings from './src/screens/settings/HelpSupportSettings';
 import AboutAppSettings from './src/screens/settings/AboutAppSettings';
 import StorageSettings from './src/screens/settings/StorageSettings';
+import TestingScreen from './src/screens/Testing';
+import HistoryScreen from './src/screens/HistoryScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -67,6 +69,8 @@ const SettingsStack = () => {
       <Stack.Screen name="HelpSupportSettings" component={HelpSupportSettings} options={{ title: 'Help & Support Settings' }} />
       <Stack.Screen name="AboutAppSettings" component={AboutAppSettings} options={{ title: 'About App Settings' }} />
       <Stack.Screen name="StorageSettings" component={StorageSettings} options={{ title: 'Storage Settings' }} />
+      <Stack.Screen name="Testing" component={TestingScreen} options={{ title: 'Testing' }} />
+      <Stack.Screen name="HistoryScreen" component={HistoryScreen} options={{ title: 'History' }} />
     </Stack.Navigator>
   );
 };
@@ -91,6 +95,8 @@ const MainTabs = () => {
       <Tab.Screen name="Mood" component={MoodScreen} options={{ headerShown: true }} />
       <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} options={{ headerShown: true }} />
       <Tab.Screen name="Settings" component={SettingsStack} />
+      <Tab.Screen name="Testing" component={TestingScreen} options={{ headerShown: true }} />
+      <Tab.Screen name="History" component={HistoryScreen} options={{ headerShown: true }} />
     </Tab.Navigator>
   );
 };
