@@ -91,7 +91,7 @@ const MainTabs = () => {
       <Tab.Screen name="Mood" component={MoodScreen} options={{ headerShown: true }} />
       <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} options={{
           tabBarIcon: ({ size }) => (
-              source={require('./src/assets/images/rubber duck.jpg')}
+              source={require('./src/assets/images/Wade_no-bg.png')}
               style={{ width: size, height: size }}
               />
               ),
