@@ -13,97 +13,114 @@ const TestingScreen = () => {
   return (
     <SafeAreaView style={styles.screenContainer}>
       <ScrollView>
-        <View style={styles.section}>
-          <View style={styles.headerRow}>
-            <TouchableOpacity>
-              <Text style={styles.tagText}>x Cancel</Text>
+        <View style={styles.contentContainer}>
+          <View style={styles.section}>
+            <View style={styles.headerRow}>
+              <TouchableOpacity>
+                <Text style={styles.tagText}>x Cancel</Text>
+              </TouchableOpacity>
+
+              <Text style={styles.title}>New Journal Entry</Text>
+
+              <TouchableOpacity>
+                <View style={styles.tag}>
+                  <Text style={styles.tagText}>Draft</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.divider} />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Entry type tags</Text>
+            <View style={styles.tagRow}>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>Bug</Text>
+              </View>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>Concept</Text>
+              </View>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>Debugging</Text>
+              </View>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>End of Day</Text>
+              </View>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>Quick Idea</Text>
+              </View>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>+ Issue Tag</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              What problem are you trying to solve?
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="React Native keeps throwing a warning when..."
+              placeholderTextColor="#595959"
+              multiline
+            />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>What have you tried so far?</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Tried clearing cache, updated the nav library..."
+              placeholderTextColor="#595959"
+              multiline
+            />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Attach code snippet</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Paste your code here..."
+              placeholderTextColor="#595959"
+              multiline
+            />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Issue type tags</Text>
+            <View style={styles.tagRow}>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>Bug</Text>
+              </View>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>JavaScript</Text>
+              </View>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>React Native</Text>
+              </View>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>Python</Text>
+              </View>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>Syntax</Text>
+              </View>
+              <View style={styles.tag}>
+                <Text style={styles.tagText}>+ Issue Tag</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.actionsRow}>
+            <TouchableOpacity style={styles.actionButtonSecondary}>
+              <Text style={styles.actionButtonTextSecondary}>Discard</Text>
             </TouchableOpacity>
-          <Text style={styles.titleText}>New Journal Entry</Text>
-          <TouchableOpacity>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>Draft</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-          <View style={styles.divider} />
-      </View>
-      <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Type</Text>
-          <View style={styles.tagRow}>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>Bug</Text>
-            </View>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>Concept</Text>
-            </View>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>Debugging</Text>
-            </View>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>Writing</Text>
-            </View>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>+ Tag</Text>
-            </View>
+
+            <TouchableOpacity style={styles.actionButtonPrimary}>
+              <Text style={styles.actionButtonTextPrimary}>Save</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>What problem are you trying to solve?</Text>
-          <TextInput
-            style={styles.promptInput}
-            placeholder="React Native keeps throwing a warning when..."
-            placeholderTextColor="#595959"
-            multiline
-          />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>What have you tried so far?</Text>
-          <TextInput
-            style={styles.promptInput}
-            placeholder="Tried clearing cache, updated the nav library..."
-            placeholderTextColor="#595959"
-            multiline
-          />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Attach code snippet</Text>
-          <TextInput
-            style={styles.promptInput}
-            placeholder="Paste your code here..."
-            placeholderTextColor="#595959"
-            multiline
-          />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.formLabel}>Tags</Text>
-          <View style={styles.tagRow}>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>Bug</Text>
-            </View>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>JavaScript</Text>
-            </View>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>React Native</Text>
-            </View>
-             <View style={styles.tag}>
-              <Text style={styles.tagText}>+ Tag</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.footerButtonRow}>
-          <TouchableOpacity style={styles.discardButton}>
-            <Text style={styles.footerButtonTextB}>Discard</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.saveButton}>
-            <Text style={styles.footerButtonText}>Save</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -111,73 +128,112 @@ const TestingScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  screenContainer: {flex: 1, backgroundColor: '#fff', padding: 16,},
-
-  section: {marginBottom: 20,},
-
-  headerRow: {flexDirection: 'row',justifyContent: 'space-between',
-    alignItems: 'center',marginBottom: 20,},
-
-   footerButtonRow: {flexDirection: 'row', justifyContent: 'space-between',
-    alignItems: 'center', marginBottom: 20,},
-
-  titleText: {
-    fontSize: 18,fontWeight: 'bold',color: '#000',},
-
-  sectionTitle: { fontSize: 16, fontWeight: '600', marginBottom: 10, color: '#333',},
-
-  formLabel: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 10,
-    color: '#555',
+  // ===== Layout =====
+  screenContainer: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
   },
 
-  promptInput: {
-    backgroundColor: '#d9d9d9',
+  contentContainer: {
+    flex: 1,
+    padding: 16,
+  },
+
+  section: {
+    marginBottom: 20,
+  },
+
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+
+  divider: {
+    height: 1,
+    backgroundColor: '#000000',
+    marginVertical: 10,
+  },
+
+  // ===== Typography =====
+  title: {
+    fontSize: 20,
+    fontWeight: '400',
+    color: '#000000',
+  },
+
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#555555',
+    marginBottom: 10,
+  },
+
+  tagText: {
+    fontSize: 10,
+    color: '#000000',
+  },
+
+  actionButtonTextPrimary: {
+    fontSize: 20,
+    fontWeight: '300',
+    color: '#FFFFFF',
+  },
+
+  actionButtonTextSecondary: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#000000',
+  },
+
+  // ===== Inputs / Panels =====
+  input: {
+    backgroundColor: '#D9D9D9',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     minHeight: 90,
     textAlignVertical: 'top',
-    color: '#333',
+    color: '#333333',
   },
+
+  // ===== Tags =====
   tagRow: {
-    flexDirection: 'row',flexWrap: 'wrap',},
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
 
   tag: {
     backgroundColor: '#D9D9D9',
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 20,
+    borderRadius: 30,
     marginRight: 10,
     marginBottom: 10,
   },
-  tagText: {color: '#000',fontSize: 10, },
-  discardButton: {
-    flex: 0.48,
-    backgroundColor: '#ccc',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
+
+  // ===== Action Buttons =====
+  actionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
   },
-  saveButton: {
+
+  actionButtonPrimary: {
     flex: 0.48,
     backgroundColor: '#6B6B6B',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     alignItems: 'center',
   },
-  footerButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  footerButtonTextB: {color: '#000',fontWeight: 'bold',},
 
-  divider: {
-  height: 1,
-  backgroundColor: '#000',
-  marginVertical: -1,
-}
+  actionButtonSecondary: {
+    flex: 0.48,
+    backgroundColor: '#D9D9D9',
+    padding: 15,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
 });
 
 export default TestingScreen;

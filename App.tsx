@@ -10,6 +10,7 @@ import JournalScreen from './src/screens/JournalScreen';
 import MoodScreen from './src/screens/MoodScreen';
 import RubberDuckScreen from './src/screens/RubberDuckScreen';
 import TestingScreen from './src/screens/Testing';
+import HistoryPage from './src/screens/HistoryScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,6 +23,7 @@ const MainTabs = () => {
       <Tab.Screen name="Mood" component={MoodScreen} />
       <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} />
       <Tab.Screen name="Testing" component={TestingScreen} />
+      <Tab.Screen name="History" component={HistoryPage} />
     </Tab.Navigator>
   );
 };
