@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator} from 'react-native';
+import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image} from 'react-native';
 import Voice from '@react-native-voice/voice';
 import { getDuckResponse } from '../lib/gemini';
 import { useTheme } from '../context/ThemeContext';
@@ -91,6 +91,17 @@ const RubberDuckScreen = () => {
       style={[styles.container, { backgroundColor: colors.background }]}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
     >
+      <View style={[styles.header, { borderBottomColor: colors.border, backgroundColor: colors.card }]}>
+        <Image
+          source={require('../assets/images/Wade_no-bg.png')}
+          style={styles.headerIcon}
+        />
+        <View>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>Wade</Text>
+          <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>The Rubber Duck Assistant</Text>
+        </View>
+      </View>
+
       <FlatList
         ref={flatListRef}
         data={messages}
@@ -147,6 +158,24 @@ const RubberDuckScreen = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+  },
+  headerIcon: {
+    width: 50,
+    height: 50,
+    marginRight: 15,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  headerSubtitle: {
+    fontSize: 12,
+  },
   chatContainer: { padding: 20 },
   messageBubble: { padding: 12, borderRadius: 15, marginBottom: 15, maxWidth: '85%' },
   messageText: { fontSize: 16, lineHeight: 22 },
