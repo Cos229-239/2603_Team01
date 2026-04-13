@@ -6,7 +6,7 @@ const Entry  = () => {
   return (
    <SafeAreaView style={styles.screenContainer}>
     <ScrollView>
-      <View style={styles.headerRow}>
+        <View style={styles.headerRow}>
         <Text style={styles.title}>History</Text>
         <TouchableOpacity>
           <Text style={styles.searchText}>Settings</Text>
@@ -15,7 +15,13 @@ const Entry  = () => {
       <View style={styles.divider} />
       <View style={styles.section}>
         <View style={styles.searchBar}>
+          // TODO: Implement search functionality to filter reflections by keywords, tags, or dates.
+          <View style={styles.headerRow}>
           <Text style={styles.searchText}>Search Reflections...</Text>
+           <TouchableOpacity>
+          <Text style={styles.searchText}>Q</Text>
+        </TouchableOpacity>
+        </View>
         </View>
       </View>
 
