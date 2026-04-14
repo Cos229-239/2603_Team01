@@ -15,9 +15,10 @@ const Entry  = () => {
       <View style={styles.divider} />
       <View style={styles.section}>
         <View style={styles.searchBar}>
-          // TODO: Implement search functionality to filter reflections by keywords, tags, or dates.
+          // TODO: Implement search functionality
           <View style={styles.headerRow}>
           <Text style={styles.searchText}>Search Reflections...</Text>
+          // TODO: Implement filtering functionality
            <TouchableOpacity>
           <Text style={styles.searchText}>Q</Text>
         </TouchableOpacity>
@@ -27,6 +28,7 @@ const Entry  = () => {
 
       <View style={styles.section}>
         <View style={styles.tagRow}>
+          // TODO: Implement dynamic tags based on existing entries, and filter entries by tag when selected. Possible multi-select for tags to allow for more specific filtering (e.g. show all entries tagged with both "React Native" and "Debugging").
           <View style={styles.tag}>
             <Text style={styles.tagText}>All</Text>
           </View>
@@ -68,6 +70,7 @@ const Entry  = () => {
       </View>
 
       <View style={styles.section}>
+        // More tags for filtering/sorting, based on user tags and most used/common.
         <Text style={styles.sectionTitle}>Issue type tags</Text>
         <View style={styles.tagRow}>
           <View style={styles.tag}>

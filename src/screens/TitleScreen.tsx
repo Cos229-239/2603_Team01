@@ -29,13 +29,16 @@ const TitleScreen = () => {
             <Text style={styles.sectionTitle}>you don't want to lose.</Text>
           </View>
           <View style={styles.section}>
+            // TODO: Replace with actual login.
             <TouchableOpacity style={styles.actionButtonPrimary}>
               <Text style={styles.actionButtonTextPrimary}>Log in</Text>
             </TouchableOpacity>
+            // TODO: Replace with actual account creation flow.
             <TouchableOpacity style={styles.actionButtonSecondary}>
               <Text style={styles.actionButtonTextSecondary}>Create Account</Text>
             </TouchableOpacity>
             <TouchableOpacity>
+              // TODO: Implement guest access flow that allows users to use the app without creating an account, but with limited features.
               <Text style={styles.guestButtonText}>Continue as Guest</Text>
             </TouchableOpacity>
           </View>

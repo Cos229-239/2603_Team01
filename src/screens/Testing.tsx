@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+
 const TestingScreen = () => {
   return (
     <SafeAreaView style={styles.screenContainer}>
@@ -16,6 +17,7 @@ const TestingScreen = () => {
         <View style={styles.contentContainer}>
           <View style={styles.section}>
             <View style={styles.headerRow}>
+              // TODO: Replace with icon or better visual element for cancel action
               <TouchableOpacity>
                 <Text style={styles.tagText}>x Cancel</Text>
               </TouchableOpacity>
@@ -24,6 +26,7 @@ const TestingScreen = () => {
 
               <TouchableOpacity>
                 <View style={styles.tag}>
+                  // TODO: Insert feature to toggle between Draft and Published states, and update tag color accordingly.
                   <Text style={styles.tagText}>Draft</Text>
                 </View>
               </TouchableOpacity>
@@ -34,6 +37,7 @@ const TestingScreen = () => {
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Entry type tags</Text>
+            // TODO: Add tage select/deselect + custom tags. 
             <View style={styles.tagRow}>
               <View style={styles.tag}>
                 <Text style={styles.tagText}>Bug</Text>
@@ -79,6 +83,7 @@ const TestingScreen = () => {
           </View>
 
           <View style={styles.section}>
+            // TODO: Implement functionality to allow users to attach code snippets, screenshots, or other files.
             <Text style={styles.sectionTitle}>Attach code snippet</Text>
             <TextInput
               style={styles.input}
@@ -89,6 +94,7 @@ const TestingScreen = () => {
           </View>
 
           <View style={styles.section}>
+            // TODO: Add tag select/deselect + custom tags.
             <Text style={styles.sectionTitle}>Issue type tags</Text>
             <View style={styles.tagRow}>
               <View style={styles.tag}>
@@ -113,11 +119,13 @@ const TestingScreen = () => {
           </View>
 
           <View style={styles.actionsRow}>
+            // TODO: Implement functionality for the Discard and Save buttons. The Discard button should prompt the user to confirm their action before clearing all input fields.
             <TouchableOpacity style={styles.actionButtonSecondary}>
               <Text style={styles.actionButtonTextSecondary}>Discard</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.actionButtonPrimary}>
+              // TODO: Implement functionality to validate inputs and save entry.
               <Text style={styles.actionButtonTextPrimary}>Save</Text>
             </TouchableOpacity>
           </View>
@@ -233,6 +241,16 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 12,
     alignItems: 'center',
+  },
+  // ===== Animations =====
+
+  tagToggleButton: {
+    backgroundColor: '#33623A',
+  },
+
+  tagToggleButtonText: {
+    fontSize: 10,
+    color: '#fff',
   },
 });
 
