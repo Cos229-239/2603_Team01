@@ -17,7 +17,7 @@ const TitleScreen = () => {
       <ScrollView>
         <View style={styles.contentContainer}>
           <View style={styles.section}>
-            <Image source={require('/Users/cehome/Documents/Code/assets/images/Wade.png')} 
+            <Image source={require('../../assets/images/Wade.png')} 
             style={{ width: 100, height: 100, borderRadius: 0, alignContent: 'center', alignSelf: 'center'}} />
           </View>
           <View style={styles.sectionTitle}>

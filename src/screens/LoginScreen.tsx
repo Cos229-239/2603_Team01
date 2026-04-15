@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, TextInput, Button, View, SafeAreaView, Alert} from 'react-native';
+import {Text, StyleSheet, TextInput, Button, View, SafeAreaView, Alert, TouchableOpacity} from 'react-native';
 import {supabase} from '../lib/supabase';
 import { useTheme } from '../context/ThemeContext';
 
@@ -78,6 +78,12 @@ const LoginScreen = ({navigation}: any) => {
     }
   };
 
+  // Handle guest login - bypass authentication and navigate directly to app
+  const handleGuestLogin = () => {
+    console.log('Continuing as guest');
+    navigation.replace('MainTabs');
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}
     >
@@ -111,6 +117,17 @@ const LoginScreen = ({navigation}: any) => {
       <View style={{marginTop: 10}}>
         <Button title={loading ? "Loading..." : "Sign Up"} color="#666" onPress={handleSignUp} disabled={loading} />
       </View>
+      
+      {/* Guest Login Button */}
+      <TouchableOpacity 
+        style={styles.guestButton} 
+        onPress={handleGuestLogin}
+        disabled={loading}
+      >
+        <Text style={[styles.guestButtonText, { color: colors.textSecondary }]}>
+          Continue as Guest
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -121,6 +138,15 @@ const styles = StyleSheet.create({
   formGroup: { marginBottom: 15 },
   label: { fontSize: 16 },
   input: { height: 45, borderWidth: 1, padding: 10, borderRadius: 8, marginTop: 5 },
+  guestButton: {
+    marginTop: 20,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  guestButtonText: {
+    fontSize: 14,
+    textDecorationLine: 'underline',
+  },
 });
 
 export default LoginScreen;
