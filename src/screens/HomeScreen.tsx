@@ -6,6 +6,8 @@ import Slider from '@react-native-community/slider';
 import { supabase } from '../lib/supabase';
 import { useTheme } from '../context/ThemeContext';
 
+import { useNavigation } from '@react-navigation/native';
+
 const HomeScreen = () => {
   const [lastEntry, setLastEntry] = useState<any>(null);
   const [lastMood, setLastMood] = useState<any>(null);
@@ -14,6 +16,50 @@ const HomeScreen = () => {
   const [userMood, setMood] = useState('');
   const isFocused = useIsFocused();
   const { colors } = useTheme();
+
+  const navigation = useNavigation<any>();
+
+  const [AngrySize, setAngrySize] = useState(45);
+  const [FrustratedSize, setFrustratedSize] = useState(45);
+  const [NeutralSize, setNeutralSize] = useState(45);
+  const [GoodSize, setGoodSize] = useState(45);
+  const [AmazingSize, setAmazingSize] = useState(45);
+
+  const handleMoods = (mood : string) => {
+      if (mood === "Angry") {
+          setAngrySize(75)
+          setFrustratedSize(45)
+          setNeutralSize(45)
+          setGoodSize(45)
+          setAmazingSize(45)
+      } else if (mood === "Frustrated") {
+          setAngrySize(45)
+          setFrustratedSize(75)
+          setNeutralSize(45)
+          setGoodSize(45)
+          setAmazingSize(45)
+      } else if (mood === "Neutral") {
+          setAngrySize(45)
+          setFrustratedSize(45)
+          setNeutralSize(75)
+          setGoodSize(45)
+          setAmazingSize(45)
+      } else if (mood === "Good") {
+          setAngrySize(45)
+          setFrustratedSize(45)
+          setNeutralSize(45)
+          setGoodSize(75)
+          setAmazingSize(45)
+      } else if (mood === "Amazing") {
+          setAngrySize(45)
+          setFrustratedSize(45)
+          setNeutralSize(45)
+          setGoodSize(45)
+          setAmazingSize(75)
+      }
+  }
+
+
 
   const loadData = async () => {
     try {
@@ -91,20 +137,36 @@ const HomeScreen = () => {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Today's Mood</Text>
           <View style={styles.currentMood}>
-            <TouchableOpacity onPress={() => setMood('Angry')} >
-              <Text style={styles.emoji}>😡</Text>
+            <TouchableOpacity activeOpacity={.1}
+                          onPress={() => {
+                setMood('Angry')
+                handleMoods("Angry")
+            }}>
+                <Text style={{ fontSize: AngrySize }}>😡</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMood('Frustrated')}>
-              <Text style={styles.emoji}>☹️</Text>
+            <TouchableOpacity onPress={() => {
+                setMood('Frustrated')
+                handleMoods("Frustrated")
+            }}>
+                <Text style={{ fontSize: FrustratedSize }}>☹️</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMood('Neutral')}>
-              <Text style={styles.emoji}>😐</Text>
+            <TouchableOpacity onPress={() => {
+                setMood('Neutral')
+                handleMoods("Neutral")
+            }}>
+                <Text style={{ fontSize: NeutralSize }}>😐</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMood('Good')}>
-              <Text style={styles.emoji}>😁</Text>
+            <TouchableOpacity onPress={() => {
+                setMood('Good')
+                handleMoods("Good")
+            }}>
+                <Text style={{ fontSize: GoodSize }}>😁</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMood('Amazing')}>
-              <Text style={styles.emoji}>🤩</Text>
+            <TouchableOpacity onPress={() => {
+                setMood('Amazing')
+                handleMoods("Amazing")
+            }}>
+                <Text style={{ fontSize: AmazingSize }}>🤩</Text>
             </TouchableOpacity>
           </View>
           {userMood && (
@@ -140,6 +202,12 @@ const HomeScreen = () => {
                 <Text style={styles.emoji}>🐤</Text>
                 <Text style={[styles.cardText, { color: colors.textSecondary }]}>No Reflections Yet</Text>
                 <Text style={[styles.reflectionTitle, { color: colors.textSecondary }]}>Start logging your first thoughts</Text>
+                <TouchableOpacity
+                    style={[styles.reflectionButton, { backgroundColor: colors.textSecondary }]}
+                    onPress={() => navigation.navigate("Journal")}
+                >
+                    <Text style={[styles.reflectionTitle, { color: colors.card }]}>+ New Reflection</Text>
+                </TouchableOpacity>
               </>
             )}
           </View>
@@ -158,18 +226,30 @@ const HomeScreen = () => {
         )}
 
         <View style={styles.buttonSection}>
-          <TouchableOpacity style={[styles.button, { backgroundColor: colors.card }]}>
-            <Text style={[styles.buttonText, { color: colors.text }]}>🪳 Log a bug</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, { backgroundColor: colors.card }]}>
-            <Text style={[styles.buttonText, { color: colors.text }]}>🐤 Duck Mode</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+                style={[styles.button, { backgroundColor: colors.card }]}
+                onPress={() => navigation.navigate("Journal")}
+            >
+                <Text style={[styles.buttonText, { color: colors.text }]}>🪳 Log a bug</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={[styles.button, { backgroundColor: colors.card }]}
+                onPress={() => navigation.navigate("Rubber Duck")}
+            >
+                <Text style={[styles.buttonText, { color: colors.text }]}>🐤 Duck Mode</Text>
+            </TouchableOpacity>
         </View>
         <View style={styles.buttonSection}>
-          <TouchableOpacity style={[styles.button, { backgroundColor: colors.card }]}>
+            <TouchableOpacity
+                style={[styles.button, { backgroundColor: colors.card }]}
+                onPress={() => navigation.navigate("Mood")}
+             >
             <Text style={[styles.buttonText, { color: colors.text }]}>🌙 End of day</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, { backgroundColor: colors.card }]}>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: colors.card }]}
+            onPress={() => navigation.navigate("Journal")}
+          >
             <Text style={[styles.buttonText, { color: colors.text }]}>💡 Quick Idea</Text>
           </TouchableOpacity>
         </View>
@@ -190,13 +270,14 @@ const styles = StyleSheet.create({
   aiPrompt: { fontStyle: 'italic', marginTop: 8 },
   slider: { width: '100%', minHeight: 50 },
   stressTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10, textAlign: 'center' },
-  currentMood: { justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row', marginBottom: 10 },
+  currentMood: { justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row', marginBottom: 5 },
   emoji: { fontSize: 50 },
-  selectedMood: { textAlign: 'center', fontSize: 16, marginTop: 10 },
+  selectedMood: { textAlign: 'center', fontSize: 16, marginTop: 5},
   buttonSection: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15 },
-  button: { padding: 20, borderRadius: 10, alignItems: 'center', width: '48%', elevation: 2 },
+  button: { padding: 15, borderRadius: 10, alignItems: 'center', width: '48%', elevation: 2 },
   buttonText: { fontSize: 16 },
-  reflectionTitle: { fontSize: 14, marginTop: 5 }
+  reflectionTitle: { fontSize: 14, marginTop: 5 },
+  reflectionButton: { padding: 10, borderRadius: 10, alignItems: 'center', width: 150, marginTop: 5 },
 });
 
 export default HomeScreen;
