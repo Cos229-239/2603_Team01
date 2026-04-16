@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
@@ -82,7 +83,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={[styles.wrapper, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
       <ScrollView style={styles.container}>
         <Text style={[styles.title, { color: colors.text }]}>
           Welcome back{username ? `, ${username}` : ', Dev'}!
@@ -174,12 +175,12 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+    </PlSafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: { flex: 1 },
+  safeArea: { flex: 1 },
   container: { flex: 1, padding: 20 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
   section: { marginBottom: 25 },
