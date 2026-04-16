@@ -175,7 +175,7 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </PlSafeAreaView>
+    </SafeAreaView>
   );
 };
 
