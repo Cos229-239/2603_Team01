@@ -3,6 +3,8 @@ import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardA
 import Voice from '@react-native-voice/voice';
 import { getDuckResponse } from '../lib/gemini';
 import { useTheme } from '../context/ThemeContext';
+import Image from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
 
 const RubberDuckScreen = () => {
   const [input, setInput] = useState('');
@@ -13,6 +15,7 @@ const RubberDuckScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const flatListRef = useRef<FlatList>(null);
   const { colors } = useTheme();
+  const hasUserMessages = messages.some(m => m.isUser);
 
   useEffect(() => {
     console.log("Voice module:", Voice);
@@ -102,6 +105,18 @@ const RubberDuckScreen = () => {
         </View>
       </View>
 
+      {!hasUserMessages && (
+        <View style={styles.emptyState}>
+          <Image
+            source={require('../assets/images/Wade_no-bg.png')}
+            style={styles.emptyStateDuck}
+          />
+          <Text style={[styles.emptyStateText, { color: colors.textSecondary }]}>
+            Explain it to the duck
+          </Text>
+        </View>
+      )}
+
       <FlatList
         ref={flatListRef}
         data={messages}
@@ -189,6 +204,21 @@ const styles = StyleSheet.create({
   micButtonText: { fontSize: 20 },
   sendButton: { paddingHorizontal: 15, minWidth: 60, alignItems: 'center' },
   sendButtonText: { fontWeight: 'bold', fontSize: 16 }
+  emptyState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 12,
+  },
+  emptyStateDuck: {
+    width: 120,
+    height: 120,
+    resizeMode: 'contain',
+  },
+  emptyStateText: {
+    fontSize: 16,
+    fontStyle: 'italic',
+  }
 });
 
 export default RubberDuckScreen;
