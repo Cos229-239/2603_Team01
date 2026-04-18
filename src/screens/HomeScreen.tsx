@@ -5,8 +5,8 @@ import { useIsFocused } from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
 import { supabase } from '../lib/supabase';
 import { useTheme } from '../context/ThemeContext';
-
 import { useNavigation } from '@react-navigation/native';
+import {Image} from 'react-native'
 
 const HomeScreen = () => {
   const [lastEntry, setLastEntry] = useState<any>(null);
@@ -16,9 +16,7 @@ const HomeScreen = () => {
   const [userMood, setMood] = useState('');
   const isFocused = useIsFocused();
   const { colors } = useTheme();
-
   const navigation = useNavigation<any>();
-
   const [AngrySize, setAngrySize] = useState(45);
   const [FrustratedSize, setFrustratedSize] = useState(45);
   const [NeutralSize, setNeutralSize] = useState(45);
@@ -199,7 +197,10 @@ const HomeScreen = () => {
               </>
             ) : (
               <>
-                <Text style={styles.emoji}>🐤</Text>
+                <Image
+                    source={require('../../assets/images/Wade.png')}
+                    style={{ width: 100, height: 100 }}
+                />
                 <Text style={[styles.cardText, { color: colors.textSecondary }]}>No Reflections Yet</Text>
                 <Text style={[styles.reflectionTitle, { color: colors.textSecondary }]}>Start logging your first thoughts</Text>
                 <TouchableOpacity
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
   cardTitle: { fontWeight: 'bold', fontSize: 16 },
   cardText: { marginTop: 5, textAlign: 'center' },
   aiPrompt: { fontStyle: 'italic', marginTop: 8 },
-  slider: { width: '100%', minHeight: 50 },
+  slider: { width: '100%', minHeight: 10 },
   stressTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10, textAlign: 'center' },
   currentMood: { justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row', marginBottom: 5 },
   emoji: { fontSize: 50 },
