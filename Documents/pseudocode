@@ -1,0 +1,101 @@
+Title screen
+Padding (Center Veritcally)
+Image duck
+                  Duck logo
+Text
+“DevReflect”
+Text
+“A Dev journal for the thoughts you don’t want to lose.”
+Button
+                  Rectangle (rounded, color:gray)
+                                    Text “Log in”
+                                    useState -> nav to login
+Button
+                  Rectangle (rounded, color: gray)
+                                    Text “Create Account”
+                                    useState create account
+Button
+                  Text “Continue as guest”
+                  useState -> nav to homescreen (demo mode)
+
+HomeScreen
+
+//HomeScreen (Dashboard – Zero state)
+Header
+Text “DevReflect
+Button (Menu icon)
+ 
+Text (small) “Good evening, Dev”
+Text (Large) “How’s the code going?”
+Text (label) “TODAY’S MOOD”
+Row of 5 buttons (Mood selector)
+Button “Mad” useState -> selectedMoodTag
+Add tag Mad
+Button “Low” useState -> selectedMoodTag
+Add tag Low
+Button “Meh”  useState -> selectedMoodTag
+Add tag Meh
+Button “Happy”  useState -> selectedMoodTag
+Add tag Happy
+Button “High”  useState -> selectedMoodTag
+Add tag High
+ 
+Rectangle (rounded, color: gray – empty state card)
+Image duck
+Text “No Reflections yet.”
+Text “Start logging your first thought”
+Button
+Rectangle (rounded, color: brick red background)
+Text “+ New Reflection”
+                                    useState -> nav to New Reflection entry
+ 
+Quick Actions
+                  Button
+                                    Rectangle (rounded, color: gray)
+                                                      Image “Bug” Text “Log a bug”
+useState -> nav to New Reflection entry
+Add tag Bug
+                  Button
+Rectangle (rounded, color: gray)
+                                                      Image “duck” Text “Duck Mode”
+useState -> nav to Duck Mode
+Add tag Duck
+Button
+Rectangle (rounded, color: gray)
+                                                      Image “moon” Text “End of Day”
+useState -> nav to New Reflection entry
+Add tag EOD
+ 
+Button
+Rectangle (rounded, color: gray)
+                                                      Image “Lightbulb” Text “Quick Idea”
+useState -> nav to New Reflection entry
+Add tag Quick Idea
+Footer
+Bottom Nav bar
+
+//Settings psuedocode
+
+Page: Settings
+//Header
+Header
+Text “Settings” 
+Button (Menu icon)
+//Body
+//Settings items in standard cards
+Rectangle (12pt rounded, color: gray)
+Card1: “Account”
+Rectangle (12pt rounded, color: gray)
+Card2: ”Notifications”
+Rectangle (12pt rounded, color: gray)
+Card3: ”Appearance”
+Rectangle (12pt rounded, color: gray)
+Card4: ”Privacy and Security”
+Rectangle (12pt rounded, color: gray)
+Card5: ”Help and Support”
+Rectangle (12pt rounded, color: gray)
+Card6: “About App”
+Rectangle (12pt rounded, color: white, outline gray)
+Card7: ”Delete Data”
+Footer 
+Bottom nav bar
