@@ -1,5 +1,4 @@
 import React from 'react';
-import { Image } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -15,6 +14,11 @@ import JournalScreen from './src/screens/JournalScreen';
 import JournalEntryScreen from './src/screens/JournalEntryScreen';
 import MoodScreen from './src/screens/MoodScreen';
 import RubberDuckScreen from './src/screens/RubberDuckScreen';
+import TestingScreen from './src/screens/Testing';
+import HistoryScreen from './src/screens/HistoryScreen';
+import TitleScreen from './src/screens/TitleScreen';
+import LoginScreenTest from './src/screens/LoginScreenTest';
+
 
 // Import Settings Screens
 import SettingsScreen from './src/screens/settings/settings';
@@ -25,6 +29,7 @@ import PrivacySecuritySettings from './src/screens/settings/PrivacySecuritySetti
 import HelpSupportSettings from './src/screens/settings/HelpSupportSettings';
 import AboutAppSettings from './src/screens/settings/AboutAppSettings';
 import StorageSettings from './src/screens/settings/StorageSettings';
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -53,13 +58,13 @@ const SettingsStack = () => {
         },
       }}
     >
-      <Stack.Screen 
-        name="Settings" 
-        component={SettingsScreen} 
-        options={{ 
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
           title: 'Settings',
           headerShown: false,
-        }} 
+        }}
       />
       <Stack.Screen name="AccountSettings" component={AccountSettings} options={{ title: 'Account Settings' }} />
       <Stack.Screen name="AppearanceSettings" component={AppearanceSettings} options={{ title: 'Appearance Settings' }} />
@@ -68,16 +73,20 @@ const SettingsStack = () => {
       <Stack.Screen name="HelpSupportSettings" component={HelpSupportSettings} options={{ title: 'Help & Support Settings' }} />
       <Stack.Screen name="AboutAppSettings" component={AboutAppSettings} options={{ title: 'About App Settings' }} />
       <Stack.Screen name="StorageSettings" component={StorageSettings} options={{ title: 'Storage Settings' }} />
+      {/* Commenting out Testing for now since it has a feature skeleton and is not fully implemented, but we can easily add it back to the stack when needed.
+      {/* <Stack.Screen name="Testing" component={TestingScreen} options={{ title: 'Testing' }} /> */}
+      <Stack.Screen name="HistoryScreen" component={HistoryScreen} options={{ title: 'History' }} />
+      <Stack.Screen name="TitleScreen" component={TitleScreen} options={{ title: 'Title' }} />
     </Stack.Navigator>
   );
 };
 
 const MainTabs = () => {
   const { colors } = useTheme();
-  
+
   return (
-    <Tab.Navigator 
-      screenOptions={{ 
+    <Tab.Navigator
+      screenOptions={{
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {
@@ -90,16 +99,12 @@ const MainTabs = () => {
       <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: true }} />
       <Tab.Screen name="Journal" component={JournalStack} />
       <Tab.Screen name="Mood" component={MoodScreen} options={{ headerShown: true }} />
-      <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} options={{
-          tabBarIcon: ({ size }) => (
-              <Image
-              source={require('./src/assets/images/Wade_no-bg.png')}
-              style={{ width: size, height: size }}
-              />
-              ),
-          }}
-      />
-      <Tab.Screen name="Settings" component={SettingsStack} />
+      <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} options={{ headerShown: true }} />
+      <Tab.Screen name="Settings" component={SettingsStack} options={{ headerShown: true }} />
+      {/* <Tab.Screen name="Testing" component={TestingScreen} options={{ headerShown: true }} /> */}
+      {/* <Tab.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} /> */}
+      {/* <Tab.Screen name="Title" component={TitleScreen} options={{ headerShown: true }} /> */}
+      {/* <Tab.Screen name="LoginScreenTest" component={LoginScreenTest} options={{ headerShown: true }} /> */}
     </Tab.Navigator>
   );
 };
