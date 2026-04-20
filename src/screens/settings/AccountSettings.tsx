@@ -12,6 +12,7 @@ import {
 import { useNavigation, CommonActions, useIsFocused } from '@react-navigation/native';
 import { supabase } from '../../lib/supabase';
 import { useTheme } from '../../context/ThemeContext';
+import { SettingsCard, SectionHeader } from './components/SettingsComponents';
 
 const AccountSettings = () => {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ const AccountSettings = () => {
   const [username, setUsername] = useState('');
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [tempUsername, setTempUsername] = useState('');
-  const { colors } = useTheme();
+  const { colors, getFontSize } = useTheme();
 
   useEffect(() => {
     if (isFocused) {
@@ -152,147 +153,221 @@ const AccountSettings = () => {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView style={styles.scrollView}>
-        {/* Profile Section */}
-        <View style={[styles.section, { backgroundColor: colors.card }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Profile Information</Text>
-          
-          {/* Email (Read-only) */}
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.label, { color: colors.textSecondary }]}>Email</Text>
-            <View style={[styles.readOnlyField, { backgroundColor: colors.background }]}>
-              <Text style={[styles.readOnlyText, { color: colors.textSecondary }]}>{email}</Text>
-            </View>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Profile Section */}
+      <SettingsCard colors={colors}>
+        <SectionHeader title="Profile Information" colors={colors} fontSize={getFontSize} />
+        
+        {/* Email (Read-only) */}
+        <View style={styles.fieldContainer}>
+          <Text style={[styles.label, { color: colors.textSecondary, fontSize: getFontSize(14) }]}>Email</Text>
+          <View style={[styles.readOnlyField, { backgroundColor: colors.background }]}>
+            <Text style={[styles.readOnlyText, { color: colors.text, fontSize: getFontSize(15) }]}>{email}</Text>
           </View>
+        </View>
 
-          {/* Username (Editable) */}
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.label, { color: colors.textSecondary }]}>Username</Text>
-            {isEditingUsername ? (
-              <View>
-                <TextInput
-                  style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.text }]}
-                  value={tempUsername}
-                  onChangeText={setTempUsername}
-                  placeholder="Enter username"
-                  placeholderTextColor={colors.textSecondary}
-                  autoCapitalize="none"
-                />
-                <View style={styles.editButtonsContainer}>
-                  <TouchableOpacity 
-                    style={[styles.editButton, styles.cancelButton, { backgroundColor: colors.background }]} 
-                    onPress={handleCancelEdit}
-                  >
-                    <Text style={[styles.cancelButtonText, { color: colors.text }]}>Cancel</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={[styles.editButton, styles.saveButton, { backgroundColor: colors.primary }]} 
-                    onPress={handleSaveUsername}
-                  >
-                    <Text style={styles.saveButtonText}>Save</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ) : (
-              <View style={styles.usernameContainer}>
-                <View style={[styles.readOnlyField, { backgroundColor: colors.background }]}>
-                  <Text style={[styles.readOnlyText, { color: colors.textSecondary }]}>{username}</Text>
-                </View>
+        {/* Username (Editable) */}
+        <View style={styles.fieldContainer}>
+          <Text style={[styles.label, { color: colors.textSecondary, fontSize: getFontSize(14) }]}>Username</Text>
+          {isEditingUsername ? (
+            <View>
+              <TextInput
+                style={[
+                  styles.input, 
+                  { 
+                    backgroundColor: colors.background, 
+                    borderColor: colors.border, 
+                    color: colors.text,
+                    fontSize: getFontSize(15)
+                  }
+                ]}
+                value={tempUsername}
+                onChangeText={setTempUsername}
+                placeholder="Enter username"
+                placeholderTextColor={colors.textSecondary}
+                autoCapitalize="none"
+              />
+              <View style={styles.editButtonsContainer}>
                 <TouchableOpacity 
-                  style={styles.editIconButton} 
-                  onPress={() => setIsEditingUsername(true)}
+                  style={[styles.editButton, { backgroundColor: colors.background, borderColor: colors.border, borderWidth: 1 }]} 
+                  onPress={handleCancelEdit}
                 >
-                  <Text style={[styles.editIconText, { color: colors.primary }]}>Edit</Text>
+                  <Text style={[styles.buttonText, { color: colors.text, fontSize: getFontSize(14) }]}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={[styles.editButton, { backgroundColor: colors.primary }]} 
+                  onPress={handleSaveUsername}
+                >
+                  <Text style={[styles.buttonText, { color: '#fff', fontSize: getFontSize(14) }]}>Save</Text>
                 </TouchableOpacity>
               </View>
-            )}
+            </View>
+          ) : (
+            <View style={styles.usernameContainer}>
+              <View style={[styles.readOnlyField, { backgroundColor: colors.background, flex: 1 }]}>
+                <Text style={[styles.readOnlyText, { color: colors.text, fontSize: getFontSize(15) }]}>{username}</Text>
+              </View>
+              <TouchableOpacity 
+                style={styles.editIconButton} 
+                onPress={() => setIsEditingUsername(true)}
+              >
+                <Text style={[styles.editIconText, { color: colors.primary, fontSize: getFontSize(14) }]}>Edit</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      </SettingsCard>
+
+      {/* Activity Section */}
+      <SettingsCard colors={colors}>
+        <SectionHeader title="Activity" colors={colors} fontSize={getFontSize} />
+        <View style={styles.activityContainer}>
+          <View style={styles.activityItem}>
+            <Text style={[styles.activityCount, { color: colors.primary, fontSize: getFontSize(28) }]}>0</Text>
+            <Text style={[styles.activityLabel, { color: colors.textSecondary, fontSize: getFontSize(14) }]}>Reflections</Text>
+          </View>
+          <View style={[styles.activityDivider, { backgroundColor: colors.border }]} />
+          <View style={styles.activityItem}>
+            <Text style={[styles.activityCount, { color: colors.primary, fontSize: getFontSize(28) }]}>0</Text>
+            <Text style={[styles.activityLabel, { color: colors.textSecondary, fontSize: getFontSize(14) }]}>Saved Snippets</Text>
           </View>
         </View>
+      </SettingsCard>
 
-        {/* Activity Section */}
-        <View style={[styles.section, { backgroundColor: colors.card }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Activity</Text>
-          <View style={styles.activityContainer}>
-            <View style={styles.activityItem}>
-              <Text style={[styles.activityCount, { color: colors.primary }]}>0</Text>
-              <Text style={[styles.activityLabel, { color: colors.textSecondary }]}>Reflections</Text>
-            </View>
-            <View style={[styles.activityDivider, { backgroundColor: colors.border }]} />
-            <View style={styles.activityItem}>
-              <Text style={[styles.activityCount, { color: colors.primary }]}>0</Text>
-              <Text style={[styles.activityLabel, { color: colors.textSecondary }]}>Saved Snippets</Text>
-            </View>
-          </View>
-        </View>
+      {/* Account Actions Section */}
+      <SettingsCard colors={colors}>
+        <SectionHeader title="Account Actions" colors={colors} fontSize={getFontSize} />
+        
+        <TouchableOpacity 
+          style={[styles.actionButton, { backgroundColor: colors.background, borderColor: colors.border }]} 
+          onPress={handleChangePassword}
+        >
+          <Text style={[styles.actionButtonText, { color: colors.text, fontSize: getFontSize(15) }]}>Change Password</Text>
+        </TouchableOpacity>
 
-        {/* Account Actions Section */}
-        <View style={[styles.section, { backgroundColor: colors.card }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Account Actions</Text>
-          
-          <TouchableOpacity 
-            style={[styles.actionButton, { backgroundColor: colors.card, borderColor: colors.border }]} 
-            onPress={handleChangePassword}
-          >
-            <Text style={[styles.actionButtonText, { color: colors.text }]}>Change Password</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.actionButton, styles.deleteButton]} 
-            onPress={handleDeleteAccount}
-          >
-            <Text style={[styles.actionButtonText, styles.deleteButtonText]}>
-              Delete Account
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+        <TouchableOpacity 
+          style={[styles.actionButton, styles.deleteButton]} 
+          onPress={handleDeleteAccount}
+        >
+          <Text style={[styles.actionButtonText, styles.deleteButtonText, { fontSize: getFontSize(15) }]}>
+            Delete Account
+          </Text>
+        </TouchableOpacity>
+      </SettingsCard>
 
       {/* Logout Button */}
-      <View style={[styles.logoutContainer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
-        <TouchableOpacity 
-          style={styles.logoutButton} 
-          onPress={handleLogout}
-        >
-          <Text style={styles.logoutText}>Log Out</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      <TouchableOpacity 
+        style={[styles.logoutButton, { backgroundColor: '#FF3B30' }]} 
+        onPress={handleLogout}
+      >
+        <Text style={[styles.logoutText, { fontSize: getFontSize(16) }]}>Log Out</Text>
+      </TouchableOpacity>
+
+      <View style={{ height: 30 }} />
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  scrollView: { flex: 1 },
-  section: { marginTop: 20, paddingHorizontal: 20, paddingVertical: 15 },
-  sectionTitle: { fontSize: 18, fontWeight: '600', marginBottom: 15 },
-  fieldContainer: { marginBottom: 20 },
-  label: { fontSize: 14, fontWeight: '500', marginBottom: 8 },
-  readOnlyField: { padding: 12, borderRadius: 8 },
-  readOnlyText: { fontSize: 16 },
-  usernameContainer: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  editIconButton: { paddingHorizontal: 12, paddingVertical: 8 },
-  editIconText: { fontSize: 14, fontWeight: '500' },
-  input: { borderWidth: 1, padding: 12, borderRadius: 8, fontSize: 16 },
-  editButtonsContainer: { flexDirection: 'row', gap: 10, marginTop: 10 },
-  editButton: { flex: 1, padding: 10, borderRadius: 8, alignItems: 'center' },
-  cancelButton: {},
-  cancelButtonText: { fontSize: 14, fontWeight: '500' },
-  saveButton: {},
-  saveButtonText: { color: '#fff', fontSize: 14, fontWeight: '500' },
-  activityContainer: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10 },
-  activityItem: { alignItems: 'center', flex: 1 },
-  activityCount: { fontSize: 28, fontWeight: 'bold' },
-  activityLabel: { fontSize: 14, marginTop: 5 },
-  activityDivider: { width: 1 },
-  actionButton: { borderWidth: 1, padding: 15, borderRadius: 8, marginBottom: 10, alignItems: 'center' },
-  actionButtonText: { fontSize: 16, fontWeight: '500' },
-  deleteButton: { borderColor: '#FF3B30' },
-  deleteButtonText: { color: '#FF3B30' },
-  logoutContainer: { padding: 20, paddingBottom: 40, borderTopWidth: 1 },
-  logoutButton: { backgroundColor: '#FF3B30', paddingVertical: 12, borderRadius: 8, alignItems: 'center', elevation: 2 },
-  logoutText: { color: '#fff', fontWeight: '600', fontSize: 16 },
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fieldContainer: {
+    marginBottom: 16,
+  },
+  label: {
+    fontWeight: '500',
+    marginBottom: 8,
+  },
+  readOnlyField: {
+    padding: 12,
+    borderRadius: 8,
+  },
+  readOnlyText: {
+    fontWeight: '500',
+  },
+  usernameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  editIconButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  editIconText: {
+    fontWeight: '600',
+  },
+  input: {
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 8,
+  },
+  editButtonsContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 10,
+  },
+  editButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontWeight: '600',
+  },
+  activityContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+  },
+  activityItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  activityCount: {
+    fontWeight: 'bold',
+  },
+  activityLabel: {
+    marginTop: 5,
+  },
+  activityDivider: {
+    width: 1,
+  },
+  actionButton: {
+    borderWidth: 1,
+    paddingVertical: 14,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  actionButtonText: {
+    fontWeight: '600',
+  },
+  deleteButton: {
+    borderColor: '#FF3B30',
+    backgroundColor: 'transparent',
+  },
+  deleteButtonText: {
+    color: '#FF3B30',
+  },
+  logoutButton: {
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  logoutText: {
+    color: '#fff',
+    fontWeight: '600',
+  },
 });
 
 export default AccountSettings;

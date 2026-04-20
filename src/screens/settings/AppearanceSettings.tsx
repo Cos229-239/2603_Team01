@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
+import { SettingsCard, SectionHeader } from './components/SettingsComponents';
 
 const AppearanceSettings = () => {
   const { theme, accentColor, fontSize, setTheme, setAccentColor, setFontSize, colors, getFontSize } = useTheme();
@@ -8,184 +9,182 @@ const AppearanceSettings = () => {
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* App Theme Section */}
-      <Text style={[styles.sectionTitle, { color: colors.text, fontSize: getFontSize(20) }]}>App Theme</Text>
+      <SettingsCard colors={colors}>
+        <SectionHeader title="App Theme" colors={colors} fontSize={getFontSize} />
 
-      <TouchableOpacity
-        style={[
-          styles.option,
-          {
-            backgroundColor: colors.card,
-            borderColor: theme === 'light' ? colors.primary : colors.border,
-            borderWidth: theme === 'light' ? 2 : 1,
-          },
-        ]}
-        onPress={() => setTheme('light')}
-      >
-        <Text
+        <TouchableOpacity
           style={[
-            styles.optionText,
-            { color: theme === 'light' ? colors.primary : colors.text, fontSize: getFontSize(16) },
+            styles.option,
+            {
+              backgroundColor: colors.background,
+              borderColor: theme === 'light' ? colors.primary : colors.border,
+              borderWidth: theme === 'light' ? 2 : 1,
+            },
           ]}
+          onPress={() => setTheme('light')}
         >
-          Light Mode
-        </Text>
-        {theme === 'light' && (
-          <Text style={[styles.checkmark, { color: colors.primary }]}>✓</Text>
-        )}
-      </TouchableOpacity>
+          <Text
+            style={[
+              styles.optionText,
+              { color: theme === 'light' ? colors.primary : colors.text, fontSize: getFontSize(15) },
+            ]}
+          >
+            Light Mode
+          </Text>
+          {theme === 'light' && (
+            <Text style={[styles.checkmark, { color: colors.primary, fontSize: getFontSize(18) }]}>✓</Text>
+          )}
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[
-          styles.option,
-          {
-            backgroundColor: colors.card,
-            borderColor: theme === 'dark' ? colors.primary : colors.border,
-            borderWidth: theme === 'dark' ? 2 : 1,
-          },
-        ]}
-        onPress={() => setTheme('dark')}
-      >
-        <Text
+        <TouchableOpacity
           style={[
-            styles.optionText,
-            { color: theme === 'dark' ? colors.primary : colors.text, fontSize: getFontSize(16) },
+            styles.option,
+            {
+              backgroundColor: colors.background,
+              borderColor: theme === 'dark' ? colors.primary : colors.border,
+              borderWidth: theme === 'dark' ? 2 : 1,
+            },
           ]}
+          onPress={() => setTheme('dark')}
         >
-          Dark Mode
-        </Text>
-        {theme === 'dark' && (
-          <Text style={[styles.checkmark, { color: colors.primary }]}>✓</Text>
-        )}
-      </TouchableOpacity>
+          <Text
+            style={[
+              styles.optionText,
+              { color: theme === 'dark' ? colors.primary : colors.text, fontSize: getFontSize(15) },
+            ]}
+          >
+            Dark Mode
+          </Text>
+          {theme === 'dark' && (
+            <Text style={[styles.checkmark, { color: colors.primary, fontSize: getFontSize(18) }]}>✓</Text>
+          )}
+        </TouchableOpacity>
+      </SettingsCard>
 
       {/* Accent Color Section */}
-      <Text style={[styles.sectionTitle, { color: colors.text, fontSize: getFontSize(20), marginTop: 30 }]}>
-        Accent Color
-      </Text>
+      <SettingsCard colors={colors}>
+        <SectionHeader title="Accent Color" colors={colors} fontSize={getFontSize} />
 
-      <View style={styles.colorGrid}>
-        <AccentColorOption
-          label="Blue"
-          colorKey="blue"
-          selected={accentColor === 'blue'}
-          onPress={() => setAccentColor('blue')}
-          colors={colors}
-          fontSize={getFontSize(16)}
-          displayColor="#007AFF"
-        />
-        <AccentColorOption
-          label="Purple"
-          colorKey="purple"
-          selected={accentColor === 'purple'}
-          onPress={() => setAccentColor('purple')}
-          colors={colors}
-          fontSize={getFontSize(16)}
-          displayColor="#AF52DE"
-        />
-        <AccentColorOption
-          label="Green"
-          colorKey="green"
-          selected={accentColor === 'green'}
-          onPress={() => setAccentColor('green')}
-          colors={colors}
-          fontSize={getFontSize(16)}
-          displayColor="#34C759"
-        />
-        <AccentColorOption
-          label="Orange"
-          colorKey="orange"
-          selected={accentColor === 'orange'}
-          onPress={() => setAccentColor('orange')}
-          colors={colors}
-          fontSize={getFontSize(16)}
-          displayColor="#FF9500"
-        />
-      </View>
+        <View style={styles.colorGrid}>
+          <AccentColorOption
+            label="Blue"
+            colorKey="blue"
+            selected={accentColor === 'blue'}
+            onPress={() => setAccentColor('blue')}
+            colors={colors}
+            fontSize={getFontSize}
+            displayColor="#007AFF"
+          />
+          <AccentColorOption
+            label="Purple"
+            colorKey="purple"
+            selected={accentColor === 'purple'}
+            onPress={() => setAccentColor('purple')}
+            colors={colors}
+            fontSize={getFontSize}
+            displayColor="#AF52DE"
+          />
+          <AccentColorOption
+            label="Green"
+            colorKey="green"
+            selected={accentColor === 'green'}
+            onPress={() => setAccentColor('green')}
+            colors={colors}
+            fontSize={getFontSize}
+            displayColor="#34C759"
+          />
+          <AccentColorOption
+            label="Orange"
+            colorKey="orange"
+            selected={accentColor === 'orange'}
+            onPress={() => setAccentColor('orange')}
+            colors={colors}
+            fontSize={getFontSize}
+            displayColor="#FF9500"
+          />
+        </View>
+      </SettingsCard>
 
       {/* Font Size Section */}
-      <Text style={[styles.sectionTitle, { color: colors.text, fontSize: getFontSize(20), marginTop: 30 }]}
-        >
-        Font Size
-      </Text>
+      <SettingsCard colors={colors}>
+        <SectionHeader title="Font Size" colors={colors} fontSize={getFontSize} />
 
-      <TouchableOpacity
-        style={[
-          styles.option,
-          {
-            backgroundColor: colors.card,
-            borderColor: fontSize === 'small' ? colors.primary : colors.border,
-            borderWidth: fontSize === 'small' ? 2 : 1,
-          },
-        ]}
-        onPress={() => setFontSize('small')}
-      >
-        <Text
+        <TouchableOpacity
           style={[
-            styles.optionText,
-            { color: fontSize === 'small' ? colors.primary : colors.text, fontSize: getFontSize(16) },
+            styles.option,
+            {
+              backgroundColor: colors.background,
+              borderColor: fontSize === 'small' ? colors.primary : colors.border,
+              borderWidth: fontSize === 'small' ? 2 : 1,
+            },
           ]}
+          onPress={() => setFontSize('small')}
         >
-          Small
-        </Text>
-        {fontSize === 'small' && (
-          <Text style={[styles.checkmark, { color: colors.primary }]}>✓</Text>
-        )}
-      </TouchableOpacity>
+          <Text
+            style={[
+              styles.optionText,
+              { color: fontSize === 'small' ? colors.primary : colors.text, fontSize: getFontSize(15) },
+            ]}
+          >
+            Small
+          </Text>
+          {fontSize === 'small' && (
+            <Text style={[styles.checkmark, { color: colors.primary, fontSize: getFontSize(18) }]}>✓</Text>
+          )}
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[
-          styles.option,
-          {
-            backgroundColor: colors.card,
-            borderColor: fontSize === 'medium' ? colors.primary : colors.border,
-            borderWidth: fontSize === 'medium' ? 2 : 1,
-          },
-        ]}
-        onPress={() => setFontSize('medium')}
-      >
-        <Text
+        <TouchableOpacity
           style={[
-            styles.optionText,
-            { color: fontSize === 'medium' ? colors.primary : colors.text, fontSize: getFontSize(16) },
+            styles.option,
+            {
+              backgroundColor: colors.background,
+              borderColor: fontSize === 'medium' ? colors.primary : colors.border,
+              borderWidth: fontSize === 'medium' ? 2 : 1,
+            },
           ]}
+          onPress={() => setFontSize('medium')}
         >
-          Medium
-        </Text>
-        {fontSize === 'medium' && (
-          <Text style={[styles.checkmark, { color: colors.primary }]}>✓</Text>
-        )}
-      </TouchableOpacity>
+          <Text
+            style={[
+              styles.optionText,
+              { color: fontSize === 'medium' ? colors.primary : colors.text, fontSize: getFontSize(15) },
+            ]}
+          >
+            Medium
+          </Text>
+          {fontSize === 'medium' && (
+            <Text style={[styles.checkmark, { color: colors.primary, fontSize: getFontSize(18) }]}>✓</Text>
+          )}
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[
-          styles.option,
-          {
-            backgroundColor: colors.card,
-            borderColor: fontSize === 'large' ? colors.primary : colors.border,
-            borderWidth: fontSize === 'large' ? 2 : 1,
-          },
-        ]}
-        onPress={() => setFontSize('large')}
-      >
-        <Text
+        <TouchableOpacity
           style={[
-            styles.optionText,
-            { color: fontSize === 'large' ? colors.primary : colors.text, fontSize: getFontSize(16) },
+            styles.option,
+            {
+              backgroundColor: colors.background,
+              borderColor: fontSize === 'large' ? colors.primary : colors.border,
+              borderWidth: fontSize === 'large' ? 2 : 1,
+            },
           ]}
+          onPress={() => setFontSize('large')}
         >
-          Large
-        </Text>
-        {fontSize === 'large' && (
-          <Text style={[styles.checkmark, { color: colors.primary }]}>✓</Text>
-        )}
-      </TouchableOpacity>
+          <Text
+            style={[
+              styles.optionText,
+              { color: fontSize === 'large' ? colors.primary : colors.text, fontSize: getFontSize(15) },
+            ]}
+          >
+            Large
+          </Text>
+          {fontSize === 'large' && (
+            <Text style={[styles.checkmark, { color: colors.primary, fontSize: getFontSize(18) }]}>✓</Text>
+          )}
+        </TouchableOpacity>
+      </SettingsCard>
 
       {/* Preview Section */}
-      <Text style={[styles.sectionTitle, { color: colors.text, fontSize: getFontSize(20), marginTop: 30 }]}>
-        Preview
-      </Text>
-
-      <View style={[styles.previewCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+      <SettingsCard colors={colors}>
+        <SectionHeader title="Preview" colors={colors} fontSize={getFontSize} />
         <Text style={[styles.previewHeading, { color: colors.text, fontSize: getFontSize(24) }]}>
           DevReflect
         </Text>
@@ -195,11 +194,11 @@ const AppearanceSettings = () => {
         <TouchableOpacity
           style={[styles.previewButton, { backgroundColor: colors.primary }]}
         >
-          <Text style={[styles.previewButtonText, { fontSize: getFontSize(16) }]}>
+          <Text style={[styles.previewButtonText, { fontSize: getFontSize(15) }]}>
             Sample Button
           </Text>
         </TouchableOpacity>
-      </View>
+      </SettingsCard>
 
       <View style={{ height: 30 }} />
     </ScrollView>
@@ -221,7 +220,7 @@ const AccentColorOption = ({
   selected: boolean;
   onPress: () => void;
   colors: any;
-  fontSize: number;
+  fontSize: (size: number) => number;
   displayColor: string;
 }) => {
   return (
@@ -229,7 +228,7 @@ const AccentColorOption = ({
       style={[
         styles.colorOption,
         {
-          backgroundColor: colors.card,
+          backgroundColor: colors.background,
           borderColor: selected ? colors.primary : colors.border,
           borderWidth: selected ? 2 : 1,
         },
@@ -240,13 +239,13 @@ const AccentColorOption = ({
       <Text
         style={[
           styles.colorLabel,
-          { color: selected ? colors.primary : colors.text, fontSize },
+          { color: selected ? colors.primary : colors.text, fontSize: fontSize(15) },
         ]}
       >
         {label}
       </Text>
       {selected && (
-        <Text style={[styles.checkmark, { color: colors.primary, position: 'absolute', right: 12 }]}>✓</Text>
+        <Text style={[styles.checkmark, { color: colors.primary, position: 'absolute', right: 12, fontSize: fontSize(18) }]}>✓</Text>
       )}
     </TouchableOpacity>
   );
@@ -257,23 +256,19 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  sectionTitle: {
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
   option: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 18,
-    borderRadius: 10,
-    marginBottom: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginBottom: 10,
   },
   optionText: {
-    fontWeight: '500',
+    fontWeight: '600',
   },
   checkmark: {
-    fontSize: 20,
     fontWeight: 'bold',
   },
   colorGrid: {
@@ -285,25 +280,20 @@ const styles = StyleSheet.create({
     width: '48%',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginBottom: 10,
     position: 'relative',
   },
   colorCircle: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    marginRight: 12,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    marginRight: 10,
   },
   colorLabel: {
-    fontWeight: '500',
-  },
-  previewCard: {
-    padding: 20,
-    borderRadius: 12,
-    borderWidth: 1,
-    marginTop: 10,
+    fontWeight: '600',
   },
   previewHeading: {
     fontWeight: 'bold',
