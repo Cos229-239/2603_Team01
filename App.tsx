@@ -58,13 +58,13 @@ const SettingsStack = () => {
         },
       }}
     >
-      <Stack.Screen 
-        name="Settings" 
-        component={SettingsScreen} 
-        options={{ 
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
           title: 'Settings',
           headerShown: false,
-        }} 
+        }}
       />
       <Stack.Screen name="AccountSettings" component={AccountSettings} options={{ title: 'Account Settings' }} />
       <Stack.Screen name="AppearanceSettings" component={AppearanceSettings} options={{ title: 'Appearance Settings' }} />
@@ -83,10 +83,10 @@ const SettingsStack = () => {
 
 const MainTabs = () => {
   const { colors } = useTheme();
-  
+
   return (
-    <Tab.Navigator 
-      screenOptions={{ 
+    <Tab.Navigator
+      screenOptions={{
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {

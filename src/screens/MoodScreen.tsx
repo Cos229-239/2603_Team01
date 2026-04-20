@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 import { useTheme } from '../context/ThemeContext';
 
@@ -42,52 +43,55 @@ const MoodScreen = () => {
   };
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.title, { color: colors.text }]}>How are you feeling, Dev?</Text>
-      <View style={styles.moodGrid}>
-        {moods.map(mood => (
-          <TouchableOpacity
-            key={mood.label}
-            style={[
-              styles.moodCard, 
-              { backgroundColor: colors.card },
-              currentMood === mood.label && { borderColor: colors.primary, borderWidth: 2 }
-            ]}
-            onPress={() => setCurrentMood(mood.label)}
-          >
-            <Text style={styles.moodIcon}>{mood.icon}</Text>
-            <Text style={[styles.moodLabel, { color: colors.text }]}>{mood.label}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      {currentMood && aiPrompts[currentMood] && (
-        <View style={[styles.aiCard, { backgroundColor: colors.card, borderLeftColor: colors.primary }]}>
-          <Text style={[styles.aiTitle, { color: colors.primary }]}>AI Stability Assistant</Text>
-          <Text style={[styles.aiText, { color: colors.text }]}>{aiPrompts[currentMood]}</Text>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
+      <ScrollView style={styles.container}>
+        <Text style={[styles.title, { color: colors.text }]}>How are you feeling, Dev?</Text>
+        <View style={styles.moodGrid}>
+          {moods.map(mood => (
+            <TouchableOpacity
+              key={mood.label}
+              style={[
+                styles.moodCard,
+                { backgroundColor: colors.card },
+                currentMood === mood.label && { borderColor: colors.primary, borderWidth: 2 }
+              ]}
+              onPress={() => setCurrentMood(mood.label)}
+            >
+              <Text style={styles.moodIcon}>{mood.icon}</Text>
+              <Text style={[styles.moodLabel, { color: colors.text }]}>{mood.label}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
-      )}
 
-      <Text style={[styles.stressTitle, { color: colors.text }]}>Stress Level: {sliderValue}</Text>
+        {currentMood && aiPrompts[currentMood] && (
+          <View style={[styles.aiCard, { backgroundColor: colors.card, borderLeftColor: colors.primary }]}>
+            <Text style={[styles.aiTitle, { color: colors.primary }]}>AI Stability Assistant</Text>
+            <Text style={[styles.aiText, { color: colors.text }]}>{aiPrompts[currentMood]}</Text>
+          </View>
+        )}
 
-      <Slider
-        style={styles.slider}
-        minimumValue={0}
-        maximumValue={5}
-        step={.25}
-        minimumTrackTintColor="#E00C0C"
-        maximumTrackTintColor="#00FF00"
-        thumbTintColor={colors.primary}
-        onValueChange={(value) => setSliderValue(value)}
-        value={sliderValue}
-        onSlidingComplete={handleSlidingComplete}
-      />
-      <Text style={[styles.stressText, { color: colors.text }]}>{stressTips}</Text>
-    </ScrollView>
+        <Text style={[styles.stressTitle, { color: colors.text }]}>Stress Level: {sliderValue}</Text>
+
+        <Slider
+          style={styles.slider}
+          minimumValue={0}
+          maximumValue={5}
+          step={.25}
+          minimumTrackTintColor="#E00C0C"
+          maximumTrackTintColor="#00FF00"
+          thumbTintColor={colors.primary}
+          onValueChange={(value) => setSliderValue(value)}
+          value={sliderValue}
+          onSlidingComplete={handleSlidingComplete}
+        />
+        <Text style={[styles.stressText, { color: colors.text }]}>{stressTips}</Text>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: { flex: 1 },
   container: { flex: 1, padding: 20 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
   moodGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
