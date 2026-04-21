@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
@@ -33,43 +34,46 @@ const JournalScreen = ({navigation}: any) => {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <TextInput
-        style={[styles.searchBar, { backgroundColor: colors.card, borderColor: colors.border, color: colors.text }]}
-        placeholder="Search problems or tags..."
-        placeholderTextColor={colors.textSecondary}
-        value={search}
-        onChangeText={setSearch}
-      />
-      <FlatList
-        data={filteredEntries}
-        keyExtractor={item => item.id}
-        ListEmptyComponent={<Text style={[styles.emptyText, { color: colors.textSecondary }]}>No entries yet. Start journaling your bugs!</Text>}
-        renderItem={({item}) => (
-          <View style={[styles.card, { backgroundColor: colors.card }]}>
-            <Text style={[styles.cardTitle, { color: colors.text }]}>{item.title}</Text>
-            <Text style={[styles.cardSolution, { color: colors.textSecondary }]}>{item.solution}</Text>
-            <View style={styles.tagContainer}>
-              {item.tags && item.tags.map((tag: string) => (
-                <View key={tag} style={styles.tag}>
-                  <Text style={styles.tagText}>#{tag}</Text>
-                </View>
-              ))}
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
+      <View style={styles.container}>
+        <TextInput
+          style={[styles.searchBar, { backgroundColor: colors.card, borderColor: colors.border, color: colors.text }]}
+          placeholder="Search problems or tags..."
+          placeholderTextColor={colors.textSecondary}
+          value={search}
+          onChangeText={setSearch}
+        />
+        <FlatList
+          data={filteredEntries}
+          keyExtractor={item => item.id}
+          ListEmptyComponent={<Text style={[styles.emptyText, { color: colors.textSecondary }]}>No entries yet. Start journaling your bugs!</Text>}
+          renderItem={({item}) => (
+            <View style={[styles.card, { backgroundColor: colors.card }]}>
+              <Text style={[styles.cardTitle, { color: colors.text }]}>{item.title}</Text>
+              <Text style={[styles.cardSolution, { color: colors.textSecondary }]}>{item.solution}</Text>
+              <View style={styles.tagContainer}>
+                {item.tags && item.tags.map((tag: string) => (
+                  <View key={tag} style={styles.tag}>
+                    <Text style={styles.tagText}>#{tag}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
-        )}
-      />
-      <TouchableOpacity
-        style={[styles.fab, { backgroundColor: colors.primary }]}
-        onPress={() => navigation.navigate('JournalEntry')}
-      >
-        <Text style={styles.fabText}>+</Text>
-      </TouchableOpacity>
-    </View>
+          )}
+        />
+        <TouchableOpacity
+          style={[styles.fab, { backgroundColor: colors.primary }]}
+          onPress={() => navigation.navigate('JournalEntry')}
+        >
+          <Text style={styles.fabText}>+</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: { flex: 1 },
   container: { flex: 1, padding: 10 },
   searchBar: { height: 45, borderRadius: 8, paddingHorizontal: 15, marginBottom: 15, borderWidth: 1 },
   card: { padding: 15, borderRadius: 10, marginBottom: 10, elevation: 1 },

@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator} from 'react-native';
+import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Voice from '@react-native-voice/voice';
 import { getDuckResponse } from '../lib/gemini';
 import { useTheme } from '../context/ThemeContext';
@@ -13,6 +14,7 @@ const RubberDuckScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const flatListRef = useRef<FlatList>(null);
   const { colors } = useTheme();
+  const hasUserMessages = messages.some(m => m.isUser);
 
   useEffect(() => {
     console.log("Voice module:", Voice);
@@ -86,67 +88,111 @@ const RubberDuckScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[styles.container, { backgroundColor: colors.background }]}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
-    >
-      <FlatList
-        ref={flatListRef}
-        data={messages}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.chatContainer}
-        onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
-        renderItem={({item}) => (
-          <View style={[styles.messageBubble, item.isUser ? { alignSelf: 'flex-end', backgroundColor: colors.primary } : { alignSelf: 'flex-start', backgroundColor: colors.card }]}>
-            <Text style={[styles.messageText, { color: item.isUser ? '#fff' : colors.text }]}>
-              {item.text}
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      >
+        <View style={[styles.header, { borderBottomColor: colors.border, backgroundColor: colors.card }]}>
+          <Image
+            source={require('../assets/images/Wade_no-bg.png')}
+            style={styles.headerIcon}
+          />
+          <View>
+            <Text style={[styles.headerTitle, { color: colors.text }]}>Wade</Text>
+            <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>The Rubber Duck Assistant</Text>
+          </View>
+        </View>
+
+        {!hasUserMessages && (
+          <View style={styles.emptyState}>
+            <Image
+              source={require('../assets/images/Wade_no-bg.png')}
+              style={styles.emptyStateDuck}
+            />
+            <Text style={[styles.emptyStateText, { color: colors.textSecondary }]}>
+              Explain it to the duck
             </Text>
-            {item.suggestion && (
-              <View style={[styles.suggestionBox, { borderTopColor: colors.border }]}>
-                <Text style={[styles.suggestionLabel, { color: colors.primary }]}>Suggestion:</Text>
-                <Text style={[styles.suggestionText, { color: colors.textSecondary }]}>{item.suggestion}</Text>
-              </View>
-            )}
           </View>
         )}
-      />
 
-      <View style={[styles.inputArea, { borderTopColor: colors.border, backgroundColor: colors.card }]}>
-        <TouchableOpacity
-          style={[styles.micButton, { backgroundColor: colors.background }, isListening && styles.micButtonActive]}
-          onPress={toggleListening}
-        >
-          <Text style={styles.micButtonText}>{isListening ? '⏹' : '🎤'}</Text>
-        </TouchableOpacity>
-
-        <TextInput
-          style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.text }]}
-          placeholder={isListening ? "Listening..." : "Talk to the duck..."}
-          placeholderTextColor={colors.textSecondary}
-          value={input}
-          onChangeText={setInput}
-          editable={!isLoading && !isListening}
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.chatContainer}
+          onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+          renderItem={({item}) => (
+            <View style={[styles.messageBubble, item.isUser ? { alignSelf: 'flex-end', backgroundColor: colors.primary } : { alignSelf: 'flex-start', backgroundColor: colors.card }]}>
+              <Text style={[styles.messageText, { color: item.isUser ? '#fff' : colors.text }]}>
+                {item.text}
+              </Text>
+              {item.suggestion && (
+                <View style={[styles.suggestionBox, { borderTopColor: colors.border }]}>
+                  <Text style={[styles.suggestionLabel, { color: colors.primary }]}>Suggestion:</Text>
+                  <Text style={[styles.suggestionText, { color: colors.textSecondary }]}>{item.suggestion}</Text>
+                </View>
+              )}
+            </View>
+          )}
         />
 
-        <TouchableOpacity
-          style={styles.sendButton}
-          onPress={() => handleSend()}
-          disabled={isLoading || isListening}
-        >
-          {isLoading ? (
-            <ActivityIndicator size="small" color={colors.primary} />
-          ) : (
-            <Text style={[styles.sendButtonText, { color: colors.primary }]}>Send</Text>
-          )}
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+        <View style={[styles.inputArea, { borderTopColor: colors.border, backgroundColor: colors.card }]}>
+          <TouchableOpacity
+            style={[styles.micButton, { backgroundColor: colors.background }, isListening && styles.micButtonActive]}
+            onPress={toggleListening}
+          >
+            <Text style={styles.micButtonText}>{isListening ? '⏹' : '🎤'}</Text>
+          </TouchableOpacity>
+
+          <TextInput
+            style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.text }]}
+            placeholder={isListening ? "Listening..." : "Talk to the duck..."}
+            placeholderTextColor={colors.textSecondary}
+            value={input}
+            onChangeText={setInput}
+            editable={!isLoading && !isListening}
+          />
+
+          <TouchableOpacity
+            style={styles.sendButton}
+            onPress={() => handleSend()}
+            disabled={isLoading || isListening}
+          >
+            {isLoading ? (
+              <ActivityIndicator size="small" color={colors.primary} />
+            ) : (
+              <Text style={[styles.sendButtonText, { color: colors.primary }]}>Send</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: { flex: 1 },
   container: { flex: 1 },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+  },
+  headerIcon: {
+    width: 50,
+    height: 50,
+    marginRight: 15,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  headerSubtitle: {
+    fontSize: 12,
+  },
   chatContainer: { padding: 20 },
   messageBubble: { padding: 12, borderRadius: 15, marginBottom: 15, maxWidth: '85%' },
   messageText: { fontSize: 16, lineHeight: 22 },
@@ -159,7 +205,22 @@ const styles = StyleSheet.create({
   micButtonActive: { backgroundColor: '#FF3B30' },
   micButtonText: { fontSize: 20 },
   sendButton: { paddingHorizontal: 15, minWidth: 60, alignItems: 'center' },
-  sendButtonText: { fontWeight: 'bold', fontSize: 16 }
+  sendButtonText: { fontWeight: 'bold', fontSize: 16 },
+  emptyState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 12,
+  },
+  emptyStateDuck: {
+    width: 120,
+    height: 120,
+    resizeMode: 'contain',
+  },
+  emptyStateText: {
+    fontSize: 16,
+    fontStyle: 'italic',
+  }
 });
 
 export default RubberDuckScreen;
