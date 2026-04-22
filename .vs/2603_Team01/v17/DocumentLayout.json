@@ -1,0 +1,306 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:my-app\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\StorageSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\settings\\StorageSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\AboutAppSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\settings\\AboutAppSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\HelpSupportSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\settings\\HelpSupportSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\PrivacySecuritySettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\settings\\PrivacySecuritySettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\NotificationsSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\settings\\NotificationsSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\AccountSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\settings\\AccountSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\settings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\settings\\settings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\RubberDuckScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\RubberDuckScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\MoodScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\MoodScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\JournalEntryScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\JournalEntryScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\JournalScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\JournalScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\LoginScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\LoginScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\HomeScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\HomeScreen.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\AppearanceSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\screens\\settings\\AppearanceSettings.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\context\\ThemeContext.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\context\\ThemeContext.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\.gitignore",
+              "RelativeDocumentMoniker": "my-app\\.gitignore",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\my-app\\.gitignore",
+              "RelativeToolTip": "my-app\\.gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-11T20:30:32.179Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "StorageSettings.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\StorageSettings.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\settings\\StorageSettings.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\StorageSettings.tsx",
+              "RelativeToolTip": "src\\screens\\settings\\StorageSettings.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:25:23.529Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AboutAppSettings.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\AboutAppSettings.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\settings\\AboutAppSettings.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\AboutAppSettings.tsx",
+              "RelativeToolTip": "src\\screens\\settings\\AboutAppSettings.tsx",
+              "ViewState": "AgIAABAAAAAAAAAAAAAawAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:25:16.857Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "HelpSupportSettings.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\HelpSupportSettings.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\settings\\HelpSupportSettings.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\HelpSupportSettings.tsx",
+              "RelativeToolTip": "src\\screens\\settings\\HelpSupportSettings.tsx",
+              "ViewState": "AgIAABAAAAAAAAAAAAAawAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:25:09.568Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PrivacySecuritySettings.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\PrivacySecuritySettings.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\settings\\PrivacySecuritySettings.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\PrivacySecuritySettings.tsx",
+              "RelativeToolTip": "src\\screens\\settings\\PrivacySecuritySettings.tsx",
+              "ViewState": "AgIAABAAAAAAAAAAAAAawAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:25:01.445Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "NotificationsSettings.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\NotificationsSettings.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\settings\\NotificationsSettings.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\NotificationsSettings.tsx",
+              "RelativeToolTip": "src\\screens\\settings\\NotificationsSettings.tsx",
+              "ViewState": "AgIAABAAAAAAAAAAAAAawAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:24:01.007Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "App.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\App.tsx",
+              "RelativeDocumentMoniker": "App.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\App.tsx",
+              "RelativeToolTip": "App.tsx",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAADcAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:16:58.698Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AccountSettings.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\AccountSettings.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\settings\\AccountSettings.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\AccountSettings.tsx",
+              "RelativeToolTip": "src\\screens\\settings\\AccountSettings.tsx",
+              "ViewState": "AgIAAAMBAAAAAAAAAAAuwBAAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:22:50.192Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "settings.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\settings.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\settings\\settings.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\settings.tsx",
+              "RelativeToolTip": "src\\screens\\settings\\settings.tsx",
+              "ViewState": "AgIAABcAAAAAAAAAAAAvwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:22:40.045Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "RubberDuckScreen.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\RubberDuckScreen.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\RubberDuckScreen.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\RubberDuckScreen.tsx",
+              "RelativeToolTip": "src\\screens\\RubberDuckScreen.tsx",
+              "ViewState": "AgIAAI8AAAAAAAAAAAAewAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:22:17.848Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MoodScreen.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\MoodScreen.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\MoodScreen.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\MoodScreen.tsx",
+              "RelativeToolTip": "src\\screens\\MoodScreen.tsx",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:21:48.598Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "JournalEntryScreen.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\JournalEntryScreen.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\JournalEntryScreen.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\JournalEntryScreen.tsx",
+              "RelativeToolTip": "src\\screens\\JournalEntryScreen.tsx",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:21:30.272Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "JournalScreen.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\JournalScreen.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\JournalScreen.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\JournalScreen.tsx",
+              "RelativeToolTip": "src\\screens\\JournalScreen.tsx",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAuwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:21:14.545Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "LoginScreen.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\LoginScreen.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\LoginScreen.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\LoginScreen.tsx",
+              "RelativeToolTip": "src\\screens\\LoginScreen.tsx",
+              "ViewState": "AgIAAGcAAAAAAAAAAAAvwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:21:00.517Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "HomeScreen.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\HomeScreen.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\HomeScreen.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\HomeScreen.tsx",
+              "RelativeToolTip": "src\\screens\\HomeScreen.tsx",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAtwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:17:38.94Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AppearanceSettings.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\AppearanceSettings.tsx",
+              "RelativeDocumentMoniker": "src\\screens\\settings\\AppearanceSettings.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\screens\\settings\\AppearanceSettings.tsx",
+              "RelativeToolTip": "src\\screens\\settings\\AppearanceSettings.tsx",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:17:20.918Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ThemeContext.tsx",
+              "DocumentMoniker": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\context\\ThemeContext.tsx",
+              "RelativeDocumentMoniker": "src\\context\\ThemeContext.tsx",
+              "ToolTip": "C:\\Users\\bjami\\source\\repos\\2603_Team01\\src\\context\\ThemeContext.tsx",
+              "RelativeToolTip": "src\\context\\ThemeContext.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFQAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2026-04-10T20:16:53.652Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\android",
+    "\\android\\app",
+    "\\android\\app\\src",
+    "\\android\\app\\src\\main",
+    "\\android\\app\\src\\main\\res",
+    "\\android\\app\\src\\main\\res\\values",
+    "\\my-app",
+    "\\src",
+    "\\src\\lib",
+    "\\src\\screens",
+    "\\src\\screens\\settings"
+  ],
+  "SelectedNode": "\\src\\screens\\HomeScreen.tsx",
+  "PreviewInSolutionExplorer": false
+}
