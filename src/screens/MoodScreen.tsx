@@ -4,11 +4,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 import { useTheme } from '../context/ThemeContext';
 
+import { BarChart } from "react-native-gifted-charts";
+
+
 const MoodScreen = () => {
   const [currentMood, setCurrentMood] = useState<string | null>(null);
   const [sliderValue, setSliderValue] = useState(0);
   const [stressTips, setStressTips] = useState('');
   const { colors } = useTheme();
+
+
+  const data = [{ value: 3, label: 'Mon', frontColor: '#00FF00' }, { value: 4, label: 'Tues', frontColor: '#AAA7AD' }, { value: 7, label: 'Wed', frontColor: '#E00C0C' }, { value: 10, label: 'Thurs', frontColor: '#E00C0C' }, { value: 5, label: 'Fri', frontColor: '#AAA7AD' }, { value: 2, label: 'Sat', frontColor: '#00FF00' }, { value: 1, label: 'Sun', frontColor: '#00FF00'}];
+
 
   const moods = [
     { label: 'Productive', icon: '🚀' },
@@ -45,7 +52,23 @@ const MoodScreen = () => {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
       <ScrollView style={styles.container}>
-        <Text style={[styles.title, { color: colors.text }]}>How are you feeling, Dev?</Text>
+      <Text style={[styles.title, { color: colors.text }]}>How are you feeling, Dev?</Text>
+
+              <BarChart
+                  data={data}
+                  barWidth={20}
+                  maxValue={10}
+                  noOfSections={5}
+                  stepValue={2}
+
+              />
+
+
+              <View style={styles.burnout}>
+                  <Text style={[styles.title, { color: colors.text }]}>Burnout Monitor:</Text>
+                  <Text style={[styles.stressText, { color: colors.text }]}>High stress levels logged for middle of the week - Try breaking down tasks and spreading them evenly across the week to prevent a full burnout.</Text>
+              </View>
+              
         <View style={styles.moodGrid}>
           {moods.map(mood => (
             <TouchableOpacity
@@ -99,6 +122,7 @@ const styles = StyleSheet.create({
   moodIcon: { fontSize: 32 },
   moodLabel: { marginTop: 10, fontWeight: '600' },
   aiCard: { padding: 20, borderRadius: 12, marginTop: 20, borderLeftWidth: 5 },
+    burnout: { padding: 20, borderRadius: 12, marginTop: 20, borderLeftWidth: 5, backgroundColor: '#FFADB0'},
   aiTitle: { fontWeight: 'bold', marginBottom: 5 },
   aiText: { fontSize: 16, lineHeight: 22 },
   stressTitle: { fontSize: 24, fontWeight: 'bold', marginTop: 20, textAlign: 'center' },
