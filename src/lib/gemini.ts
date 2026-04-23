@@ -17,15 +17,33 @@ ALWAYS respond in the following JSON format:
 }
 `;
 
-export const getDuckResponse = async (userInput: string) => {
+export interface MessagePart {
+  text?: string;
+  inlineData?: {
+    mimeType: string;
+    data: string;
+  };
+}
+
+export interface ChatHistoryEntry {
+  role: "user" | "model";
+  parts: MessagePart[];
+}
+
+export const getDuckResponse = async (history: ChatHistoryEntry[]) => {
   try {
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
-      generationConfig: { responseMimeType: "application/json" }
+      generationConfig: { responseMimeType: "application/json" },
+      systemInstruction: systemPrompt,
     });
 
-    const prompt = `${systemPrompt}\n\nDeveloper says: ${userInput}`;
-    const result = await model.generateContent(prompt);
+    const chat = model.startChat({
+      history: history.slice(0, -1), // Everything except the last message
+    });
+
+    const lastMessage = history[history.length - 1];
+    const result = await chat.sendMessage(lastMessage.parts);
     const responseText = result.response.text();
 
     return JSON.parse(responseText);
