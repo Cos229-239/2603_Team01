@@ -10,17 +10,11 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url("../node_modules/react-native/android")
-        }
-        maven {
-            url("../node_modules/@react-native/gradle-plugin/outputs/repo")
-        }
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.7.3")
+        classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }
 

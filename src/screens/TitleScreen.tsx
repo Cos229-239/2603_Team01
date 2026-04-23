@@ -1,4 +1,4 @@
-+import React from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -18,11 +18,10 @@ const TitleScreen = () => {
         <View style={styles.contentContainer}>
           <View style={styles.section}>
 
-            <Image source={require('../../assets/images/Wade.png')}
-
-            <Image source={require('../../assets/images/Wade.png')} 
-
-            style={{ width: 100, height: 100, borderRadius: 0, alignContent: 'center', alignSelf: 'center'}} />
+            <Image
+              source={require('../assets/images/Wade_no-bg.png')}
+              style={{ width: 100, height: 100, borderRadius: 0, alignContent: 'center', alignSelf: 'center'}}
+            />
           </View>
           <View style={styles.sectionTitle}>
             <Text style={styles.title}>DevReflect</Text>
@@ -33,16 +32,16 @@ const TitleScreen = () => {
             <Text style={styles.sectionTitle}>you don't want to lose.</Text>
           </View>
           <View style={styles.section}>
-            // TODO: Replace with actual login.
+            {/* TODO: Replace with actual login. */}
             <TouchableOpacity style={styles.actionButtonPrimary}>
               <Text style={styles.actionButtonTextPrimary}>Log in</Text>
             </TouchableOpacity>
-            // TODO: Replace with actual account creation flow.
+            {/* TODO: Replace with actual account creation flow. */}
             <TouchableOpacity style={styles.actionButtonSecondary}>
               <Text style={styles.actionButtonTextSecondary}>Create Account</Text>
             </TouchableOpacity>
             <TouchableOpacity>
-              // TODO: Implement guest access flow that allows users to use the app without creating an account, but with limited features.
+              {/* TODO: Implement guest access flow that allows users to use the app without creating an account, but with limited features. */}
               <Text style={styles.guestButtonText}>Continue as Guest</Text>
             </TouchableOpacity>
           </View>
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
   },
 
   actionButtonPrimary: {
-    flex: 0.48,
+    marginBottom: 10,
     backgroundColor: '#6B6B6B',
     padding: 15,
     borderRadius: 12,
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
   },
 
   actionButtonSecondary: {
-    flex: 0.48,
+    marginBottom: 10,
     backgroundColor: '#D9D9D9',
     padding: 15,
     borderRadius: 12,
