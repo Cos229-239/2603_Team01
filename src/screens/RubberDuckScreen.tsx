@@ -5,6 +5,8 @@ import Voice from '@react-native-voice/voice';
 import { getDuckResponse } from '../lib/gemini';
 import { useTheme } from '../context/ThemeContext';
 
+//comment for tag
+
 const RubberDuckScreen = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<any[]>([
