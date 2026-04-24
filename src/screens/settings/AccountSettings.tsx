@@ -18,6 +18,7 @@ const AccountSettings = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true);
+  const [passwordResetLoading, setPasswordResetLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [isEditingUsername, setIsEditingUsername] = useState(false);
@@ -105,7 +106,45 @@ const AccountSettings = () => {
   };
 
   const handleChangePassword = () => {
-    Alert.alert('Change Password', 'This feature will be implemented soon.');
+    if (!email) {
+      Alert.alert('Error', 'No email address found. Please try logging in again.');
+      return;
+    }
+
+    Alert.alert(
+      'Reset Password',
+      `Send a password reset email to ${email}?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Send Email', 
+          onPress: async () => {
+            try {
+              setPasswordResetLoading(true);
+              const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: 'devreflect://reset-password',
+              });
+
+              if (error) {
+                Alert.alert('Error', error.message || 'Failed to send password reset email.');
+                console.error('Password reset error:', error);
+              } else {
+                Alert.alert(
+                  'Success',
+                  'Password reset email sent! Please check your inbox.',
+                  [{ text: 'OK' }]
+                );
+              }
+            } catch (error) {
+              Alert.alert('Error', 'An unexpected error occurred.');
+              console.error('Password reset error:', error);
+            } finally {
+              setPasswordResetLoading(false);
+            }
+          }
+        }
+      ]
+    );
   };
 
   const handleDeleteAccount = () => {
@@ -241,8 +280,13 @@ const AccountSettings = () => {
         <TouchableOpacity 
           style={[styles.actionButton, { backgroundColor: colors.background, borderColor: colors.border }]} 
           onPress={handleChangePassword}
+          disabled={passwordResetLoading}
         >
-          <Text style={[styles.actionButtonText, { color: colors.text, fontSize: getFontSize(15) }]}>Change Password</Text>
+          {passwordResetLoading ? (
+            <ActivityIndicator size="small" color={colors.primary} />
+          ) : (
+            <Text style={[styles.actionButtonText, { color: colors.text, fontSize: getFontSize(15) }]}>Change Password</Text>
+          )}
         </TouchableOpacity>
 
         <TouchableOpacity 
