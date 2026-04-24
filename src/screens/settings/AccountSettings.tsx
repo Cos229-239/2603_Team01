@@ -13,6 +13,7 @@ import { useNavigation, CommonActions, useIsFocused } from '@react-navigation/na
 import { supabase } from '../../lib/supabase';
 import { useTheme } from '../../context/ThemeContext';
 import { SettingsCard, SectionHeader } from './components/SettingsComponents';
+import ActivityGrid from './components/ActivityGrid';
 
 const AccountSettings = () => {
   const navigation = useNavigation();
@@ -257,20 +258,9 @@ const AccountSettings = () => {
         </View>
       </SettingsCard>
 
-      {/* Activity Section */}
+      {/* Activity Section - Replaced with GitHub-style grid */}
       <SettingsCard colors={colors}>
-        <SectionHeader title="Activity" colors={colors} fontSize={getFontSize} />
-        <View style={styles.activityContainer}>
-          <View style={styles.activityItem}>
-            <Text style={[styles.activityCount, { color: colors.primary, fontSize: getFontSize(28) }]}>0</Text>
-            <Text style={[styles.activityLabel, { color: colors.textSecondary, fontSize: getFontSize(14) }]}>Reflections</Text>
-          </View>
-          <View style={[styles.activityDivider, { backgroundColor: colors.border }]} />
-          <View style={styles.activityItem}>
-            <Text style={[styles.activityCount, { color: colors.primary, fontSize: getFontSize(28) }]}>0</Text>
-            <Text style={[styles.activityLabel, { color: colors.textSecondary, fontSize: getFontSize(14) }]}>Saved Snippets</Text>
-          </View>
-        </View>
+        <ActivityGrid colors={colors} getFontSize={getFontSize} />
       </SettingsCard>
 
       {/* Account Actions Section */}
@@ -366,24 +356,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: '600',
-  },
-  activityContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 10,
-  },
-  activityItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  activityCount: {
-    fontWeight: 'bold',
-  },
-  activityLabel: {
-    marginTop: 5,
-  },
-  activityDivider: {
-    width: 1,
   },
   actionButton: {
     borderWidth: 1,
