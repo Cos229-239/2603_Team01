@@ -16,7 +16,7 @@ const JournalEntryScreen = ({navigation, route}: any) => {
       const {entry} = route.params;
       setTitle(entry.title);
       setSolution(entry.solution);
-      setTags(entry.tags.join(', '));
+      setTags(entry.tags ? entry.tags.join(', ') : '');
       setIsEditing(true);
     }
   }, [route.params]);

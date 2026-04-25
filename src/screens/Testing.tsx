@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,24 +6,81 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTheme } from '../context/ThemeContext';
 
+{/*const JournalEntryScreen = ({navigation, route}: any) => {*/}
+  const Testing = ({navigation, route}: any) => {
+  const [title, setTitle] = useState('');
+  const [solution, setSolution] = useState('');
+  const [tags, setTags] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const { colors } = useTheme();
 
-const TestingScreen = () => {
+  useEffect(() => {
+    if (route.params?.entry) {
+      const {entry} = route.params;
+      setTitle(entry.title);
+      setSolution(entry.solution);
+      setTags(entry.tags ? entry.tags.join(', ') : '');
+      setIsEditing(true);
+    }
+  }, [route.params]);
+
+  const saveEntry = async () => {
+    if (!title || !solution) {
+      Alert.alert('Error', 'Please fill in both title and solution');
+      return;
+    }
+
+    const parsedTags = tags
+      .split(',').map(tag => tag.trim())
+      .filter(tag => tag !== '');
+
+    try {
+      const existingEntries = await AsyncStorage.getItem('journal_entries');
+      let entries = existingEntries ? JSON.parse(existingEntries) : [];
+
+      if (isEditing) {
+        entries = entries.map((e: any) =>
+          e.id === route.params.entry.id
+            ? {...e, title, solution, tags: parsedTags}
+            : e
+        );
+      } else {
+        const newEntry = {
+          id: Date.now().toString(),
+          title,
+          solution,
+          tags: parsedTags,
+          date: new Date().toISOString(),
+        };
+        entries = [newEntry, ...entries];
+      }
+
+      await AsyncStorage.setItem('journal_entries', JSON.stringify(entries));
+      navigation.goBack();
+    } catch (error) {
+      console.error('Failed to save entry', error);
+      Alert.alert('Error', 'Failed to save the journal entry');
+    }
+  };
+
   return (
-    <SafeAreaView style={styles.screenContainer}>
-      <ScrollView>
+    <SafeAreaView style={[styles.screenContainer, { backgroundColor: colors.background }]}>
         <View style={styles.contentContainer}>
           <View style={styles.section}>
             <View style={styles.headerRow}>
-              // TODO: Replace with icon or better visual element for cancel action
-              <TouchableOpacity>
-                <Text style={styles.tagText}>x Cancel</Text>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Text style={styles.actionButtonTextSecondary}> X Cancel
+                </Text>
               </TouchableOpacity>
-
-              <Text style={styles.title}>New Journal Entry</Text>
-
+              <Text style={[styles.title, {color: colors.text}]}>
+              New Journal Entry
+              </Text>
               <TouchableOpacity>
                 <View style={styles.tag}>
                   // TODO: Insert feature to toggle between Draft and Published states, and update tag color accordingly.
@@ -34,10 +91,10 @@ const TestingScreen = () => {
 
             <View style={styles.divider} />
           </View>
-
+          <ScrollView>
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Entry type tags</Text>
-            // TODO: Add tage select/deselect + custom tags. 
+            // TODO: Add tag select/deselect + custom tags. 
             <View style={styles.tagRow}>
               <View style={styles.tag}>
                 <Text style={styles.tagText}>Bug</Text>
@@ -118,19 +175,20 @@ const TestingScreen = () => {
             </View>
           </View>
 
-          <View style={styles.actionsRow}>
-            // TODO: Implement functionality for the Discard and Save buttons. The Discard button should prompt the user to confirm their action before clearing all input fields.
-            <TouchableOpacity style={styles.actionButtonSecondary}>
-              <Text style={styles.actionButtonTextSecondary}>Discard</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.actionButtonPrimary}>
-              // TODO: Implement functionality to validate inputs and save entry.
-              <Text style={styles.actionButtonTextPrimary}>Save</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+            <View style={styles.actionsRow}>
+              // TODO: Implement functionality for the  and Save buttons. The Discard button should prompt the user to confirm their action before clearing all input fields.
+              <TouchableOpacity style={styles.actionButtonSecondary}>
+                <Text style={styles.actionButtonTextSecondary}>Export</Text>
+                <Text style={styles.tagText}>**Coming Soon**</Text>
+              </TouchableOpacity>
+  
+              <TouchableOpacity style={styles.actionButtonPrimary}>
+                // TODO: Implement functionality to validate inputs and save entry.
+                <Text style={styles.actionButtonTextPrimary}>Save</Text>
+              </TouchableOpacity>
+            </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -254,4 +312,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TestingScreen;
+{/*export default JournalEntryScreen;*/}
+export default Testing;
