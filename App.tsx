@@ -11,7 +11,7 @@ import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import LoginScreen from './src/screens/LoginScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import JournalScreen from './src/screens/JournalScreen';
-import JournalEntryScreen from './src/screens/JournalEntryScreen';
+import JournalEntryScreen from './src/screens/Testing';
 import MoodScreen from './src/screens/MoodScreen';
 import RubberDuckScreen from './src/screens/RubberDuckScreen';
 import TestingScreen from './src/screens/Testing';

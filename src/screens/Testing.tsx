@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Share,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,24 +16,56 @@ import { useTheme } from '../context/ThemeContext';
 {/*const JournalEntryScreen = ({navigation, route}: any) => {*/}
   const Testing = ({navigation, route}: any) => {
   const [title, setTitle] = useState('');
+  const [issue, setIssue] = useState('');
   const [solution, setSolution] = useState('');
   const [tags, setTags] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const { colors } = useTheme();
+
+  const handleExport = async () => {
+  try {
+    const titleText = title.trim() || 'Untitled Entry';
+    const issueText = issue.trim();
+    const tagsText = tags.trim();
+    const solutionText = solution.trim();
+
+    if (!solutionText) {
+      Alert.alert('Nothing to export', 'Please add entry content before exporting.');
+      return;
+    }
+    const content = [
+      `Title: ${titleText}`,
+      issueText ? `Issue: ${issue.trim()}` : null,
+      tagsText ? `Tags: ${tagsText}` : null,
+      solutionText ? `Solution: ${solutionText}` : null,
+    ]
+    .filter(Boolean)
+    .join('\n\n');
+
+    await Share.share({
+      title: titleText,
+      message: content,
+    });
+  } catch (error) {
+    console.error('Export failed', error);
+    Alert.alert('Error', 'Failed to export the journal entry');
+  }
+};
 
   useEffect(() => {
     if (route.params?.entry) {
       const {entry} = route.params;
       setTitle(entry.title);
       setSolution(entry.solution);
+      setIssue(entry.issue);
       setTags(entry.tags ? entry.tags.join(', ') : '');
       setIsEditing(true);
     }
   }, [route.params]);
 
   const saveEntry = async () => {
-    if (!title || !solution) {
-      Alert.alert('Error', 'Please fill in both title and solution');
+    if (!title || !issue || !solution) {
+      Alert.alert('Error', 'Please fill in title, issue and solution');
       return;
     }
 
@@ -54,6 +87,7 @@ import { useTheme } from '../context/ThemeContext';
         const newEntry = {
           id: Date.now().toString(),
           title,
+          issue,
           solution,
           tags: parsedTags,
           date: new Date().toISOString(),
@@ -78,45 +112,26 @@ import { useTheme } from '../context/ThemeContext';
                 <Text style={styles.actionButtonTextSecondary}> X Cancel
                 </Text>
               </TouchableOpacity>
-              <Text style={[styles.title, {color: colors.text}]}>
-              New Journal Entry
-              </Text>
+
+              <TextInput
+                style={[styles.title, { color: colors.text }]}
+                placeholder="✎ Tap to add title..."
+                placeholderTextColor={colors.text}
+                value={title}
+                onChangeText={setTitle}
+              />
+              
               <TouchableOpacity>
                 <View style={styles.tag}>
-                  // TODO: Insert feature to toggle between Draft and Published states, and update tag color accordingly.
+                  {/*TODO: Insert feature to toggle between Draft and Published states, and update tag color accordingly.*/}
                   <Text style={styles.tagText}>Draft</Text>
+                  <Text style={styles.tagText}>**Coming soon**</Text>
                 </View>
               </TouchableOpacity>
-            </View>
 
-            <View style={styles.divider} />
+            </View>
           </View>
           <ScrollView>
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Entry type tags</Text>
-            // TODO: Add tag select/deselect + custom tags. 
-            <View style={styles.tagRow}>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>Bug</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>Concept</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>Debugging</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>End of Day</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>Quick Idea</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>+ Issue Tag</Text>
-              </View>
-            </View>
-          </View>
-
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>
               What problem are you trying to solve?
@@ -125,6 +140,8 @@ import { useTheme } from '../context/ThemeContext';
               style={styles.input}
               placeholder="React Native keeps throwing a warning when..."
               placeholderTextColor="#595959"
+              value={issue}
+              onChangeText={setIssue}
               multiline
             />
           </View>
@@ -135,12 +152,14 @@ import { useTheme } from '../context/ThemeContext';
               style={styles.input}
               placeholder="Tried clearing cache, updated the nav library..."
               placeholderTextColor="#595959"
+              value={solution}
+              onChangeText={setSolution}
               multiline
             />
           </View>
 
           <View style={styles.section}>
-            // TODO: Implement functionality to allow users to attach code snippets, screenshots, or other files.
+            {/* TODO: Implement functionality to allow users to attach code snippets, screenshots, or other files.*/}
             <Text style={styles.sectionTitle}>Attach code snippet</Text>
             <TextInput
               style={styles.input}
@@ -151,44 +170,27 @@ import { useTheme } from '../context/ThemeContext';
           </View>
 
           <View style={styles.section}>
-            // TODO: Add tag select/deselect + custom tags.
-            <Text style={styles.sectionTitle}>Issue type tags</Text>
-            <View style={styles.tagRow}>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>Bug</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>JavaScript</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>React Native</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>Python</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>Syntax</Text>
-              </View>
-              <View style={styles.tag}>
-                <Text style={styles.tagText}>+ Issue Tag</Text>
-              </View>
-            </View>
+            <Text style={styles.sectionTitle}>Custom tags</Text>
+          <TextInput
+              style={styles.input}
+              placeholder="Add custom tags, separated by commas..."
+              placeholderTextColor="#595959"
+              value={tags}
+              onChangeText={setTags}
+            />
           </View>
+              </ScrollView>
 
             <View style={styles.actionsRow}>
-              // TODO: Implement functionality for the  and Save buttons. The Discard button should prompt the user to confirm their action before clearing all input fields.
-              <TouchableOpacity style={styles.actionButtonSecondary}>
-                <Text style={styles.actionButtonTextSecondary}>Export</Text>
-                <Text style={styles.tagText}>**Coming Soon**</Text>
-              </TouchableOpacity>
-  
-              <TouchableOpacity style={styles.actionButtonPrimary}>
-                // TODO: Implement functionality to validate inputs and save entry.
+                <TouchableOpacity style={styles.actionButtonSecondary} onPress={handleExport}>
+                  <Text style={styles.actionButtonTextSecondary}>Export</Text>
+                </TouchableOpacity>
+
+              <TouchableOpacity style={styles.actionButtonPrimary} onPress={saveEntry}>
                 <Text style={styles.actionButtonTextPrimary}>Save</Text>
               </TouchableOpacity>
             </View>
-        </ScrollView>
-      </View>
+        </View>
     </SafeAreaView>
   );
 };
