@@ -13,8 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../context/ThemeContext';
 
-{/*const JournalEntryScreen = ({navigation, route}: any) => {*/}
-  const Testing = ({navigation, route}: any) => {
+const JournalEntryScreen = ({navigation, route}: any) => {
   const [title, setTitle] = useState('');
   const [issue, setIssue] = useState('');
   const [solution, setSolution] = useState('');
@@ -109,7 +108,7 @@ import { useTheme } from '../context/ThemeContext';
           <View style={styles.section}>
             <View style={styles.headerRow}>
               <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Text style={styles.actionButtonTextSecondary}> X Cancel
+                <Text style={styles.smallText}> X Cancel
                 </Text>
               </TouchableOpacity>
 
@@ -124,8 +123,8 @@ import { useTheme } from '../context/ThemeContext';
               <TouchableOpacity>
                 <View style={styles.tag}>
                   {/*TODO: Insert feature to toggle between Draft and Published states, and update tag color accordingly.*/}
-                  <Text style={styles.tagText}>Draft</Text>
-                  <Text style={styles.tagText}>**Coming soon**</Text>
+                  <Text style={styles.smallText}>Draft</Text>
+                  <Text style={styles.tinyText}>**Coming soon**</Text>
                 </View>
               </TouchableOpacity>
 
@@ -238,8 +237,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  tagText: {
-    fontSize: 10,
+  smallText: {
+    fontSize: 14,
     color: '#000000',
   },
 
@@ -308,11 +307,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#33623A',
   },
 
-  tagToggleButtonText: {
+  tinyText: {
     fontSize: 10,
-    color: '#fff',
+    color: '#000000',
   },
 });
 
-{/*export default JournalEntryScreen;*/}
-export default Testing;
+export default JournalEntryScreen;
