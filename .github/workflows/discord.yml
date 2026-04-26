@@ -1,0 +1,339 @@
+name: Discord Push Notifications
+
+on:
+  push:
+    branches:
+      - "**"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Use 'test' to send a setup confirmation post."
+        required: false
+        default: "test"
+      headline:
+        description: "Headline override for status posts."
+        required: false
+        default: ""
+      cycle:
+        description: "Cycle label for the test post."
+        required: false
+        default: ""
+      repo_label:
+        description: "Repo label override for the test post."
+        required: false
+        default: ""
+      summary:
+        description: "Status summary text for a branch-status post."
+        required: false
+        default: ""
+      details:
+        description: "Status details for a branch-status post."
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send push embed
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          GITHUB_TOKEN: ${{ github.token }}
+          WORKFLOW_INPUT_MODE: ${{ github.event.inputs.mode }}
+          WORKFLOW_INPUT_HEADLINE: ${{ github.event.inputs.headline }}
+          WORKFLOW_INPUT_CYCLE: ${{ github.event.inputs.cycle }}
+          WORKFLOW_INPUT_REPO_LABEL: ${{ github.event.inputs.repo_label }}
+          WORKFLOW_INPUT_SUMMARY: ${{ github.event.inputs.summary }}
+          WORKFLOW_INPUT_DETAILS: ${{ github.event.inputs.details }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+          from datetime import datetime, timezone
+
+          webhook = os.environ.get("DISCORD_WEBHOOK", "").strip()
+          if not webhook:
+              raise SystemExit("DISCORD_WEBHOOK is not set")
+
+          event_name = os.environ.get("GITHUB_EVENT_NAME", "").strip()
+          input_mode = os.environ.get("WORKFLOW_INPUT_MODE", "").strip().lower()
+          input_headline = os.environ.get("WORKFLOW_INPUT_HEADLINE", "").strip()
+          input_cycle = os.environ.get("WORKFLOW_INPUT_CYCLE", "").strip()
+          input_repo_label = os.environ.get("WORKFLOW_INPUT_REPO_LABEL", "").strip()
+          input_summary = os.environ.get("WORKFLOW_INPUT_SUMMARY", "").strip()
+          input_details = os.environ.get("WORKFLOW_INPUT_DETAILS", "").strip()
+          repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
+          branch = os.environ.get("GITHUB_REF_NAME", "").strip()
+          actor = os.environ.get("GITHUB_ACTOR", "").strip()
+          github_token = os.environ.get("GITHUB_TOKEN", "").strip()
+          server = os.environ.get("GITHUB_SERVER_URL", "https://github.com").strip() or "https://github.com"
+          event_path = os.environ.get("GITHUB_EVENT_PATH", "").strip()
+
+          with open(event_path, "r", encoding="utf-8") as fh:
+              event = json.load(fh)
+
+          def fetch_commit_files(repo_name: str, sha: str) -> list[str]:
+              repo_name = str(repo_name or "").strip()
+              sha = str(sha or "").strip()
+              if not repo_name or not sha or not github_token:
+                  return []
+              api_url = f"https://api.github.com/repos/{repo_name}/commits/{sha}"
+              req = urllib.request.Request(
+                  api_url,
+                  headers={
+                      "Accept": "application/vnd.github+json",
+                      "Authorization": f"Bearer {github_token}",
+                      "User-Agent": "Mozilla/5.0",
+                  },
+                  method="GET",
+              )
+              try:
+                  with urllib.request.urlopen(req) as response:
+                      payload = json.loads(response.read().decode("utf-8"))
+              except Exception:
+                  return []
+              results = []
+              seen = set()
+              for item in list(payload.get("files") or []):
+                  file_path = str(item.get("filename") or "").strip()
+                  if not file_path or file_path in seen:
+                      continue
+                  seen.add(file_path)
+                  results.append(file_path)
+              return results
+
+          def fetch_repo_json(repo_name: str, repo_path: str, ref: str = "main") -> dict:
+              repo_name = str(repo_name or "").strip()
+              repo_path = str(repo_path or "").strip().lstrip("/")
+              ref = str(ref or "").strip() or "main"
+              if not repo_name or not repo_path or not github_token:
+                  return {}
+              api_url = f"https://api.github.com/repos/{repo_name}/contents/{repo_path}?ref={ref}"
+              req = urllib.request.Request(
+                  api_url,
+                  headers={
+                      "Accept": "application/vnd.github+json",
+                      "Authorization": f"Bearer {github_token}",
+                      "User-Agent": "Mozilla/5.0",
+                  },
+                  method="GET",
+              )
+              try:
+                  with urllib.request.urlopen(req) as response:
+                      payload = json.loads(response.read().decode("utf-8"))
+              except Exception:
+                  return {}
+              content = str(payload.get("content", "") or "")
+              encoding = str(payload.get("encoding", "") or "").strip().lower()
+              if not content or encoding != "base64":
+                  return {}
+              try:
+                  import base64
+                  decoded = base64.b64decode(content).decode("utf-8")
+                  data = json.loads(decoded)
+              except Exception:
+                  return {}
+              return data if isinstance(data, dict) else {}
+
+          def fetch_branch_compare(repo_name: str, base_branch: str, head_branch: str) -> dict:
+              repo_name = str(repo_name or "").strip()
+              base_branch = str(base_branch or "").strip()
+              head_branch = str(head_branch or "").strip()
+              if not repo_name or not base_branch or not head_branch or not github_token:
+                  return {"state": "Unknown", "ahead": 0, "behind": 0, "ahead_behind": "—"}
+              api_url = f"https://api.github.com/repos/{repo_name}/compare/{base_branch}...{head_branch}"
+              req = urllib.request.Request(
+                  api_url,
+                  headers={
+                      "Accept": "application/vnd.github+json",
+                      "Authorization": f"Bearer {github_token}",
+                      "User-Agent": "Mozilla/5.0",
+                  },
+                  method="GET",
+              )
+              try:
+                  with urllib.request.urlopen(req) as response:
+                      payload = json.loads(response.read().decode("utf-8"))
+              except Exception:
+                  return {"state": "Unknown", "ahead": 0, "behind": 0, "ahead_behind": "—"}
+              ahead = int(payload.get("ahead_by", 0) or 0)
+              behind = int(payload.get("behind_by", 0) or 0)
+              if ahead > 0 and behind > 0:
+                  state = "Diverged"
+              elif behind > 0:
+                  state = "Behind"
+              elif ahead > 0:
+                  state = "Ahead"
+              else:
+                  state = "In Sync"
+              return {
+                  "state": state,
+                  "ahead": ahead,
+                  "behind": behind,
+                  "ahead_behind": f"+{ahead} / -{behind}",
+              }
+
+          notify_config = fetch_repo_json(repo, ".github/discord-notify.json", "main")
+          notify_enabled = bool(notify_config.get("enabled", True))
+          include = notify_config.get("include", {}) if isinstance(notify_config.get("include", {}), dict) else {}
+          branch_policy = notify_config.get("branches", {}) if isinstance(notify_config.get("branches", {}), dict) else {}
+          include_branch_name = bool(include.get("branch_name", True))
+          include_status = bool(include.get("status", True))
+          include_ahead_behind = bool(include.get("ahead_behind", True))
+          include_files_changed = bool(include.get("files_changed", True))
+          include_commit_message = bool(include.get("commit_message", True))
+          include_actor = bool(include.get("actor", True))
+          include_timestamp = bool(include.get("timestamp", True))
+
+          def branch_notifications_enabled(branch_name: str) -> bool:
+              name = str(branch_name or "").strip()
+              if not name:
+                  return True
+              if name in branch_policy:
+                  return bool(branch_policy.get(name))
+              if name in ("main", "gh-pages"):
+                  return False
+              return True
+
+          if event_name == "workflow_dispatch" and input_mode == "test":
+              test_repo = input_repo_label or repo or "repo"
+              test_cycle = input_cycle or "cycle"
+              payload = {
+                  "embeds": [
+                      {
+                          "title": f"{test_repo} notifications are live",
+                          "description": "This is a setup test post from SupaTewl.",
+                          "color": 5814783,
+                          "fields": [
+                              {"name": "Repo", "value": test_repo, "inline": True},
+                              {"name": "Cycle", "value": test_cycle, "inline": True},
+                              {"name": "Status", "value": "Webhook saved and ready for push notifications.", "inline": False},
+                          ],
+                          "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                      }
+                  ]
+              }
+          elif event_name == "workflow_dispatch" and input_mode == "status":
+              if not notify_enabled:
+                  raise SystemExit(0)
+              status_repo = input_repo_label or repo or "repo"
+              status_cycle = input_cycle or "cycle"
+              summary_text = input_summary or "No branch summary provided."
+              details_text = input_details or "No branch details provided."
+              payload = {
+                  "embeds": [
+                      {
+                          "title": input_headline or f"{status_repo} branch status",
+                          "description": details_text,
+                          "color": 5814783,
+                          "fields": [
+                              {"name": "Repo", "value": status_repo, "inline": True},
+                              {"name": "Cycle", "value": status_cycle, "inline": True},
+                              {"name": "Summary", "value": summary_text, "inline": False},
+                          ],
+                          "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                      }
+                  ]
+              }
+          else:
+              if not notify_enabled:
+                  raise SystemExit(0)
+              if not branch_notifications_enabled(branch):
+                  raise SystemExit(0)
+              commits = list(event.get("commits") or [])
+              compare_url = (event.get("compare") or "").strip() or f"{server}/{repo}/commits/{branch}"
+              head = event.get("head_commit") or {}
+              timestamp = (head.get("timestamp") or datetime.now(timezone.utc).isoformat()).replace("+00:00", "Z")
+              short_when = timestamp.replace("T", " ").replace("Z", " UTC") if timestamp else "Unknown"
+              branch_compare = fetch_branch_compare(repo, "dev", branch)
+              files_changed = []
+              seen_files = set()
+
+              for commit in commits:
+                  for bucket in ("added", "modified", "removed"):
+                      for path in list(commit.get(bucket) or []):
+                          file_path = str(path or "").strip()
+                          if not file_path or file_path in seen_files:
+                              continue
+                          seen_files.add(file_path)
+                          files_changed.append(file_path)
+
+              head_sha_full = str(head.get("id") or event.get("after") or "").strip()
+              if not files_changed and head_sha_full:
+                  files_changed = fetch_commit_files(repo, head_sha_full)
+
+              lines = []
+              for commit in commits[:5]:
+                  sha = str(commit.get("id") or "")[:7]
+                  message = str(commit.get("message") or "").strip().splitlines()[0] if commit.get("message") else "No commit message"
+                  author = str((commit.get("author") or {}).get("name") or actor).strip() or actor
+                  url = str(commit.get("url") or "").strip()
+                  if url.startswith("https://api.github.com/repos/"):
+                      url = url.replace("https://api.github.com/repos/", f"{server}/").replace("/commits/", "/commit/")
+                  if sha and url:
+                      lines.append(f"[`{sha}`]({url}) {message} — {author}")
+                  elif sha:
+                      lines.append(f"`{sha}` {message} — {author}")
+                  else:
+                      lines.append(f"{message} — {author}")
+
+              if len(commits) > 5:
+                  lines.append(f"...and {len(commits) - 5} more commit(s).")
+
+              file_lines = [f"`{path}`" for path in files_changed[:6]]
+              if len(files_changed) > 6:
+                  file_lines.append(f"+{len(files_changed) - 6} more")
+
+              head_sha = str(head.get("id") or "")[:7]
+              head_message = str(head.get("message") or "").strip().splitlines()[0] if head.get("message") else ""
+              head_author = str((head.get("author") or {}).get("name") or actor).strip() or actor
+              commit_total = len(commits)
+              push_size = f"{commit_total} commit{'s' if commit_total != 1 else ''}"
+              commit_message = f"`{head_sha}` {head_message}" if head_sha and head_message else (head_message or (f"`{head_sha}`" if head_sha else "No commit message"))
+
+              description = "\n".join(lines) if lines else "A new push was received."
+              payload = {
+                  "embeds": [
+                      {
+                          "title": f"{repo} · push on {branch}",
+                          "url": compare_url,
+                          "description": description,
+                          "color": 5814783,
+                          "fields": [
+                              *([{"name": "Actor", "value": actor or "Unknown", "inline": True}] if include_actor else []),
+                              *([{"name": "Branch Name", "value": branch or "Unknown", "inline": True}] if include_branch_name else []),
+                              *([{"name": "Timestamp", "value": short_when, "inline": True}] if include_timestamp else []),
+                              *([{"name": "Status", "value": str(branch_compare.get("state", "Unknown") or "Unknown"), "inline": True}] if include_status else []),
+                              *([{"name": "Ahead / Behind", "value": str(branch_compare.get("ahead_behind", "—") or "—"), "inline": True}] if include_ahead_behind else []),
+                              {"name": "Repo", "value": repo or "Unknown", "inline": True},
+                              {"name": "Push Size", "value": push_size, "inline": True},
+                              *([{"name": "Commit Message", "value": commit_message, "inline": False}] if include_commit_message else []),
+                              {"name": "Commit Author", "value": head_author or "Unknown", "inline": True},
+                              *([{
+                                  "name": "Files changed",
+                                  "value": "\n".join(file_lines),
+                                  "inline": False,
+                              }] if file_lines and include_files_changed else []),
+                          ],
+                          "timestamp": timestamp,
+                      }
+                  ]
+              }
+
+          req = urllib.request.Request(
+              webhook,
+              data=json.dumps(payload).encode("utf-8"),
+              headers={
+                  "Content-Type": "application/json",
+                  "User-Agent": "Mozilla/5.0",
+              },
+              method="POST",
+          )
+          with urllib.request.urlopen(req) as response:
+              if response.status >= 300:
+                  raise SystemExit(f"Discord webhook failed: HTTP {response.status}")
+          PY
