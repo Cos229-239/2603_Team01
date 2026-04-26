@@ -11,6 +11,8 @@ interface Message {
   suggestion?: string;
   isUser: boolean;
   imageUri?: string;
+  imageBase64?: string;
+  imageType?: string;
 }
 
 const RubberDuckScreen = () => {
@@ -43,7 +45,9 @@ const RubberDuckScreen = () => {
       id: Date.now().toString(),
       text: input,
       isUser: true,
-      imageUri: selectedImage?.uri
+      imageUri: selectedImage?.uri,
+      imageBase64: selectedImage?.base64,
+      imageType: selectedImage?.type
     };
 
     const newMessages = [...messages, userMessage];
@@ -55,19 +59,19 @@ const RubberDuckScreen = () => {
     setIsLoading(true);
 
     try {
-      // Convert history to Gemini format
+      // Convert history to Gemini format, including previous images
       const history: ChatHistoryEntry[] = newMessages.map(m => ({
         role: m.isUser ? "user" : "model",
         parts: [
           ...(m.text ? [{ text: m.text }] : []),
-          ...(m.imageUri && currentImage?.base64 ? [{
+          ...(m.imageBase64 ? [{
             inlineData: {
-              mimeType: currentImage.type || 'image/jpeg',
-              data: currentImage.base64
+              mimeType: m.imageType || 'image/jpeg',
+              data: m.imageBase64
             }
           }] : [])
         ]
-      }));
+      })).filter(entry => entry.parts.length > 0);
 
       const response = await getDuckResponse(history);
 
