@@ -101,9 +101,7 @@ const MainTabs = () => {
       <Tab.Screen name="Mood" component={MoodScreen} options={{ headerShown: true }} />
       <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} options={{ headerShown: true }} />
       <Tab.Screen name="Settings" component={SettingsStack} options={{ headerShown: true }} />
-      {/* <Tab.Screen name="Testing" component={TestingScreen} options={{ headerShown: true }} /> */}
-      {/* <Tab.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} /> */}
-      {/* <Tab.Screen name="Title" component={TitleScreen} options={{ headerShown: true }} /> */}
+      <Tab.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
       {/* <Tab.Screen name="LoginScreenTest" component={LoginScreenTest} options={{ headerShown: true }} / >*/}
     </Tab.Navigator>
   );
@@ -126,7 +124,12 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Title">
+        <Stack.Screen
+          name="Title"
+          component={TitleScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Login"
           component={LoginScreen}

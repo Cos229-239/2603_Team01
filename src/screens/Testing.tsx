@@ -185,8 +185,10 @@ const JournalEntryScreen = ({navigation, route}: any) => {
                   <Text style={styles.actionButtonTextSecondary}>Export</Text>
                 </TouchableOpacity>
 
-              <TouchableOpacity style={styles.actionButtonPrimary} onPress={saveEntry}>
-                <Text style={styles.actionButtonTextPrimary}>Save</Text>
+             <TouchableOpacity style={styles.actionButtonPrimary} onPress={saveEntry}>
+              <Text style={styles.actionButtonTextPrimary}>
+                {isEditing ? "Update Entry" : "Save Entry"}
+                </Text>
               </TouchableOpacity>
             </View>
         </View>

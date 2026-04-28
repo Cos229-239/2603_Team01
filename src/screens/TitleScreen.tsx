@@ -1,20 +1,26 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { useEffect } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
+type RootStackParamList = {
+  Login: undefined;
+};
 
 const TitleScreen = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.navigate('Login');
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <SafeAreaView style={styles.screenContainer}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.contentContainer}>
           <View style={styles.section}>
 
@@ -32,18 +38,6 @@ const TitleScreen = () => {
             <Text style={styles.sectionTitle}>you don't want to lose.</Text>
           </View>
           <View style={styles.section}>
-            {/* TODO: Replace with actual login. */}
-            <TouchableOpacity style={styles.actionButtonPrimary}>
-              <Text style={styles.actionButtonTextPrimary}>Log in</Text>
-            </TouchableOpacity>
-            {/* TODO: Replace with actual account creation flow. */}
-            <TouchableOpacity style={styles.actionButtonSecondary}>
-              <Text style={styles.actionButtonTextSecondary}>Create Account</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              {/* TODO: Implement guest access flow that allows users to use the app without creating an account, but with limited features. */}
-              <Text style={styles.guestButtonText}>Continue as Guest</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -56,11 +50,16 @@ const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   contentContainer: {
     flex: 1,
     padding: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   section: {

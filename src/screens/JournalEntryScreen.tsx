@@ -6,6 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 
 const JournalEntryScreen1 = ({navigation, route}: any) => {
   const [title, setTitle] = useState('');
+  const [issue, setIssue] = useState('');
   const [solution, setSolution] = useState('');
   const [tags, setTags] = useState('');
   const [isEditing, setIsEditing] = useState(false);
