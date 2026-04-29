@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - "**"
+  schedule:
+    - cron: "0 21 * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -189,6 +191,14 @@ jobs:
           include_actor = bool(include.get("actor", True))
           include_timestamp = bool(include.get("timestamp", True))
 
+          def infer_cycle_label(repo_name: str) -> str:
+              text = str(repo_name or "").strip()
+              if "_" in text:
+                  prefix = text.split("_", 1)[0].strip()
+                  if len(prefix) == 4 and prefix.isdigit():
+                      return prefix
+              return ""
+
           def branch_notifications_enabled(branch_name: str) -> bool:
               name = str(branch_name or "").strip()
               if not name:
@@ -198,6 +208,22 @@ jobs:
               if name in ("main", "gh-pages"):
                   return False
               return True
+
+          def scheduled_status_branches() -> list[str]:
+              rows = []
+              seen = set()
+              for name, enabled in list(branch_policy.items()):
+                  branch_name = str(name or "").strip()
+                  if not branch_name or not enabled:
+                      continue
+                  if branch_name in ("main", "gh-pages", "dev"):
+                      continue
+                  lowered = branch_name.lower()
+                  if lowered in seen:
+                      continue
+                  seen.add(lowered)
+                  rows.append(branch_name)
+              return sorted(rows, key=lambda item: item.lower())
 
           if event_name == "workflow_dispatch" and input_mode == "test":
               test_repo = input_repo_label or repo or "repo"
@@ -228,6 +254,44 @@ jobs:
                   "embeds": [
                       {
                           "title": input_headline or f"{status_repo} branch status",
+                          "description": details_text,
+                          "color": 5814783,
+                          "fields": [
+                              {"name": "Repo", "value": status_repo, "inline": True},
+                              {"name": "Cycle", "value": status_cycle, "inline": True},
+                              {"name": "Summary", "value": summary_text, "inline": False},
+                          ],
+                          "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                      }
+                  ]
+              }
+          elif event_name == "schedule":
+              if not notify_enabled:
+                  raise SystemExit(0)
+              status_repo = input_repo_label or repo or "repo"
+              status_cycle = input_cycle or infer_cycle_label(status_repo) or "cycle"
+              tracked = scheduled_status_branches()
+              if not tracked:
+                  raise SystemExit(0)
+              rows = []
+              counts = {"Diverged": 0, "Behind": 0, "Ahead": 0, "In Sync": 0, "Unknown": 0}
+              for branch_name in tracked:
+                  compare = fetch_branch_compare(repo, "dev", branch_name)
+                  state_name = str(compare.get("state") or "Unknown").strip() or "Unknown"
+                  counts[state_name] = counts.get(state_name, 0) + 1
+                  ahead_behind = str(compare.get("ahead_behind") or "—").strip() or "—"
+                  rows.append(f"{branch_name} — {state_name} ({ahead_behind})")
+              summary_text = (
+                  f"{counts.get('Diverged', 0)} diverged · "
+                  f"{counts.get('Behind', 0)} behind · "
+                  f"{counts.get('Ahead', 0)} ahead · "
+                  f"{counts.get('In Sync', 0)} in sync"
+              )
+              details_text = "\n".join(rows[:20]) or "No tracked branches configured for daily status."
+              payload = {
+                  "embeds": [
+                      {
+                          "title": f"{status_repo} branch status",
                           "description": details_text,
                           "color": 5814783,
                           "fields": [
