@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../context/ThemeContext';
 
-const JournalEntryScreen = ({navigation, route}: any) => {
+const JournalEntryScreen1 = ({navigation, route}: any) => {
   const [title, setTitle] = useState('');
   const [solution, setSolution] = useState('');
   const [tags, setTags] = useState('');
@@ -16,7 +16,7 @@ const JournalEntryScreen = ({navigation, route}: any) => {
       const {entry} = route.params;
       setTitle(entry.title);
       setSolution(entry.solution);
-      setTags(entry.tags.join(', '));
+      setTags(entry.tags ? entry.tags.join(', ') : '');
       setIsEditing(true);
     }
   }, [route.params]);
@@ -108,4 +108,4 @@ const styles = StyleSheet.create({
   buttonContainer: { marginTop: 10 }
 });
 
-export default JournalEntryScreen;
+export default JournalEntryScreen1;

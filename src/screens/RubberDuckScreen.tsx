@@ -1,8 +1,8 @@
 import React, {useState, useRef} from 'react';
-import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image} from 'react-native';
+import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image, Modal, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { launchImageLibrary, ImagePickerResponse } from 'react-native-image-picker';
-import { getDuckResponse, ChatHistoryEntry } from '../lib/gemini';
+import { getDuckResponse, ChatHistoryEntry, listAvailableModels } from '../lib/gemini';
 import { useTheme } from '../context/ThemeContext';
 
 interface Message {
@@ -11,6 +11,8 @@ interface Message {
   suggestion?: string;
   isUser: boolean;
   imageUri?: string;
+  imageBase64?: string;
+  imageType?: string;
 }
 
 const RubberDuckScreen = () => {
@@ -20,9 +22,26 @@ const RubberDuckScreen = () => {
     { id: '1', text: "Quack! I'm your debugging assistant. Tell me about the bug you're chasing.", isUser: false },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [debugModalVisible, setDebugModalVisible] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<string>('');
+
   const flatListRef = useRef<FlatList>(null);
   const { colors } = useTheme();
   const hasUserMessages = messages.some(m => m.isUser);
+
+  const handleListModels = async () => {
+    setIsLoading(true);
+    try {
+      const data = await listAvailableModels();
+      setDebugInfo(JSON.stringify(data, null, 2));
+      setDebugModalVisible(true);
+    } catch (error: any) {
+      setDebugInfo("Error: " + error.message);
+      setDebugModalVisible(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const pickImage = () => {
     launchImageLibrary({
@@ -43,31 +62,31 @@ const RubberDuckScreen = () => {
       id: Date.now().toString(),
       text: input,
       isUser: true,
-      imageUri: selectedImage?.uri
+      imageUri: selectedImage?.uri,
+      imageBase64: selectedImage?.base64,
+      imageType: selectedImage?.type
     };
 
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
 
     setInput('');
-    const currentImage = selectedImage;
     setSelectedImage(null);
     setIsLoading(true);
 
     try {
-      // Convert history to Gemini format
       const history: ChatHistoryEntry[] = newMessages.map(m => ({
         role: m.isUser ? "user" : "model",
         parts: [
           ...(m.text ? [{ text: m.text }] : []),
-          ...(m.imageUri && currentImage?.base64 ? [{
+          ...(m.imageBase64 ? [{
             inlineData: {
-              mimeType: currentImage.type || 'image/jpeg',
-              data: currentImage.base64
+              mimeType: m.imageType || 'image/jpeg',
+              data: m.imageBase64
             }
           }] : [])
         ]
-      }));
+      })).filter(entry => entry.parts.length > 0);
 
       const response = await getDuckResponse(history);
 
@@ -101,10 +120,13 @@ const RubberDuckScreen = () => {
       >
         <View style={[styles.header, { borderBottomColor: colors.border, backgroundColor: colors.card }]}>
           <Image source={require('../assets/images/Wade_no-bg.png')} style={styles.headerIcon} />
-          <View>
+          <View style={{ flex: 1 }}>
             <Text style={[styles.headerTitle, { color: colors.text }]}>Wade</Text>
             <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>The Rubber Duck Assistant</Text>
           </View>
+          <TouchableOpacity onPress={handleListModels} style={styles.debugButton}>
+             <Text style={{ fontSize: 18 }}>🐞</Text>
+          </TouchableOpacity>
         </View>
 
         {!hasUserMessages && (
@@ -160,6 +182,22 @@ const RubberDuckScreen = () => {
             {isLoading ? <ActivityIndicator size="small" color={colors.primary} /> : <Text style={[styles.sendButtonText, { color: colors.primary }]}>Send</Text>}
           </TouchableOpacity>
         </View>
+
+        <Modal visible={debugModalVisible} animationType="slide">
+          <SafeAreaView style={{ flex: 1, backgroundColor: '#1a1a1a' }}>
+            <View style={{ padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#333' }}>
+              <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Available Models</Text>
+              <TouchableOpacity onPress={() => setDebugModalVisible(false)}>
+                <Text style={{ color: '#007AFF', fontSize: 16 }}>Close</Text>
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={{ flex: 1, padding: 10 }}>
+              <Text style={{ color: '#00ff00', fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace', fontSize: 12 }}>
+                {debugInfo}
+              </Text>
+            </ScrollView>
+          </SafeAreaView>
+        </Modal>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -169,9 +207,10 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1 },
   container: { flex: 1 },
   header: { flexDirection: 'row', alignItems: 'center', padding: 15, borderBottomWidth: 1 },
-  headerIcon: { width: 50, height: 50, marginRight: 15 },
+  headerIcon: { width: 50, height: 50, marginRight: 15, resizeMode: 'contain' },
   headerTitle: { fontSize: 20, fontWeight: 'bold' },
   headerSubtitle: { fontSize: 12 },
+  debugButton: { padding: 10 },
   chatContainer: { padding: 20 },
   messageBubble: { padding: 12, borderRadius: 15, marginBottom: 15, maxWidth: '85%' },
   messageText: { fontSize: 16, lineHeight: 22 },

@@ -11,7 +11,7 @@ import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import LoginScreen from './src/screens/LoginScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import JournalScreen from './src/screens/JournalScreen';
-import JournalEntryScreen from './src/screens/JournalEntryScreen';
+import JournalEntryScreen from './src/screens/Testing';
 import MoodScreen from './src/screens/MoodScreen';
 import RubberDuckScreen from './src/screens/RubberDuckScreen';
 import TestingScreen from './src/screens/Testing';
@@ -38,7 +38,7 @@ const JournalStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="JournalList" component={JournalScreen} options={{ title: 'My Journal' }} />
-      <Stack.Screen name="JournalEntry" component={JournalEntryScreen} options={{ title: 'New Entry' }} />
+      <Stack.Screen name="JournalEntry" component={JournalEntryScreen} options={{ title: 'New Journal Entry' }} />
     </Stack.Navigator>
   );
 };
@@ -104,7 +104,7 @@ const MainTabs = () => {
       {/* <Tab.Screen name="Testing" component={TestingScreen} options={{ headerShown: true }} /> */}
       {/* <Tab.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} /> */}
       {/* <Tab.Screen name="Title" component={TitleScreen} options={{ headerShown: true }} /> */}
-      {/* <Tab.Screen name="LoginScreenTest" component={LoginScreenTest} options={{ headerShown: true }} /> */}
+      {/* <Tab.Screen name="LoginScreenTest" component={LoginScreenTest} options={{ headerShown: true }} / >*/}
     </Tab.Navigator>
   );
 };
