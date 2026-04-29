@@ -225,6 +225,39 @@ jobs:
                   rows.append(branch_name)
               return sorted(rows, key=lambda item: item.lower())
 
+          def state_icon(state_name: str) -> str:
+              state = str(state_name or "").strip().lower()
+              if state == "diverged":
+                  return "⚠️"
+              if state == "behind":
+                  return "🔻"
+              if state == "ahead":
+                  return "🔹"
+              if state == "in sync":
+                  return "✅"
+              return "•"
+
+          def build_branch_status_embed(repo_label: str, cycle_label: str, summary_text: str, rows: list[str], headline: str = "") -> dict:
+              repo_text = str(repo_label or "repo").strip() or "repo"
+              cycle_text = str(cycle_label or "cycle").strip() or "cycle"
+              display_rows = [str(row or "").rstrip() for row in list(rows or []) if str(row or "").strip()]
+              description_lines = [
+                  f"**Cycle**  {cycle_text}",
+                  f"**Repo**  {repo_text}",
+                  "",
+                  "**Branches vs dev**",
+                  *(display_rows or ["No tracked branches configured."]),
+              ]
+              return {
+                  "title": headline or "Branch VS Dev Update",
+                  "description": "\n".join(description_lines),
+                  "color": 5814783,
+                  "fields": [
+                      {"name": "Summary", "value": summary_text or "No branch summary provided.", "inline": False},
+                  ],
+                  "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+              }
+
           if event_name == "workflow_dispatch" and input_mode == "test":
               test_repo = input_repo_label or repo or "repo"
               test_cycle = input_cycle or "cycle"
@@ -249,20 +282,10 @@ jobs:
               status_repo = input_repo_label or repo or "repo"
               status_cycle = input_cycle or "cycle"
               summary_text = input_summary or "No branch summary provided."
-              details_text = input_details or "No branch details provided."
+              details_rows = [line for line in (input_details or "").splitlines() if line.strip()]
               payload = {
                   "embeds": [
-                      {
-                          "title": input_headline or f"{status_repo} branch status",
-                          "description": details_text,
-                          "color": 5814783,
-                          "fields": [
-                              {"name": "Repo", "value": status_repo, "inline": True},
-                              {"name": "Cycle", "value": status_cycle, "inline": True},
-                              {"name": "Summary", "value": summary_text, "inline": False},
-                          ],
-                          "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-                      }
+                      build_branch_status_embed(status_repo, status_cycle, summary_text, details_rows, input_headline or "Branch VS Dev Update")
                   ]
               }
           elif event_name == "schedule":
@@ -280,27 +303,16 @@ jobs:
                   state_name = str(compare.get("state") or "Unknown").strip() or "Unknown"
                   counts[state_name] = counts.get(state_name, 0) + 1
                   ahead_behind = str(compare.get("ahead_behind") or "—").strip() or "—"
-                  rows.append(f"{branch_name} — {state_name} ({ahead_behind})")
+                  rows.append(f"{state_icon(state_name)} **{branch_name}** — {state_name} ({ahead_behind})")
               summary_text = (
                   f"{counts.get('Diverged', 0)} diverged · "
                   f"{counts.get('Behind', 0)} behind · "
                   f"{counts.get('Ahead', 0)} ahead · "
                   f"{counts.get('In Sync', 0)} in sync"
               )
-              details_text = "\n".join(rows[:20]) or "No tracked branches configured for daily status."
               payload = {
                   "embeds": [
-                      {
-                          "title": f"{status_repo} branch status",
-                          "description": details_text,
-                          "color": 5814783,
-                          "fields": [
-                              {"name": "Repo", "value": status_repo, "inline": True},
-                              {"name": "Cycle", "value": status_cycle, "inline": True},
-                              {"name": "Summary", "value": summary_text, "inline": False},
-                          ],
-                          "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-                      }
+                      build_branch_status_embed(status_repo, status_cycle, summary_text, rows[:20], "Branch VS Dev Update")
                   ]
               }
           else:
