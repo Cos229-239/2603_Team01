@@ -37,7 +37,7 @@
             setMood(mood);
             handleMoods(mood);
             if (moodSpecs[mood]) {
-                setSelectMoodData({ name: mood, ...moodSpecs[mood]});
+                setSelectedMoodData({ name: mood, ...moodSpecs[mood]});
                 setModalVisible(true);
                 }
             }
@@ -45,10 +45,10 @@
         const saveMoodToSupabase = async (subCategory: string) => {
             try {
                 const { data: { user } } = await supabase.auth.getUser();
-                if (user && selectMoodData) {
+                if (user && selectedMoodData) {
                     await supabase.from('mood_entries').insert([{
                         user_id: user.id,
-                        mood_Label: selectedMoodData.name,
+                        mood_label: selectedMoodData.name,
                         sub_category: subCategory,
                         stress_level: sliderValue
                         }])
@@ -163,6 +163,8 @@
 
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.background }]}>
+      {/* New modal block */}
+
       <ScrollView style={styles.container}>
         <Text style={[styles.title, { color: colors.text }]}>
           Welcome back{username ? `, ${username}` : ', Dev'}!
