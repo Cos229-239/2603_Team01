@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Switch } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../../context/ThemeContext';
 import { SettingsCard, SectionHeader, DescriptionText } from './components/SettingsComponents';
+
+// AsyncStorage keys for notification preferences
+const STORAGE_KEYS = {
+  DAILY_REMINDER: 'notification_daily_reflection_reminder',
+  WEEKLY_REPORT: 'notification_weekly_summary_report',
+  MOOD_TRACKING: 'notification_mood_tracking_reminders',
+  ACHIEVEMENTS: 'notification_achievement_notifications',
+};
 
 const NotificationsSettings = () => {
   const navigation = useNavigation();
@@ -11,6 +20,111 @@ const NotificationsSettings = () => {
   const [weeklyReports, setWeeklyReports] = useState(false);
   const [moodTracking, setMoodTracking] = useState(true);
   const [achievements, setAchievements] = useState(true);
+
+  // Load notification preferences when screen is focused
+  useFocusEffect(
+    React.useCallback(() => {
+      loadNotificationPreferences();
+    }, [])
+  );
+
+  const loadNotificationPreferences = async () => {
+    try {
+      const [daily, weekly, mood, achievement] = await Promise.all([
+        AsyncStorage.getItem(STORAGE_KEYS.DAILY_REMINDER),
+        AsyncStorage.getItem(STORAGE_KEYS.WEEKLY_REPORT),
+        AsyncStorage.getItem(STORAGE_KEYS.MOOD_TRACKING),
+        AsyncStorage.getItem(STORAGE_KEYS.ACHIEVEMENTS),
+      ]);
+
+      // Parse stored values, defaulting to initial state if not found
+      setDailyReminders(daily !== null ? JSON.parse(daily) : true);
+      setWeeklyReports(weekly !== null ? JSON.parse(weekly) : false);
+      setMoodTracking(mood !== null ? JSON.parse(mood) : true);
+      setAchievements(achievement !== null ? JSON.parse(achievement) : true);
+    } catch (error) {
+      console.error('Failed to load notification preferences:', error);
+    }
+  };
+
+  const handleDailyRemindersChange = async (value: boolean) => {
+    setDailyReminders(value);
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.DAILY_REMINDER, JSON.stringify(value));
+      
+      // TODO: Call Supabase Edge Function to update scheduled email notifications
+      // if (value) {
+      //   await supabase.functions.invoke('schedule-daily-reminder', { 
+      //     userId: user.id,
+      //     enabled: true 
+      //   });
+      // } else {
+      //   await supabase.functions.invoke('cancel-daily-reminder', { 
+      //     userId: user.id 
+      //   });
+      // }
+    } catch (error) {
+      console.error('Failed to save daily reminder preference:', error);
+    }
+  };
+
+  const handleWeeklyReportsChange = async (value: boolean) => {
+    setWeeklyReports(value);
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.WEEKLY_REPORT, JSON.stringify(value));
+      
+      // TODO: Call Supabase Edge Function to update weekly email reports
+      // if (value) {
+      //   await supabase.functions.invoke('schedule-weekly-report', { 
+      //     userId: user.id,
+      //     enabled: true 
+      //   });
+      // } else {
+      //   await supabase.functions.invoke('cancel-weekly-report', { 
+      //     userId: user.id 
+      //   });
+      // }
+    } catch (error) {
+      console.error('Failed to save weekly report preference:', error);
+    }
+  };
+
+  const handleMoodTrackingChange = async (value: boolean) => {
+    setMoodTracking(value);
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.MOOD_TRACKING, JSON.stringify(value));
+      
+      // TODO: Schedule/cancel local push notifications for mood tracking
+      // if (value) {
+      //   await schedulePushNotifications({
+      //     type: 'mood-tracking',
+      //     times: ['09:00', '13:00', '18:00'] // Example: morning, afternoon, evening
+      //   });
+      // } else {
+      //   await cancelPushNotifications({ type: 'mood-tracking' });
+      // }
+    } catch (error) {
+      console.error('Failed to save mood tracking preference:', error);
+    }
+  };
+
+  const handleAchievementsChange = async (value: boolean) => {
+    setAchievements(value);
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.ACHIEVEMENTS, JSON.stringify(value));
+      
+      // TODO: Update user preference in Supabase for achievement notifications
+      // await supabase
+      //   .from('user_preferences')
+      //   .update({ achievement_notifications_enabled: value })
+      //   .eq('user_id', user.id);
+      //
+      // Backend would check this preference before sending push notifications
+      // when achievements are unlocked
+    } catch (error) {
+      console.error('Failed to save achievement preference:', error);
+    }
+  };
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -32,7 +146,7 @@ const NotificationsSettings = () => {
           label="Daily Reflection Reminder"
           description="Get reminded to write your daily reflection"
           value={dailyReminders}
-          onValueChange={setDailyReminders}
+          onValueChange={handleDailyRemindersChange}
           colors={colors}
           fontSize={getFontSize}
         />
@@ -41,7 +155,7 @@ const NotificationsSettings = () => {
           label="Weekly Summary Report"
           description="Receive a summary of your week's reflections"
           value={weeklyReports}
-          onValueChange={setWeeklyReports}
+          onValueChange={handleWeeklyReportsChange}
           colors={colors}
           fontSize={getFontSize}
           isLast
@@ -56,7 +170,7 @@ const NotificationsSettings = () => {
           label="Mood Tracking Reminders"
           description="Get prompted to track your mood throughout the day"
           value={moodTracking}
-          onValueChange={setMoodTracking}
+          onValueChange={handleMoodTrackingChange}
           colors={colors}
           fontSize={getFontSize}
         />
@@ -65,7 +179,7 @@ const NotificationsSettings = () => {
           label="Achievement Notifications"
           description="Be notified when you reach milestones"
           value={achievements}
-          onValueChange={setAchievements}
+          onValueChange={handleAchievementsChange}
           colors={colors}
           fontSize={getFontSize}
           isLast
