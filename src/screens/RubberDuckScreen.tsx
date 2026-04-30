@@ -1,8 +1,8 @@
 import React, {useState, useRef} from 'react';
-import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image} from 'react-native';
+import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image, Modal, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { launchImageLibrary, ImagePickerResponse } from 'react-native-image-picker';
-import { getDuckResponse, ChatHistoryEntry } from '../lib/gemini';
+import { getDuckResponse, ChatHistoryEntry, listAvailableModels } from '../lib/gemini';
 import { useTheme } from '../context/ThemeContext';
 
 interface Message {
@@ -22,9 +22,26 @@ const RubberDuckScreen = () => {
     { id: '1', text: "Quack! I'm your debugging assistant. Tell me about the bug you're chasing.", isUser: false },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [debugModalVisible, setDebugModalVisible] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<string>('');
+
   const flatListRef = useRef<FlatList>(null);
   const { colors } = useTheme();
   const hasUserMessages = messages.some(m => m.isUser);
+
+  const handleListModels = async () => {
+    setIsLoading(true);
+    try {
+      const data = await listAvailableModels();
+      setDebugInfo(JSON.stringify(data, null, 2));
+      setDebugModalVisible(true);
+    } catch (error: any) {
+      setDebugInfo("Error: " + error.message);
+      setDebugModalVisible(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const pickImage = () => {
     launchImageLibrary({
@@ -54,12 +71,10 @@ const RubberDuckScreen = () => {
     setMessages(newMessages);
 
     setInput('');
-    const currentImage = selectedImage;
     setSelectedImage(null);
     setIsLoading(true);
 
     try {
-      // Convert history to Gemini format, including previous images
       const history: ChatHistoryEntry[] = newMessages.map(m => ({
         role: m.isUser ? "user" : "model",
         parts: [
@@ -98,17 +113,20 @@ const RubberDuckScreen = () => {
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
-      <KeyboardAvoidingView
+
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
       >
         <View style={[styles.header, { borderBottomColor: colors.border, backgroundColor: colors.card }]}>
           <Image source={require('../assets/images/Wade_no-bg.png')} style={styles.headerIcon} />
-          <View>
+          <View style={{ flex: 1 }}>
             <Text style={[styles.headerTitle, { color: colors.text }]}>Wade</Text>
             <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>The Rubber Duck Assistant</Text>
           </View>
+          <TouchableOpacity onPress={handleListModels} style={styles.debugButton}>
+             <Text style={{ fontSize: 18 }}>🐞</Text>
+          </TouchableOpacity>
         </View>
 
         {!hasUserMessages && (
@@ -150,7 +168,7 @@ const RubberDuckScreen = () => {
           <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.background }]} onPress={pickImage}>
             <Text style={styles.actionButtonText}>🖼️</Text>
           </TouchableOpacity>
-
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
           <TextInput
             style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.text }]}
             placeholder="Talk to the duck..."
@@ -164,6 +182,8 @@ const RubberDuckScreen = () => {
             {isLoading ? <ActivityIndicator size="small" color={colors.primary} /> : <Text style={[styles.sendButtonText, { color: colors.primary }]}>Send</Text>}
           </TouchableOpacity>
         </View>
+
+
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -173,9 +193,10 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1 },
   container: { flex: 1 },
   header: { flexDirection: 'row', alignItems: 'center', padding: 15, borderBottomWidth: 1 },
-  headerIcon: { width: 50, height: 50, marginRight: 15 },
+  headerIcon: { width: 50, height: 50, marginRight: 15, resizeMode: 'contain' },
   headerTitle: { fontSize: 20, fontWeight: 'bold' },
   headerSubtitle: { fontSize: 12 },
+  debugButton: { padding: 10 },
   chatContainer: { padding: 20 },
   messageBubble: { padding: 12, borderRadius: 15, marginBottom: 15, maxWidth: '85%' },
   messageText: { fontSize: 16, lineHeight: 22 },
