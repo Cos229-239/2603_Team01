@@ -113,7 +113,7 @@ const RubberDuckScreen = () => {
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
-
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
@@ -124,10 +124,6 @@ const RubberDuckScreen = () => {
             <Text style={[styles.headerTitle, { color: colors.text }]}>Wade</Text>
             <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>The Rubber Duck Assistant</Text>
           </View>
-          <TouchableOpacity onPress={handleListModels} style={styles.debugButton}>
-             <Text style={{ fontSize: 18 }}>🐞</Text>
-          </TouchableOpacity>
-        </View>
 
         {!hasUserMessages && (
           <View style={styles.emptyState}>
@@ -142,15 +138,20 @@ const RubberDuckScreen = () => {
           keyExtractor={item => item.id}
           contentContainerStyle={styles.chatContainer}
           renderItem={({item}) => (
-            <View style={[styles.messageBubble, item.isUser ? { alignSelf: 'flex-end', backgroundColor: colors.primary } : { alignSelf: 'flex-start', backgroundColor: colors.card }]}>
-              {item.imageUri && <Image source={{ uri: item.imageUri }} style={styles.messageImage} />}
-              <Text style={[styles.messageText, { color: item.isUser ? '#fff' : colors.text }]}>{item.text}</Text>
-              {item.suggestion && (
-                <View style={[styles.suggestionBox, { borderTopColor: colors.border }]}>
-                  <Text style={[styles.suggestionLabel, { color: colors.primary }]}>Suggestion:</Text>
-                  <Text style={[styles.suggestionText, { color: colors.textSecondary }]}>{item.suggestion}</Text>
-                </View>
+            <View style={[styles.messageRow, item.isUser ? { justifyContent: 'flex-end' } : { justifyContent: 'flex-start' }]}>
+              {!item.isUser && (
+                <Image source={require('../assets/images/Wade_no-bg.png')} style={styles.messageIcon} />
               )}
+              <View style={[styles.messageBubble, item.isUser ? { alignSelf: 'flex-end', backgroundColor: colors.primary, borderBottomRightRadius: 2 } : { alignSelf: 'flex-start', backgroundColor: colors.card, borderBottomLeftRadius: 2 }]}>
+                {item.imageUri && <Image source={{ uri: item.imageUri }} style={styles.messageImage} />}
+                <Text style={[styles.messageText, { color: item.isUser ? '#fff' : colors.text }]}>{item.text}</Text>
+                {item.suggestion && (
+                  <View style={[styles.suggestionBox, { borderTopColor: colors.border }]}>
+                    <Text style={[styles.suggestionLabel, { color: colors.primary }]}>Suggestion:</Text>
+                    <Text style={[styles.suggestionText, { color: colors.textSecondary }]}>{item.suggestion}</Text>
+                  </View>
+                )}
+              </View>
             </View>
           )}
         />
@@ -168,7 +169,6 @@ const RubberDuckScreen = () => {
           <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.background }]} onPress={pickImage}>
             <Text style={styles.actionButtonText}>🖼️</Text>
           </TouchableOpacity>
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
           <TextInput
             style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.text }]}
             placeholder="Talk to the duck..."
@@ -182,7 +182,6 @@ const RubberDuckScreen = () => {
             {isLoading ? <ActivityIndicator size="small" color={colors.primary} /> : <Text style={[styles.sendButtonText, { color: colors.primary }]}>Send</Text>}
           </TouchableOpacity>
         </View>
-
 
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -198,7 +197,9 @@ const styles = StyleSheet.create({
   headerSubtitle: { fontSize: 12 },
   debugButton: { padding: 10 },
   chatContainer: { padding: 20 },
-  messageBubble: { padding: 12, borderRadius: 15, marginBottom: 15, maxWidth: '85%' },
+  messageRow: { flexDirection: 'row', alignItems: 'flex-end', marginBottom: 15 },
+  messageIcon: { width: 35, height: 35, marginRight: 8, resizeMode: 'contain' },
+  messageBubble: { padding: 12, borderRadius: 15, maxWidth: '80%' },
   messageText: { fontSize: 16, lineHeight: 22 },
   messageImage: { width: 200, height: 200, borderRadius: 10, marginBottom: 8, resizeMode: 'cover' },
   suggestionBox: { marginTop: 10, paddingTop: 10, borderTopWidth: 1 },
