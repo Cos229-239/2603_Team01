@@ -113,7 +113,7 @@ const RubberDuckScreen = () => {
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
-      <KeyboardAvoidingView
+
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
@@ -168,7 +168,7 @@ const RubberDuckScreen = () => {
           <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.background }]} onPress={pickImage}>
             <Text style={styles.actionButtonText}>🖼️</Text>
           </TouchableOpacity>
-
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
           <TextInput
             style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.text }]}
             placeholder="Talk to the duck..."
@@ -183,21 +183,7 @@ const RubberDuckScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <Modal visible={debugModalVisible} animationType="slide">
-          <SafeAreaView style={{ flex: 1, backgroundColor: '#1a1a1a' }}>
-            <View style={{ padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#333' }}>
-              <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Available Models</Text>
-              <TouchableOpacity onPress={() => setDebugModalVisible(false)}>
-                <Text style={{ color: '#007AFF', fontSize: 16 }}>Close</Text>
-              </TouchableOpacity>
-            </View>
-            <ScrollView style={{ flex: 1, padding: 10 }}>
-              <Text style={{ color: '#00ff00', fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace', fontSize: 12 }}>
-                {debugInfo}
-              </Text>
-            </ScrollView>
-          </SafeAreaView>
-        </Modal>
+
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

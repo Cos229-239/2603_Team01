@@ -3,25 +3,6 @@ import { GEMINI_API_KEY } from "@env";
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-/**
- * Helper to list all available models for your API key.
- */
-export const listAvailableModels = async () => {
-  try {
-    if (!GEMINI_API_KEY) {
-       return { error: "GEMINI_API_KEY is missing in .env" };
-    }
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`
-    );
-    const data = await response.json();
-    console.log("--- AVAILABLE MODELS ---", JSON.stringify(data, null, 2));
-    return data;
-  } catch (error: any) {
-    console.error("Error listing models:", error);
-    return { error: error.message || "Failed to fetch models" };
-  }
-};
 
 const systemPrompt = `
 You are a helpful 'Rubber Duck' debugging assistant for software developers.
