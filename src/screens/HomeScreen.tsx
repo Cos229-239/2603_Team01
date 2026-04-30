@@ -1,5 +1,5 @@
        import React, {useState, useEffect} from 'react';
-       import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+       import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Pressable, Image } from 'react-native';
        import AsyncStorage from '@react-native-async-storage/async-storage';
        import { useIsFocused } from '@react-navigation/native';
        import Slider from '@react-native-community/slider';
@@ -164,6 +164,24 @@
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.background }]}>
       {/* New modal block */}
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+       <Pressable style={styles.modalOverlay} onPress={ () => setModalVisible(false)}>
+        <View style={[styles.modalContent, {backgroundColor: colors.card}]}>
+         <Text style={[styles.modalTitle, { color: selectedMoodData?.color }]}>
+         {selectedMoodData?.name} Details
+         </Text>
+         {selectedMoodData?.options.map((item: any, index: number) => (
+             <TouchableOpacity key={index} style={styles.bulletItem} onPress={() => saveMoodToSupabase(item.label)}>
+              <View style={[styles.bullet, { backgroundColor: selectedMoodData.color}]} />
+              <View>
+                <Text style={{ color: colors.text, fontWeight: 'bold'}}>{item.label}</Text>
+                <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{item.sub}</Text>
+               </View>
+               </TouchableOpacity>
+               ))}
+              </View>
+             </Pressable>
+            </Modal>
 
       <ScrollView style={styles.container}>
         <Text style={[styles.title, { color: colors.text }]}>
