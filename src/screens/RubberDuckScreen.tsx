@@ -124,7 +124,7 @@ const RubberDuckScreen = () => {
             <Text style={[styles.headerTitle, { color: colors.text }]}>Wade</Text>
             <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>The Rubber Duck Assistant</Text>
           </View>
-
+        </View>
         {!hasUserMessages && (
           <View style={styles.emptyState}>
             <Image source={require('../assets/images/Wade_no-bg.png')} style={styles.emptyStateDuck} />
