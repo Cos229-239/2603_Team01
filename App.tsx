@@ -30,6 +30,10 @@ import HelpSupportSettings from './src/screens/settings/HelpSupportSettings';
 import AboutAppSettings from './src/screens/settings/AboutAppSettings';
 import StorageSettings from './src/screens/settings/StorageSettings';
 
+// Import Help & Support Screens
+import UserGuideScreen from './src/screens/settings/UserGuideScreen';
+import FAQScreen from './src/screens/settings/FAQScreen';
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -76,6 +80,8 @@ const SettingsStack = () => {
       <Stack.Screen name="AboutAppSettings" component={AboutAppSettings} options={{ title: 'About App Settings' }} />
       <Stack.Screen name="StorageSettings" component={StorageSettings} options={{ title: 'Storage Settings' }} />
       <Stack.Screen name="TitleScreen" component={TitleScreen} options={{ title: 'Title' }} />
+      <Stack.Screen name="UserGuide" component={UserGuideScreen} options={{ title: 'User Guide' }} />
+      <Stack.Screen name="FAQs" component={FAQScreen} options={{ title: 'FAQs' }} />
     </Stack.Navigator>
   );
 };

@@ -1,4 +1,4 @@
-       import React, {useState, useEffect} from 'react';
+       import React, { useState, useEffect } from 'react';
        import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Pressable, Image } from 'react-native';
        import AsyncStorage from '@react-native-async-storage/async-storage';
        import { useIsFocused } from '@react-navigation/native';
@@ -6,7 +6,6 @@
        import { supabase } from '../lib/supabase';
        import { useTheme } from '../context/ThemeContext';
        import { useNavigation } from '@react-navigation/native';
-       import {Image} from 'react-native'
 
        const HomeScreen = () => {
          const [lastEntry, setLastEntry] = useState<any>(null);
