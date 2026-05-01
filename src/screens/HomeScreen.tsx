@@ -6,8 +6,7 @@
        import { supabase } from '../lib/supabase';
        import { useTheme } from '../context/ThemeContext';
        import { useNavigation } from '@react-navigation/native';
-       import {Image} from 'react-native'
-
+       
        const HomeScreen = () => {
          const [lastEntry, setLastEntry] = useState<any>(null);
          const [lastMood, setLastMood] = useState<any>(null);
@@ -341,6 +340,35 @@ const styles = StyleSheet.create({
   buttonText: { fontSize: 16 },
   reflectionTitle: { fontSize: 14, marginTop: 5 },
   reflectionButton: { padding: 10, borderRadius: 10, alignItems: 'center', width: 150, marginTop: 5 },
+  modalOverlay: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+modalContent: {
+  width: '80%',
+  padding: 20,
+  borderRadius: 10,
+},
+
+modalTitle: {
+  fontSize: 18,
+  fontWeight: 'bold',
+},
+
+bulletItem: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingVertical: 8,
+},
+
+bullet: {
+  width: 10,
+  height: 10,
+  borderRadius: 5,
+  marginRight: 10,
+},
 });
 
 export default HomeScreen;
