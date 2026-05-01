@@ -1,8 +1,9 @@
-import React, {useState, useRef} from 'react';
-import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image, Modal, ScrollView} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, {useState, useRef, useEffect} from 'react';
+import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image, Modal, Alert} from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { launchImageLibrary, ImagePickerResponse } from 'react-native-image-picker';
-import { getDuckResponse, ChatHistoryEntry } from '../lib/gemini';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getDuckResponse, ChatHistoryEntry, summarizeConversation } from '../lib/gemini';
 import { useTheme } from '../context/ThemeContext';
 
 interface Message {
@@ -15,20 +16,110 @@ interface Message {
   imageType?: string;
 }
 
-const RubberDuckScreen = () => {
+interface Conversation {
+  id: string;
+  title: string;
+  messages: Message[];
+  updatedAt: string;
+}
+
+const RubberDuckScreen = ({ navigation }: any) => {
   const [input, setInput] = useState('');
   const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [currentSessionId, setCurrentSessionId] = useState<string>(Date.now().toString());
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', text: "Quack! I'm your debugging assistant. Tell me about the bug you're chasing.", isUser: false },
   ]);
   const [isLoading, setIsLoading] = useState(false);
-  const [debugModalVisible, setDebugModalVisible] = useState(false);
-  const [debugInfo, setDebugInfo] = useState<string>('');
+  const [historyModalVisible, setHistoryModalVisible] = useState(false);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
 
+  const insets = useSafeAreaInsets();
   const flatListRef = useRef<FlatList>(null);
   const { colors } = useTheme();
-  const hasUserMessages = messages.some(m => m.isUser);
+  const hasUserMessages = messages.length > 1;
 
+  useEffect(() => {
+    loadConversations();
+  }, []);
+
+  const loadConversations = async () => {
+    try {
+      const stored = await AsyncStorage.getItem('rubber_duck_history');
+      if (stored) {
+        setConversations(JSON.parse(stored));
+      }
+    } catch (e) {
+      console.error("Failed to load history", e);
+    }
+  };
+
+  const saveConversation = async (msgs: Message[]) => {
+    try {
+      const firstUserMsg = msgs.find(m => m.isUser)?.text || "New Chat";
+      const title = firstUserMsg.length > 35 ? firstUserMsg.substring(0, 32) + "..." : firstUserMsg;
+
+      const currentConv: Conversation = {
+        id: currentSessionId,
+        title,
+        messages: msgs,
+        updatedAt: new Date().toISOString()
+      };
+
+      const updatedHistory = [currentConv, ...conversations.filter(c => c.id !== currentSessionId)];
+      setConversations(updatedHistory);
+      await AsyncStorage.setItem('rubber_duck_history', JSON.stringify(updatedHistory));
+    } catch (e) {
+      console.error("Failed to save conversation", e);
+    }
+  };
+
+  const startNewConversation = () => {
+    setCurrentSessionId(Date.now().toString());
+    setMessages([{ id: '1', text: "Quack! Fresh water! What's the new problem we're solving?", isUser: false }]);
+    setHistoryModalVisible(false);
+  };
+
+  const loadSession = (conv: Conversation) => {
+    setCurrentSessionId(conv.id);
+    setMessages(conv.messages);
+    setHistoryModalVisible(false);
+  };
+
+  const handleExport = async () => {
+    if (messages.length < 2) {
+      Alert.alert("Nothing to export", "Try talking to Wade first!");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const history: ChatHistoryEntry[] = messages.map(m => ({
+        role: m.isUser ? "user" : "model",
+        parts: [{ text: m.text }]
+      }));
+
+      const summary = await summarizeConversation(history);
+
+      // Navigate to Journal entry screen (JournalEntry name from App.tsx)
+      navigation.navigate("Reflections", {
+        screen: "JournalEntry",
+        params: {
+          entry: {
+            title: summary.title,
+            issue: summary.issue,
+            solution: summary.solution,
+            tags: summary.tags || ['RubberDuck', 'Wade']
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Export Error:", error);
+      Alert.alert("Export Failed", "Could not generate summary.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const pickImage = () => {
     launchImageLibrary({
@@ -84,7 +175,9 @@ const RubberDuckScreen = () => {
         isUser: false
       };
 
-      setMessages(prev => [...prev, duckResponse]);
+      const finalMessages = [...newMessages, duckResponse];
+      setMessages(finalMessages);
+      saveConversation(finalMessages);
     } catch (error) {
       console.error("Handle Send Error:", error);
       setMessages(prev => [...prev, {
@@ -99,31 +192,47 @@ const RubberDuckScreen = () => {
   };
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
-      >
-        <View style={[styles.header, { borderBottomColor: colors.border, backgroundColor: colors.card }]}>
-          <Image source={require('../assets/images/Wade_no-bg.png')} style={styles.headerIcon} />
-          <View style={{ flex: 1 }}>
-            <Text style={[styles.headerTitle, { color: colors.text }]}>Wade</Text>
-            <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>The Rubber Duck Assistant</Text>
-          </View>
-        </View>
-        {!hasUserMessages && (
-          <View style={styles.emptyState}>
-            <Image source={require('../assets/images/Wade_no-bg.png')} style={styles.emptyStateDuck} />
-            <Text style={[styles.emptyStateText, { color: colors.textSecondary }]}>Explain it to the duck</Text>
-          </View>
-        )}
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <SafeAreaView edges={['top']} style={{ backgroundColor: colors.card, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => setHistoryModalVisible(true)} style={styles.headerBtn}>
+            <Text style={{ fontSize: 24 }}>📜</Text>
+          </TouchableOpacity>
 
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Image source={require('../assets/images/Wade_no-bg.png')} style={styles.headerIcon} />
+            <Text style={[styles.headerTitle, { color: colors.text }]}>Wade</Text>
+          </View>
+
+          <TouchableOpacity onPress={startNewConversation} style={styles.headerBtn}>
+            <Text style={{ fontSize: 24 }}>➕</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.container}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+      >
         <FlatList
           ref={flatListRef}
           data={messages}
           keyExtractor={item => item.id}
           contentContainerStyle={styles.chatContainer}
+          ListHeaderComponent={hasUserMessages ? (
+            <TouchableOpacity
+              style={[styles.exportBtn, { borderColor: colors.primary, backgroundColor: colors.primary + '10' }]}
+              onPress={handleExport}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator size="small" color={colors.primary} />
+              ) : (
+                <Text style={{ color: colors.primary, fontWeight: 'bold' }}>📤 Export Session to Reflection</Text>
+              )}
+            </TouchableOpacity>
+          ) : null}
           renderItem={({item}) => (
             <View style={[styles.messageRow, item.isUser ? { justifyContent: 'flex-end' } : { justifyContent: 'flex-start' }]}>
               {!item.isUser && (
@@ -143,16 +252,7 @@ const RubberDuckScreen = () => {
           )}
         />
 
-        {selectedImage && (
-          <View style={styles.imagePreviewContainer}>
-            <Image source={{ uri: selectedImage.uri }} style={styles.imagePreview} />
-            <TouchableOpacity onPress={() => setSelectedImage(null)} style={styles.removeImageBtn}>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>X</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        <View style={[styles.inputArea, { borderTopColor: colors.border, backgroundColor: colors.card }]}>
+        <View style={[styles.inputArea, { borderTopColor: colors.border, backgroundColor: colors.card, paddingBottom: Math.max(insets.bottom, 15) }]}>
           <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.background }]} onPress={pickImage}>
             <Text style={styles.actionButtonText}>🖼️</Text>
           </TouchableOpacity>
@@ -169,20 +269,42 @@ const RubberDuckScreen = () => {
             {isLoading ? <ActivityIndicator size="small" color={colors.primary} /> : <Text style={[styles.sendButtonText, { color: colors.primary }]}>Send</Text>}
           </TouchableOpacity>
         </View>
-
       </KeyboardAvoidingView>
-    </SafeAreaView>
+
+      {/* History Modal */}
+      <Modal visible={historyModalVisible} animationType="slide" transparent={true}>
+        <View style={[styles.modalOverlay, { backgroundColor: 'rgba(0,0,0,0.5)' }]}>
+          <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
+            <View style={[styles.modalHeader, { borderBottomColor: colors.border }]}>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>Chat History</Text>
+              <TouchableOpacity onPress={() => setHistoryModalVisible(false)}>
+                <Text style={{ color: colors.primary, fontWeight: 'bold' }}>Close</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={conversations}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => (
+                <TouchableOpacity style={[styles.historyItem, { borderBottomColor: colors.border }]} onPress={() => loadSession(item)}>
+                  <Text style={[styles.historyTitle, { color: colors.text }]} numberOfLines={1}>{item.title}</Text>
+                  <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{new Date(item.updatedAt).toLocaleDateString()}</Text>
+                </TouchableOpacity>
+              )}
+              ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20, color: colors.textSecondary }}>No history yet.</Text>}
+            />
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1 },
   container: { flex: 1 },
-  header: { flexDirection: 'row', alignItems: 'center', padding: 15, borderBottomWidth: 1 },
-  headerIcon: { width: 50, height: 50, marginRight: 15, resizeMode: 'contain' },
-  headerTitle: { fontSize: 20, fontWeight: 'bold' },
-  headerSubtitle: { fontSize: 12 },
-  debugButton: { padding: 10 },
+  header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, paddingVertical: 5 },
+  headerIcon: { width: 35, height: 35, resizeMode: 'contain' },
+  headerTitle: { fontSize: 18, fontWeight: 'bold' },
+  headerBtn: { padding: 10 },
   chatContainer: { padding: 20 },
   messageRow: { flexDirection: 'row', alignItems: 'flex-end', marginBottom: 15 },
   messageIcon: { width: 35, height: 35, marginRight: 8, resizeMode: 'contain' },
@@ -198,12 +320,13 @@ const styles = StyleSheet.create({
   actionButtonText: { fontSize: 20 },
   sendButton: { paddingHorizontal: 15, height: 45, justifyContent: 'center', minWidth: 60, alignItems: 'center' },
   sendButtonText: { fontWeight: 'bold', fontSize: 16 },
-  imagePreviewContainer: { padding: 10, backgroundColor: 'rgba(0,0,0,0.05)', flexDirection: 'row', alignItems: 'center' },
-  imagePreview: { width: 60, height: 60, borderRadius: 8 },
-  removeImageBtn: { position: 'absolute', top: 5, left: 65, backgroundColor: 'red', borderRadius: 10, width: 20, height: 20, alignItems: 'center', justifyContent: 'center' },
-  emptyState: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 12 },
-  emptyStateDuck: { width: 120, height: 120, resizeMode: 'contain' },
-  emptyStateText: { fontSize: 16, fontStyle: 'italic' }
+  exportBtn: { padding: 10, borderRadius: 10, borderWidth: 1, marginBottom: 20, alignItems: 'center' },
+  modalOverlay: { flex: 1, justifyContent: 'flex-end' },
+  modalContent: { height: '70%', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 15, borderBottomWidth: 1, marginBottom: 10 },
+  modalTitle: { fontSize: 20, fontWeight: 'bold' },
+  historyItem: { paddingVertical: 15, borderBottomWidth: 1 },
+  historyTitle: { fontSize: 16, fontWeight: '500' }
 });
 
 export default RubberDuckScreen;

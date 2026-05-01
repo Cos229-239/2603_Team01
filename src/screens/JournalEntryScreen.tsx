@@ -96,7 +96,7 @@ const JournalEntryScreen = ({navigation, route}: any) => {
     const updatedEntries = entries.filter((entry: any) => entry.id !== id);
 
     await AsyncStorage.setItem('journal_entries', JSON.stringify(updatedEntries));
-    navigation.goBack();
+    navigation.navigate('JournalList');
   } catch (error) {
     console.error('Failed to delete entry', error);
     Alert.alert('Error', 'Failed to delete the journal entry');
@@ -139,7 +139,7 @@ const JournalEntryScreen = ({navigation, route}: any) => {
     }
 
     await AsyncStorage.setItem('journal_entries', JSON.stringify(updatedEntries));
-    navigation.goBack();
+    navigation.navigate('JournalList');
   } catch (error) {
     console.error('Failed to save entry', error);
     Alert.alert('Error', 'Failed to save the journal entry');
@@ -151,7 +151,7 @@ const JournalEntryScreen = ({navigation, route}: any) => {
         <View style={styles.contentContainer}>
           <View style={styles.section}>
             <View style={styles.headerRow}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
+              <TouchableOpacity onPress={() => navigation.navigate('JournalList')}>
                 <Text style={styles.smallText}> X Cancel
                 </Text>
               </TouchableOpacity>
