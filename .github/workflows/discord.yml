@@ -184,7 +184,15 @@ jobs:
           notify_enabled = bool(notify_config.get("enabled", True))
           include = notify_config.get("include", {}) if isinstance(notify_config.get("include", {}), dict) else {}
           branch_policy = notify_config.get("branches", {}) if isinstance(notify_config.get("branches", {}), dict) else {}
-          include_title = bool(include.get("title", True))
+          def resolved_title_flag(key_new: str) -> bool:
+              if key_new in include:
+                  return bool(include[key_new])
+              if "title" in include:
+                  return bool(include["title"])
+              return True
+
+          include_title_team = resolved_title_flag("title_team")
+          include_title_action = resolved_title_flag("title_action")
           include_description = bool(include.get("description", True))
           include_branch_name = bool(include.get("branch_name", True))
           include_status = bool(include.get("status", True))
@@ -392,8 +400,14 @@ jobs:
 
               description = "\n".join(lines) if lines else "A new push was received."
               embed_object = {"color": 5814783}
-              if include_title:
+              if include_title_team and include_title_action:
                   embed_object["title"] = f"{repo} · push on {branch}"
+                  embed_object["url"] = compare_url
+              elif include_title_team:
+                  embed_object["title"] = repo
+                  embed_object["url"] = compare_url
+              elif include_title_action:
+                  embed_object["title"] = f"push on {branch}"
                   embed_object["url"] = compare_url
               if include_description:
                   embed_object["description"] = description
