@@ -1,0 +1,24 @@
+{
+  "enabled": true,
+  "include": {
+    "branch_name": true,
+    "status": true,
+    "ahead_behind": true,
+    "files_changed": true,
+    "commit_message": true,
+    "actor": true,
+    "timestamp": true
+  },
+  "branches": {
+    "main": false,
+    "gh-pages": false,
+    "Ben": true,
+    "CelestinePersonal": true,
+    "Chayton": true,
+    "ChristopherCecil": true,
+    "PatrickPersonal": false,
+    "Zach": true,
+    "Zach-V2": true
+  },
+  "version": 1
+}
