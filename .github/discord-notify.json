@@ -1,7 +1,8 @@
 {
   "enabled": true,
   "include": {
-    "title": false,
+    "title_team": false,
+    "title_action": true,
     "description": false,
     "branch_name": true,
     "status": false,
