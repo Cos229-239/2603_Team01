@@ -56,6 +56,7 @@ jobs:
           import os
           import urllib.request
           from datetime import datetime, timezone
+          from zoneinfo import ZoneInfo
 
           webhook = os.environ.get("DISCORD_WEBHOOK", "").strip()
           if not webhook:
@@ -183,6 +184,8 @@ jobs:
           notify_enabled = bool(notify_config.get("enabled", True))
           include = notify_config.get("include", {}) if isinstance(notify_config.get("include", {}), dict) else {}
           branch_policy = notify_config.get("branches", {}) if isinstance(notify_config.get("branches", {}), dict) else {}
+          include_title = bool(include.get("title", True))
+          include_description = bool(include.get("description", True))
           include_branch_name = bool(include.get("branch_name", True))
           include_status = bool(include.get("status", True))
           include_ahead_behind = bool(include.get("ahead_behind", True))
@@ -190,6 +193,10 @@ jobs:
           include_commit_message = bool(include.get("commit_message", True))
           include_actor = bool(include.get("actor", True))
           include_timestamp = bool(include.get("timestamp", True))
+          include_repo = bool(include.get("repo", True))
+          include_push_size = bool(include.get("push_size", True))
+          include_commit_author = bool(include.get("commit_author", True))
+          include_footer_timestamp = bool(include.get("footer_timestamp", True))
 
           def infer_cycle_label(repo_name: str) -> str:
               text = str(repo_name or "").strip()
@@ -324,7 +331,19 @@ jobs:
               compare_url = (event.get("compare") or "").strip() or f"{server}/{repo}/commits/{branch}"
               head = event.get("head_commit") or {}
               timestamp = (head.get("timestamp") or datetime.now(timezone.utc).isoformat()).replace("+00:00", "Z")
-              short_when = timestamp.replace("T", " ").replace("Z", " UTC") if timestamp else "Unknown"
+              eastern = ZoneInfo("America/New_York")
+              date_part, time_part = "Unknown", "Unknown"
+              if timestamp:
+                  try:
+                      raw_ts = timestamp.replace("Z", "+00:00")
+                      parsed = datetime.fromisoformat(raw_ts)
+                      if parsed.tzinfo is None:
+                          parsed = parsed.replace(tzinfo=timezone.utc)
+                      local_et = parsed.astimezone(eastern)
+                      date_part = local_et.strftime("%Y-%m-%d")
+                      time_part = local_et.strftime("%H:%M:%S")
+                  except ValueError:
+                      date_part, time_part = "Unknown", "Unknown"
               branch_compare = fetch_branch_compare(repo, "dev", branch)
               files_changed = []
               seen_files = set()
@@ -372,33 +391,34 @@ jobs:
               commit_message = f"`{head_sha}` {head_message}" if head_sha and head_message else (head_message or (f"`{head_sha}`" if head_sha else "No commit message"))
 
               description = "\n".join(lines) if lines else "A new push was received."
-              payload = {
-                  "embeds": [
-                      {
-                          "title": f"{repo} · push on {branch}",
-                          "url": compare_url,
-                          "description": description,
-                          "color": 5814783,
-                          "fields": [
-                              *([{"name": "Actor", "value": actor or "Unknown", "inline": True}] if include_actor else []),
-                              *([{"name": "Branch Name", "value": branch or "Unknown", "inline": True}] if include_branch_name else []),
-                              *([{"name": "Timestamp", "value": short_when, "inline": True}] if include_timestamp else []),
-                              *([{"name": "Status", "value": str(branch_compare.get("state", "Unknown") or "Unknown"), "inline": True}] if include_status else []),
-                              *([{"name": "Ahead / Behind", "value": str(branch_compare.get("ahead_behind", "—") or "—"), "inline": True}] if include_ahead_behind else []),
-                              {"name": "Repo", "value": repo or "Unknown", "inline": True},
-                              {"name": "Push Size", "value": push_size, "inline": True},
-                              *([{"name": "Commit Message", "value": commit_message, "inline": False}] if include_commit_message else []),
-                              {"name": "Commit Author", "value": head_author or "Unknown", "inline": True},
-                              *([{
-                                  "name": "Files changed",
-                                  "value": "\n".join(file_lines),
-                                  "inline": False,
-                              }] if file_lines and include_files_changed else []),
-                          ],
-                          "timestamp": timestamp,
-                      }
-                  ]
-              }
+              embed_object = {"color": 5814783}
+              if include_title:
+                  embed_object["title"] = f"{repo} · push on {branch}"
+                  embed_object["url"] = compare_url
+              if include_description:
+                  embed_object["description"] = description
+              embed_fields = []
+              embed_fields.extend([{"name": "Actor", "value": actor or "Unknown", "inline": True}] if include_actor else [])
+              embed_fields.extend([{"name": "Branch Name", "value": branch or "Unknown", "inline": True}] if include_branch_name else [])
+              if include_timestamp:
+                  embed_fields.append({"name": "Date (ET)", "value": date_part, "inline": True})
+                  embed_fields.append({"name": "Time (ET)", "value": time_part, "inline": True})
+              embed_fields.extend(
+                  [{"name": "Status", "value": str(branch_compare.get("state", "Unknown") or "Unknown"), "inline": True}] if include_status else []
+              )
+              embed_fields.extend(
+                  [{"name": "Ahead / Behind", "value": str(branch_compare.get("ahead_behind", "—") or "—"), "inline": True}] if include_ahead_behind else []
+              )
+              embed_fields.extend([{"name": "Repo", "value": repo or "Unknown", "inline": True}] if include_repo else [])
+              embed_fields.extend([{"name": "Push Size", "value": push_size, "inline": True}] if include_push_size else [])
+              embed_fields.extend([{"name": "Commit Message", "value": commit_message, "inline": False}] if include_commit_message else [])
+              embed_fields.extend([{"name": "Commit Author", "value": head_author or "Unknown", "inline": True}] if include_commit_author else [])
+              if file_lines and include_files_changed:
+                  embed_fields.append({"name": "Files changed", "value": "\n".join(file_lines), "inline": False})
+              embed_object["fields"] = embed_fields
+              if include_footer_timestamp:
+                  embed_object["timestamp"] = timestamp
+              payload = {"embeds": [embed_object]}
 
           req = urllib.request.Request(
               webhook,
