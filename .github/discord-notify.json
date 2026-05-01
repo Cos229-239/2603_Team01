@@ -4,7 +4,7 @@
     "title_team": false,
     "title_action": true,
     "description": false,
-    "branch_name": true,
+    "branch_name": false,
     "status": false,
     "ahead_behind": false,
     "files_changed": true,
