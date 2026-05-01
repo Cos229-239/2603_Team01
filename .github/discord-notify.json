@@ -13,7 +13,7 @@
     "timestamp": true,
     "repo": false,
     "push_size": true,
-    "commit_author": true,
+    "commit_author": false,
     "footer_timestamp": true
   },
   "branches": {
