@@ -68,31 +68,6 @@ const Entry  = () => {
           </View>
         </View>
       </View>
-
-      <View style={styles.section}>
-        // More tags for filtering/sorting, based on user tags and most used/common.
-        <Text style={styles.sectionTitle}>Issue type tags</Text>
-        <View style={styles.tagRow}>
-          <View style={styles.tag}>
-            <Text style={styles.tagText}>Bug</Text>
-          </View>
-          <View style={styles.tag}>
-            <Text style={styles.tagText}>JavaScript</Text>
-          </View>
-          <View style={styles.tag}>
-            <Text style={styles.tagText}>React Native</Text>
-          </View>
-          <View style={styles.tag}>
-            <Text style={styles.tagText}>Python</Text>
-          </View>
-            <View style={styles.tag}>
-            <Text style={styles.tagText}>Syntax</Text>
-          </View>
-            <View style={styles.tag}>
-            <Text style={styles.tagText}>+ Issue Tag</Text>
-          </View>
-        </View>
-      </View>
     </ScrollView>
     </SafeAreaView>
   );

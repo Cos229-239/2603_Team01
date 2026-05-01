@@ -245,8 +245,14 @@
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Recent Journal Entry</Text>
-          <View style={[styles.card, { backgroundColor: colors.card }]}>
-            {lastEntry ? (
+          <TouchableOpacity
+            style={[styles.card, { backgroundColor: colors.card }]}
+              onPress={() =>
+                lastEntry && navigation.navigate("Journal", {screen: "JournalEntry", params: { entry: lastEntry }})
+              }
+              activeOpacity={lastEntry ? 0.8 : 1}
+              >
+                {lastEntry ? (
               <>
                 <Text style={[styles.cardTitle, { color: colors.text }]}>{lastEntry.title}</Text>
                 <Text style={[styles.cardText, { color: colors.textSecondary }]} numberOfLines={2}>{lastEntry.solution}</Text>
@@ -261,13 +267,13 @@
                 <Text style={[styles.reflectionTitle, { color: colors.textSecondary }]}>Start logging your first thoughts</Text>
                 <TouchableOpacity
                     style={[styles.reflectionButton, { backgroundColor: colors.textSecondary }]}
-                    onPress={() => navigation.navigate("Journal")}
+                    onPress={() => navigation.navigate("Journal", { screen: "JournalEntry" })}
                 >
                     <Text style={[styles.reflectionTitle, { color: colors.card }]}>+ New Reflection</Text>
                 </TouchableOpacity>
               </>
             )}
-          </View>
+          </TouchableOpacity>
         </View>
 
         {lastMood && (
@@ -285,13 +291,13 @@
         <View style={styles.buttonSection}>
             <TouchableOpacity
                 style={[styles.button, { backgroundColor: colors.card }]}
-                onPress={() => navigation.navigate("Journal")}
+                onPress={() => navigation.navigate("Journal", {screen: "JournalEntry", params: { presetTag: 'Bug' }})}
             >
                 <Text style={[styles.buttonText, { color: colors.text }]}>🪳 Log a bug</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.button, { backgroundColor: colors.card }]}
-                onPress={() => navigation.navigate("Rubber Duck")}
+                onPress={() => navigation.navigate("Rubber Duck", { presetTag: 'Debugging' })}
             >
                 <Text style={[styles.buttonText, { color: colors.text }]}>🐤 Duck Mode</Text>
             </TouchableOpacity>
@@ -305,7 +311,7 @@
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.card }]}
-            onPress={() => navigation.navigate("Journal")}
+            onPress={() => navigation.navigate("Journal", { screen: "JournalEntry", params: { presetTag: 'Quick Idea', presetTitle: 'Quick Idea' } })}
           >
             <Text style={[styles.buttonText, { color: colors.text }]}>💡 Quick Idea</Text>
           </TouchableOpacity>
