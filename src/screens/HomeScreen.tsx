@@ -125,6 +125,13 @@ const HomeScreen = () => {
     'Productive': "Great momentum! What's the next small win you can achieve?",
   };
 
+    const MoodScreenVariables = () => {
+        navigation.navigate('Mood', {
+            userMood: userMood,
+            newStress: sliderValue
+        });
+    }
+
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.background }]}>
       <ScrollView style={styles.container}>
@@ -170,9 +177,6 @@ const HomeScreen = () => {
           {userMood && (
             <Text style={[styles.selectedMood, { color: colors.text }]}>Current: {userMood}</Text>
           )}
-        </View>
-
-        <View style={styles.section}>
           <Text style={[styles.stressTitle, { color: colors.text }]}>Today's Stress Level: {sliderValue}</Text>
           <Slider
             style={styles.slider}
@@ -184,8 +188,16 @@ const HomeScreen = () => {
             thumbTintColor={colors.primary}
             onValueChange={(value) => setSliderValue(value)}
             value={sliderValue}
-          />
+           />
+           <TouchableOpacity
+                      style={[styles.moodButton, { backgroundColor: colors.textSecondary }]}
+                      onPress={MoodScreenVariables}
+           >
+                <Text style={[styles.reflectionTitle, { color: colors.card }]}>Submit Mood</Text>
+           </TouchableOpacity>
         </View>
+
+        
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Recent Journal Entry</Text>
@@ -263,7 +275,7 @@ const styles = StyleSheet.create({
   wrapper: { flex: 1 },
   container: { flex: 1, padding: 20 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  section: { marginBottom: 25 },
+  section: { marginBottom: 25, marginTop: 10 },
   sectionTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10 },
   card: { padding: 15, borderRadius: 10, elevation: 2, alignItems: 'center' },
   cardTitle: { fontWeight: 'bold', fontSize: 16 },
@@ -273,12 +285,13 @@ const styles = StyleSheet.create({
   stressTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10, textAlign: 'center' },
   currentMood: { justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row', marginBottom: 5 },
   emoji: { fontSize: 50 },
-  selectedMood: { textAlign: 'center', fontSize: 16, marginTop: 5},
+  selectedMood: { textAlign: 'center', fontSize: 16, marginTop: 5, marginBottom: 10},
   buttonSection: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15 },
-  button: { padding: 15, borderRadius: 10, alignItems: 'center', width: '48%', elevation: 2 },
+  button: { padding: 15, borderRadius: 10, alignItems: 'center', width: '48%', elevation: 2 , justifyContent:'center'},
   buttonText: { fontSize: 16 },
   reflectionTitle: { fontSize: 14, marginTop: 5 },
   reflectionButton: { padding: 10, borderRadius: 10, alignItems: 'center', width: 150, marginTop: 5 },
+  moodButton: { padding: 5, borderRadius: 10, alignItems: 'center', width: 150, marginTop: 5, flexDirection: 'row', justifyContent: 'center', alignSelf: 'center'}
 });
 
 export default HomeScreen;
