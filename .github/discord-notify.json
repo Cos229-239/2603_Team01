@@ -1,13 +1,19 @@
 {
   "enabled": true,
   "include": {
+    "title": false,
+    "description": false,
     "branch_name": true,
-    "status": true,
-    "ahead_behind": true,
+    "status": false,
+    "ahead_behind": false,
     "files_changed": true,
     "commit_message": true,
     "actor": true,
-    "timestamp": true
+    "timestamp": true,
+    "repo": false,
+    "push_size": true,
+    "commit_author": true,
+    "footer_timestamp": true
   },
   "branches": {
     "main": false,
