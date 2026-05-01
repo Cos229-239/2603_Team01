@@ -15,10 +15,11 @@ const FeaturePage = ({navigation, route}: any) => {
   useEffect(() => {
     if (route.params?.entry) {
       const {entry} = route.params;
-      setTitle(entry.title);
-      setSolution(entry.solution);
-      setTags(entry.tags ? entry.tags.join(', ') : '');
-      setIsEditing(true);
+      setTitle(entry.title || '');
+      setIssue(entry.issue || '');
+      setSolution(entry.solution || '');
+      setTags(entry.tags ? (Array.isArray(entry.tags) ? entry.tags.join(', ') : entry.tags) : '');
+      setIsEditing(!!entry.id);
     }
   }, [route.params]);
 
@@ -32,18 +33,24 @@ const FeaturePage = ({navigation, route}: any) => {
       const existingEntries = await AsyncStorage.getItem('journal_entries');
       let entries = existingEntries ? JSON.parse(existingEntries) : [];
 
-      if (isEditing) {
+      const entryData = {
+        title,
+        issue,
+        solution,
+        tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag !== ''),
+        updatedAt: new Date().toISOString(),
+      };
+
+      if (isEditing && route.params.entry?.id) {
         entries = entries.map((e: any) =>
           e.id === route.params.entry.id
-            ? {...e, title, solution, tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '')}
+            ? {...e, ...entryData}
             : e
         );
       } else {
         const newEntry = {
+          ...entryData,
           id: Date.now().toString(),
-          title,
-          solution,
-          tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag !== ''),
           date: new Date().toISOString(),
         };
         entries = [newEntry, ...entries];
@@ -69,7 +76,17 @@ const FeaturePage = ({navigation, route}: any) => {
           onChangeText={setTitle}
         />
 
-        <Text style={[styles.label, { color: colors.text }]}>Solution</Text>
+        <Text style={[styles.label, { color: colors.text }]}>The Issue (What's wrong?)</Text>
+        <TextInput
+          style={[styles.input, styles.textArea, { borderColor: colors.border, color: colors.text, backgroundColor: colors.card, height: 100 }]}
+          placeholder="Describe the problem..."
+          placeholderTextColor={colors.textSecondary}
+          value={issue}
+          onChangeText={setIssue}
+          multiline
+        />
+
+        <Text style={[styles.label, { color: colors.text }]}>Solution / Logic</Text>
         <TextInput
           style={[styles.input, styles.textArea, { borderColor: colors.border, color: colors.text, backgroundColor: colors.card }]}
           placeholder="Describe how you solved it..."
@@ -90,7 +107,7 @@ const FeaturePage = ({navigation, route}: any) => {
         />
 
         <View style={styles.buttonContainer}>
-          <Button title={isEditing ? "Update Entry" : "Save Entry"} onPress={saveEntry} />
+          <Button title={isEditing ? "Update Reflection" : "Save Reflection"} onPress={saveEntry} />
         </View>
         <View style={styles.buttonContainer}>
           <Button title="Cancel" onPress={() => navigation.goBack()} color="#666" />

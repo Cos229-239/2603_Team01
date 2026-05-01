@@ -3,7 +3,6 @@ import { GEMINI_API_KEY } from "@env";
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-
 const systemPrompt = `
 You are a helpful 'Rubber Duck' debugging assistant for software developers.
 Your goal is to help devs talk through their problems.
@@ -37,13 +36,11 @@ export const getDuckResponse = async (history: ChatHistoryEntry[]) => {
       throw new Error("GEMINI_API_KEY is missing. Check your .env file and restart the bundler.");
     }
 
-    // Using gemini-2.5-flash as identified from listModels
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: { responseMimeType: "application/json" },
       systemInstruction: systemPrompt,
     });
-
 
     let validHistory = [...history];
     if (validHistory.length > 0 && validHistory[0].role === 'model') {
@@ -69,6 +66,59 @@ export const getDuckResponse = async (history: ChatHistoryEntry[]) => {
     return {
       message: errorMessage,
       suggestion: error.message || "Check your internet connection or API key."
+    };
+  }
+};
+
+/**
+ * Summarizes the conversation into a Reflection entry format.
+ */
+export const summarizeConversation = async (history: ChatHistoryEntry[]) => {
+  try {
+    if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is missing.");
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      generationConfig: { responseMimeType: "application/json" },
+      systemInstruction: `
+               Analyze the provided chat history between a developer and a rubber duck assistant.
+               Summarize the technical discussion into a structured "Reflection" entry.
+
+               Summarize the session into a structured "Reflection" entry.
+
+               The JSON output MUST follow this schema:
+               {
+                 "title": "A short, descriptive title for the issue",
+                 "issue": "A clear description of the technical problem the developer was facing",
+                 "solution": "A summary of the steps taken, the logic explored, or the final resolution reached"
+               }
+             `,
+
+    });
+
+    // Only include history entries that have text content
+    const validHistory = history.filter(h => h.parts.some(p => p.text));
+
+    if (validHistory.length === 0) {
+      return {
+        title: "Empty Session",
+        issue: "No details provided",
+        solution: "Session ended without discussion."
+      };
+    }
+
+    const result = await model.generateContent({
+      contents: validHistory,
+    });
+
+    const responseText = result.response.text();
+    return JSON.parse(responseText);
+  } catch (error) {
+    console.error("Summarization Error:", error);
+    return {
+      title: "Debugging Session with Wade",
+      issue: "Technical discussion with Wade",
+      solution: "Walked through logic and code details to explore a solution."
     };
   }
 };
