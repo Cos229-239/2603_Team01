@@ -401,8 +401,8 @@ jobs:
               embed_fields.extend([{"name": "Actor", "value": actor or "Unknown", "inline": True}] if include_actor else [])
               embed_fields.extend([{"name": "Branch Name", "value": branch or "Unknown", "inline": True}] if include_branch_name else [])
               if include_timestamp:
-                  embed_fields.append({"name": "Date (ET)", "value": date_part, "inline": True})
-                  embed_fields.append({"name": "Time (ET)", "value": time_part, "inline": True})
+                  embed_fields.append({"name": "Date", "value": date_part, "inline": True})
+                  embed_fields.append({"name": "Time", "value": time_part, "inline": True})
               embed_fields.extend(
                   [{"name": "Status", "value": str(branch_compare.get("state", "Unknown") or "Unknown"), "inline": True}] if include_status else []
               )
