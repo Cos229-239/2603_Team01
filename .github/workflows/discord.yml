@@ -469,11 +469,22 @@ jobs:
                   embed_object["description"] = description
               zw = "\u200b"
               embed_fields = []
+              unlabeled_value_lines = []
+              def flush_unlabeled_value_lines() -> None:
+                  nonlocal unlabeled_value_lines
+                  if not unlabeled_value_lines:
+                      return
+                  embed_fields.append({"name": zw, "value": "\n".join(unlabeled_value_lines), "inline": False})
+                  unlabeled_value_lines = []
               def append_field(label_key: str, value_key: str, fallback: str, label_text: str, value_text: str, inline: bool) -> None:
                   show_label = part_on(label_key, fallback)
                   show_value = part_on(value_key, fallback)
                   if not show_label and not show_value:
                       return
+                  if show_value and not show_label:
+                      unlabeled_value_lines.append(str(value_text or "").strip() or zw)
+                      return
+                  flush_unlabeled_value_lines()
                   embed_fields.append({
                       "name": label_text if show_label else zw,
                       "value": (str(value_text or "").strip() or zw) if show_value else zw,
@@ -482,21 +493,29 @@ jobs:
 
               append_field("g_actor_k", "g_actor_v", "actor", "Actor", actor or "Unknown", True)
               if include_timestamp_date:
-                  embed_fields.append(
-                      {
-                          "name": "Date" if include_timestamp_date_label else zw,
-                          "value": date_part,
-                          "inline": bool(include_timestamp_date_label),
-                      }
-                  )
+                  if include_timestamp_date_label:
+                      flush_unlabeled_value_lines()
+                      embed_fields.append(
+                          {
+                              "name": "Date",
+                              "value": date_part,
+                              "inline": True,
+                          }
+                      )
+                  else:
+                      unlabeled_value_lines.append(date_part)
               if include_timestamp_time:
-                  embed_fields.append(
-                      {
-                          "name": "Time" if include_timestamp_time_label else zw,
-                          "value": time_part,
-                          "inline": bool(include_timestamp_time_label),
-                      }
-                  )
+                  if include_timestamp_time_label:
+                      flush_unlabeled_value_lines()
+                      embed_fields.append(
+                          {
+                              "name": "Time",
+                              "value": time_part,
+                              "inline": True,
+                          }
+                      )
+                  else:
+                      unlabeled_value_lines.append(time_part)
               append_field("g_branch_k", "g_branch_v", "branch_name", "Branch Name", branch or "Unknown", True)
               append_field("g_status_k", "g_status_v", "status", "Status", str(branch_compare.get("state", "Unknown") or "Unknown"), True)
               append_field("g_ab_k", "g_ab_v", "ahead_behind", "Ahead / Behind", str(branch_compare.get("ahead_behind", "—") or "—"), True)
@@ -506,6 +525,7 @@ jobs:
               append_field("b_ca_k", "b_ca_v", "commit_author", "Commit Author", head_author or "Unknown", True)
               if file_lines and (part_on("b_fc_k", "files_changed") or part_on("b_fc_v", "files_changed")):
                   append_field("b_fc_k", "b_fc_v", "files_changed", "Files changed", "\n".join(file_lines), False)
+              flush_unlabeled_value_lines()
               embed_object["fields"] = embed_fields
               if include_footer_timestamp:
                   embed_object["timestamp"] = timestamp
