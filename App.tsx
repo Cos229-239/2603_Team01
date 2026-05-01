@@ -1,4 +1,5 @@
 import React from 'react';
+import { Image } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -37,8 +38,8 @@ const Tab = createBottomTabNavigator();
 const JournalStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="JournalList" component={JournalScreen} options={{ title: 'My Journal' }} />
-      <Stack.Screen name="JournalEntry" component={JournalEntryScreen} options={{ title: 'New Journal Entry' }} />
+      <Stack.Screen name="JournalList" component={JournalScreen} options={{ title: 'My Reflections' }} />
+      <Stack.Screen name="JournalEntry" component={JournalEntryScreen} options={{ title: 'New Reflection' }} />
     </Stack.Navigator>
   );
 };
@@ -95,11 +96,78 @@ const MainTabs = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: true }} />
-      <Tab.Screen name="Journal" component={JournalStack} />
-      <Tab.Screen name="Mood" component={MoodScreen} options={{ headerShown: true }} />
-      <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} options={{ headerShown: true }} />
-      <Tab.Screen name="Settings" component={SettingsStack} options={{ headerShown: true }} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerShown: true,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./src/assets/images/home_icon_no-bg.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Reflections"
+        component={JournalStack}
+        options={{
+          unmountOnBlur: true, // Reset stack when switching away from this tab
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./src/assets/images/journal_icon_no-bg.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            // Prevent default behavior and manually navigate to the root list
+            e.preventDefault();
+            navigation.navigate('Reflections', { screen: 'JournalList' });
+          },
+        })}
+      />
+      <Tab.Screen
+        name="Mood"
+        component={MoodScreen}
+        options={{
+          headerShown: true,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./src/assets/images/mood_icon_no-bg.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Rubber Duck"
+        component={RubberDuckScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./src/assets/images/Wade_no-bg.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsStack}
+        options={{
+          headerShown: true,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./src/assets/images/settings_icon_no-bg.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
+      />
       {/* <Tab.Screen name="LoginScreenTest" component={LoginScreenTest} options={{ headerShown: true }} / >*/}
     </Tab.Navigator>
   );
