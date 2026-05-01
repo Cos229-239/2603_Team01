@@ -191,35 +191,19 @@
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Today's Mood</Text>
           <View style={styles.currentMood}>
-            <TouchableOpacity activeOpacity={.1}
-                          onPress={() => {
-                setMood('Angry')
-                handleMoods("Angry")
-            }}>
+            <TouchableOpacity onPress={() => openMoodDetail('Angry')}>
                 <Text style={{ fontSize: AngrySize }}>😡</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-                setMood('Frustrated')
-                handleMoods("Frustrated")
-            }}>
+            <TouchableOpacity onPress={() => openMoodDetail('Frustrated')}>
                 <Text style={{ fontSize: FrustratedSize }}>☹️</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-                setMood('Neutral')
-                handleMoods("Neutral")
-            }}>
+            <TouchableOpacity onPress={() => openMoodDetail('Neutral')}>
                 <Text style={{ fontSize: NeutralSize }}>😐</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-                setMood('Good')
-                handleMoods("Good")
-            }}>
+            <TouchableOpacity onPress={() => openMoodDetail('Good')}>
                 <Text style={{ fontSize: GoodSize }}>😁</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-                setMood('Amazing')
-                handleMoods("Amazing")
-            }}>
+            <TouchableOpacity onPress={() => openMoodDetail('Amazing')}>
                 <Text style={{ fontSize: AmazingSize }}>🤩</Text>
             </TouchableOpacity>
           </View>
