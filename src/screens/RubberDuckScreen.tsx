@@ -29,19 +29,6 @@ const RubberDuckScreen = () => {
   const { colors } = useTheme();
   const hasUserMessages = messages.some(m => m.isUser);
 
-  const handleListModels = async () => {
-    setIsLoading(true);
-    try {
-      const data = await listAvailableModels();
-      setDebugInfo(JSON.stringify(data, null, 2));
-      setDebugModalVisible(true);
-    } catch (error: any) {
-      setDebugInfo("Error: " + error.message);
-      setDebugModalVisible(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const pickImage = () => {
     launchImageLibrary({
