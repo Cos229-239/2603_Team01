@@ -5,7 +5,7 @@
     "title_action": true,
     "description": false,
     "branch_name": false,
-    "status": false,
+    "status": true,
     "ahead_behind": false,
     "files_changed": true,
     "commit_message": true,
