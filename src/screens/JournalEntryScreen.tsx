@@ -1,111 +1,389 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TextInput, Button, ScrollView, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Share,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../context/ThemeContext';
 
 const JournalEntryScreen = ({navigation, route}: any) => {
   const [title, setTitle] = useState('');
+  const [issue, setIssue] = useState('');
   const [solution, setSolution] = useState('');
   const [tags, setTags] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const { colors } = useTheme();
 
-  useEffect(() => {
-    if (route.params?.entry) {
-      const {entry} = route.params;
-      setTitle(entry.title);
-      setSolution(entry.solution);
-      setTags(entry.tags.join(', '));
-      setIsEditing(true);
-    }
-  }, [route.params]);
+  const handleExport = async () => {
+  try {
+    const titleText = title.trim() || 'Untitled Entry';
+    const issueText = issue.trim();
+    const tagsText = tags.trim();
+    const solutionText = solution.trim();
 
-  const saveEntry = async () => {
-    if (!title || !solution) {
-      Alert.alert('Error', 'Please fill in both title and solution');
+    if (!solutionText) {
+      Alert.alert('Nothing to export', 'Please add entry content before exporting.');
       return;
     }
+    const content = [
+      `Title: ${titleText}`,
+      issueText ? `Issue: ${issue.trim()}` : null,
+      tagsText ? `Tags: ${tagsText}` : null,
+      solutionText ? `Solution: ${solutionText}` : null,
+    ]
+    .filter(Boolean)
+    .join('\n\n');
 
-    try {
-      const existingEntries = await AsyncStorage.getItem('journal_entries');
-      let entries = existingEntries ? JSON.parse(existingEntries) : [];
+    await Share.share({
+      title: titleText,
+      message: content,
+    });
+  } catch (error) {
+    console.error('Export failed', error);
+    Alert.alert('Error', 'Failed to export the journal entry');
+  }
+};
 
-      if (isEditing) {
-        entries = entries.map((e: any) =>
-          e.id === route.params.entry.id
-            ? {...e, title, solution, tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '')}
-            : e
-        );
-      } else {
-        const newEntry = {
-          id: Date.now().toString(),
-          title,
-          solution,
-          tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag !== ''),
-          date: new Date().toISOString(),
-        };
-        entries = [newEntry, ...entries];
-      }
+  useEffect(() => {
+  const entry = route.params?.entry;
 
-      await AsyncStorage.setItem('journal_entries', JSON.stringify(entries));
-      navigation.goBack();
-    } catch (error) {
-      console.error('Failed to save entry', error);
-      Alert.alert('Error', 'Failed to save the journal entry');
+  if (entry) {
+    setEditingId(entry.id ?? null);
+    setTitle(entry.title ?? '');
+    setIssue(entry.issue ?? '');
+    setSolution(entry.solution ?? '');
+
+    if (Array.isArray(entry.tags)) {
+      setTags(entry.tags.join(', '));
+    } else {
+      setTags(entry.tags ?? '');
     }
-  };
+
+    setIsEditing(!!entry.id);
+  } else {
+    setIsEditing(false);
+    setEditingId(null);
+  }
+
+  if (route.params?.presetTag) {
+    setTags(route.params.presetTag);
+  }
+
+  if (route.params?.presetTitle) {
+    setTitle(route.params.presetTitle);
+  }
+}, [route.params]);
+  const deleteEntry = async () => {
+  const id = route.params?.entry?.id;
+
+  if (!id) {
+    Alert.alert('No saved entry', 'This entry has not been saved yet.');
+    return;
+  }
+
+  try {
+    const savedEntries = await AsyncStorage.getItem('journal_entries');
+    const entries = savedEntries ? JSON.parse(savedEntries) : [];
+
+    const updatedEntries = entries.filter((entry: any) => entry.id !== id);
+
+    await AsyncStorage.setItem('journal_entries', JSON.stringify(updatedEntries));
+    navigation.goBack();
+  } catch (error) {
+    console.error('Failed to delete entry', error);
+    Alert.alert('Error', 'Failed to delete the journal entry');
+  }
+};
+
+  const saveEntry = async () => {
+  if (!title || !issue || !solution) {
+    Alert.alert('Error', 'Please fill in title, issue and solution');
+    return;
+  }
+
+  try {
+    const savedEntries = await AsyncStorage.getItem('journal_entries');
+    const entries = savedEntries ? JSON.parse(savedEntries) : [];
+
+    const parsedTags = tags
+      .split(',')
+      .map(tag => tag.trim())
+      .filter(Boolean);
+
+    const updatedEntry = {
+      id: route.params?.entry?.id ?? Date.now().toString(),
+      title,
+      issue,
+      solution,
+      tags: parsedTags,
+      date: route.params?.entry?.date ?? new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    let updatedEntries;
+
+    if (route.params?.entry?.id) {
+      updatedEntries = entries.map((entry: any) =>
+        entry.id === route.params.entry.id ? updatedEntry : entry
+      );
+    } else {
+      updatedEntries = [updatedEntry, ...entries];
+    }
+
+    await AsyncStorage.setItem('journal_entries', JSON.stringify(updatedEntries));
+    navigation.goBack();
+  } catch (error) {
+    console.error('Failed to save entry', error);
+    Alert.alert('Error', 'Failed to save the journal entry');
+  }
+};
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
-      <ScrollView style={styles.container}>
-        <Text style={[styles.label, { color: colors.text }]}>Problem Title</Text>
-        <TextInput
-          style={[styles.input, { borderColor: colors.border, color: colors.text }]}
-          placeholder="e.g. Gradle Build Error"
-          placeholderTextColor={colors.textSecondary}
-          value={title}
-          onChangeText={setTitle}
-        />
+    <SafeAreaView style={[styles.screenContainer, { backgroundColor: colors.background }]}>
+        <View style={styles.contentContainer}>
+          <View style={styles.section}>
+            <View style={styles.headerRow}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Text style={styles.smallText}> X Cancel
+                </Text>
+              </TouchableOpacity>
 
-        <Text style={[styles.label, { color: colors.text }]}>Solution</Text>
-        <TextInput
-          style={[styles.input, styles.textArea, { borderColor: colors.border, color: colors.text, backgroundColor: colors.card }]}
-          placeholder="Describe how you solved it..."
-          placeholderTextColor={colors.textSecondary}
-          value={solution}
-          onChangeText={setSolution}
-          multiline
-          numberOfLines={6}
-        />
+              <TextInput
+                style={[styles.title, { color: colors.text }]}
+                placeholder="✎ Tap to add title..."
+                placeholderTextColor={colors.text}
+                value={title}
+                onChangeText={setTitle}
+              />
+              
+              <TouchableOpacity onPress={() => { Alert.alert('Alert', 'Feature coming soon') }}>
+                <View style={styles.tag}>
+                  <Text style={styles.smallText}>Draft</Text>
 
-        <Text style={[styles.label, { color: colors.text }]}>Tags (comma separated)</Text>
-        <TextInput
-          style={[styles.input, { borderColor: colors.border, color: colors.text }]}
-          placeholder="e.g. android, gradle, ui"
-          placeholderTextColor={colors.textSecondary}
-          value={tags}
-          onChangeText={setTags}
-        />
+                </View>
+              </TouchableOpacity>
 
-        <View style={styles.buttonContainer}>
-          <Button title={isEditing ? "Update Entry" : "Save Entry"} onPress={saveEntry} />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button title="Cancel" onPress={() => navigation.goBack()} color="#666" />
-        </View>
-      </ScrollView>
+            </View>
+          </View>
+          <ScrollView>
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              What problem are you trying to solve?
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="React Native keeps throwing a warning when..."
+              placeholderTextColor="#595959"
+              value={issue}
+              onChangeText={setIssue}
+              multiline
+            />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>What have you tried so far?</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Tried clearing cache, updated the nav library..."
+              placeholderTextColor="#595959"
+              value={solution}
+              onChangeText={setSolution}
+              multiline
+            />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Attach code snippet</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Paste your code here..."
+              placeholderTextColor="#595959"
+              multiline
+            />
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Custom tags</Text>
+          <TextInput
+              style={styles.input}
+              placeholder="Add custom tags, separated by commas..."
+              placeholderTextColor="#595959"
+              value={tags}
+              onChangeText={setTags}
+            />
+          </View>
+              </ScrollView>
+
+            <View style={styles.actionsRow}>
+                <TouchableOpacity style={styles.actionButtonSecondary} onPress={handleExport}>
+                  <Text style={styles.actionButtonTextSecondary}>Export</Text>
+                </TouchableOpacity>
+
+             <TouchableOpacity style={styles.actionButtonPrimary} onPress={saveEntry}>
+              <Text style={styles.actionButtonTextPrimary}>
+                {isEditing ? "Update Entry" : "Save Entry"}
+                </Text>
+              </TouchableOpacity>
+              </View>
+              {isEditing && (editingId && (
+                <View style={styles.actionsRow}>
+                  <TouchableOpacity style={styles.deleteButtonBox} onPress={deleteEntry}>
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1 },
-  container: { flex: 1, padding: 20 },
-  label: { fontSize: 16, fontWeight: 'bold', marginTop: 15 },
-  input: { borderBottomWidth: 1, paddingVertical: 8, fontSize: 16, marginBottom: 10 },
-  textArea: { textAlignVertical: 'top', height: 120, borderWidth: 1, borderRadius: 8, padding: 10, marginTop: 5 },
-  buttonContainer: { marginTop: 10 }
+  // ===== Layout =====
+  screenContainer: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+
+  contentContainer: {
+    flex: 1,
+    padding: 16,
+  },
+
+  deleteButtonBox: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+    alignContent: 'center',
+    alignSelf: 'flex-start',
+    flex: 0.25,
+    alignItems: 'center',
+    borderRadius: 12,
+    backgroundColor: '#ffffff',
+    padding: 10,
+    borderColor: '#FF0000',
+    borderWidth: 1,
+
+  },
+  section: {
+    marginBottom: 20,
+  },
+
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+
+  divider: {
+    height: 1,
+    backgroundColor: '#000000',
+    marginVertical: 10,
+  },
+
+  // ===== Typography =====
+  title: {
+    fontSize: 20,
+    fontWeight: '400',
+    color: '#000000',
+  },
+
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#555555',
+    marginBottom: 10,
+  },
+
+  smallText: {
+    fontSize: 14,
+    color: '#000000',
+  },
+
+  actionButtonTextPrimary: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+
+  actionButtonTextSecondary: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#000000',
+  },
+
+  deleteButtonText: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#FF0000',
+
+  },
+
+  // ===== Inputs / Panels =====
+  input: {
+    backgroundColor: '#D9D9D9',
+    padding: 15,
+    borderRadius: 12,
+    minHeight: 90,
+    textAlignVertical: 'top',
+    color: '#333333',
+  },
+
+  // ===== Tags =====
+  tagRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+
+  tag: {
+    backgroundColor: '#D9D9D9',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 30,
+    marginRight: 10,
+    marginBottom: 10,
+  },
+
+  // ===== Action Buttons =====
+  actionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+
+  actionButtonPrimary: {
+    flex: 0.48,
+    backgroundColor: '#6B6B6B',
+    padding: 15,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+
+  actionButtonSecondary: {
+    flex: 0.48,
+    backgroundColor: '#D9D9D9',
+    padding: 15,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  // ===== Animations =====
+
+  tagToggleButton: {
+    backgroundColor: '#33623A',
+  },
+
+  tinyText: {
+    fontSize: 10,
+    color: '#000000',
+  },
 });
 
 export default JournalEntryScreen;

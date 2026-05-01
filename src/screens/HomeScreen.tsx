@@ -1,28 +1,64 @@
-import React, {useState, useEffect} from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
-import Slider from '@react-native-community/slider';
-import { supabase } from '../lib/supabase';
-import { useTheme } from '../context/ThemeContext';
-import { useNavigation } from '@react-navigation/native';
-import {Image} from 'react-native'
+       import React, {useState, useEffect} from 'react';
+       import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Pressable, Image } from 'react-native';
+       import AsyncStorage from '@react-native-async-storage/async-storage';
+       import { useIsFocused } from '@react-navigation/native';
+       import Slider from '@react-native-community/slider';
+       import { supabase } from '../lib/supabase';
+       import { useTheme } from '../context/ThemeContext';
+       import { useNavigation } from '@react-navigation/native';
+       import {Image} from 'react-native'
 
-const HomeScreen = () => {
-  const [lastEntry, setLastEntry] = useState<any>(null);
-  const [lastMood, setLastMood] = useState<any>(null);
-  const [username, setUsername] = useState<string>('');
-  const [sliderValue, setSliderValue] = useState(0);
-  const [userMood, setMood] = useState('');
-  const isFocused = useIsFocused();
-  const { colors } = useTheme();
-  const navigation = useNavigation<any>();
-  const [AngrySize, setAngrySize] = useState(45);
-  const [FrustratedSize, setFrustratedSize] = useState(45);
-  const [NeutralSize, setNeutralSize] = useState(45);
-  const [GoodSize, setGoodSize] = useState(45);
-  const [AmazingSize, setAmazingSize] = useState(45);
+       const HomeScreen = () => {
+         const [lastEntry, setLastEntry] = useState<any>(null);
+         const [lastMood, setLastMood] = useState<any>(null);
+         const [username, setUsername] = useState<string>('');
+         const [sliderValue, setSliderValue] = useState(0);
+         const [userMood, setMood] = useState('');
+         const isFocused = useIsFocused();
+         const { colors } = useTheme();
+         const navigation = useNavigation<any>();
+         const [AngrySize, setAngrySize] = useState(45);
+         const [FrustratedSize, setFrustratedSize] = useState(45);
+         const [NeutralSize, setNeutralSize] = useState(45);
+         const [GoodSize, setGoodSize] = useState(45);
+         const [AmazingSize, setAmazingSize] = useState(45);
+         const [modalVisible, setModalVisible] = useState(false);// for pop up
+         const [selectedMoodData, setSelectedMoodData] = useState<any>(null);// for pop up
+         const  moodSpecs: Record<string, any> = {
+             'Angry': { color: '#E00C0C', options: [{ label: 'Nothing Matters', sub: '[No Motivation]' }, { label: 'Enraged', sub: '[Breaking Things]' }, { label: 'Fuming', sub: '[Stuck + Angry]' }] },
+             'Frustrated': { color: '#E6A23C', options: [{ label: 'Imposter Syndrome', sub: '[Not Enough]' }, { label: 'Agitated', sub: "[can't Focus]" }, { label: 'Confused', sub: '[Lost in Code]' }] },
+             'Neutral': { color: '#909399', options: [{ label: 'Detached', sub: '[Not Engaged]' }, { label: 'Drained', sub: '[No energy]' }, { label: 'Autopilot', sub: '[Mindless Coding]' }] },
+             'Good': { color: '#67C23A', options: [{ label: 'Invincible', sub: '[Everything works]' }, { label: 'Drained', sub: '[Problem Solved]' }, { label: 'Flow State', sub: '[Deep Focus]' }] },
+             'Amazing': { color: '#B37FEB', options: [{ label: 'Everything Clicks', sub: '[Effortless Program]' }, { label: 'Locked In', sub: '[Fully Immersed]' }, { label: 'ON Fire', sub: '[High momentum]' }] }
+               };
 
+        //Function that opens the window
+        const openMoodDetail = (mood: string) => {
+            setMood(mood);
+            handleMoods(mood);
+            if (moodSpecs[mood]) {
+                setSelectedMoodData({ name: mood, ...moodSpecs[mood]});
+                setModalVisible(true);
+                }
+            }
+        // function that saves the choices to supabase
+        const saveMoodToSupabase = async (subCategory: string) => {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user && selectedMoodData) {
+                    await supabase.from('mood_entries').insert([{
+                        user_id: user.id,
+                        mood_label: selectedMoodData.name,
+                        sub_category: subCategory,
+                        stress_level: sliderValue
+                        }])
+                        setModalVisible(false); //close window
+                        alert("Mood Logged!");
+                    }
+                }catch (error) {
+                 console.error("Save error:", error);
+                }
+            }
   const handleMoods = (mood : string) => {
       if (mood === "Angry") {
           setAngrySize(75)
@@ -134,6 +170,26 @@ const HomeScreen = () => {
 
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.background }]}>
+      {/* New modal block */}
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+       <Pressable style={styles.modalOverlay} onPress={ () => setModalVisible(false)}>
+        <View style={[styles.modalContent, {backgroundColor: colors.card}]}>
+         <Text style={[styles.modalTitle, { color: selectedMoodData?.color }]}>
+         {selectedMoodData?.name} Details
+         </Text>
+         {selectedMoodData?.options.map((item: any, index: number) => (
+             <TouchableOpacity key={index} style={styles.bulletItem} onPress={() => saveMoodToSupabase(item.label)}>
+              <View style={[styles.bullet, { backgroundColor: selectedMoodData.color}]} />
+              <View>
+                <Text style={{ color: colors.text, fontWeight: 'bold'}}>{item.label}</Text>
+                <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{item.sub}</Text>
+               </View>
+               </TouchableOpacity>
+               ))}
+              </View>
+             </Pressable>
+            </Modal>
+
       <ScrollView style={styles.container}>
         <Text style={[styles.title, { color: colors.text }]}>
           Welcome back{username ? `, ${username}` : ', Dev'}!
@@ -201,8 +257,14 @@ const HomeScreen = () => {
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Recent Journal Entry</Text>
-          <View style={[styles.card, { backgroundColor: colors.card }]}>
-            {lastEntry ? (
+          <TouchableOpacity
+            style={[styles.card, { backgroundColor: colors.card }]}
+              onPress={() =>
+                lastEntry && navigation.navigate("Journal", {screen: "JournalEntry", params: { entry: lastEntry }})
+              }
+              activeOpacity={lastEntry ? 0.8 : 1}
+              >
+                {lastEntry ? (
               <>
                 <Text style={[styles.cardTitle, { color: colors.text }]}>{lastEntry.title}</Text>
                 <Text style={[styles.cardText, { color: colors.textSecondary }]} numberOfLines={2}>{lastEntry.solution}</Text>
@@ -217,13 +279,13 @@ const HomeScreen = () => {
                 <Text style={[styles.reflectionTitle, { color: colors.textSecondary }]}>Start logging your first thoughts</Text>
                 <TouchableOpacity
                     style={[styles.reflectionButton, { backgroundColor: colors.textSecondary }]}
-                    onPress={() => navigation.navigate("Journal")}
+                    onPress={() => navigation.navigate("Journal", { screen: "JournalEntry" })}
                 >
                     <Text style={[styles.reflectionTitle, { color: colors.card }]}>+ New Reflection</Text>
                 </TouchableOpacity>
               </>
             )}
-          </View>
+          </TouchableOpacity>
         </View>
 
         {lastMood && (
@@ -241,13 +303,13 @@ const HomeScreen = () => {
         <View style={styles.buttonSection}>
             <TouchableOpacity
                 style={[styles.button, { backgroundColor: colors.card }]}
-                onPress={() => navigation.navigate("Journal")}
+                onPress={() => navigation.navigate("Journal", {screen: "JournalEntry", params: { presetTag: 'Bug' }})}
             >
                 <Text style={[styles.buttonText, { color: colors.text }]}>🪳 Log a bug</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.button, { backgroundColor: colors.card }]}
-                onPress={() => navigation.navigate("Rubber Duck")}
+                onPress={() => navigation.navigate("Rubber Duck", { presetTag: 'Debugging' })}
             >
                 <Text style={[styles.buttonText, { color: colors.text }]}>🐤 Duck Mode</Text>
             </TouchableOpacity>
@@ -261,7 +323,7 @@ const HomeScreen = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.card }]}
-            onPress={() => navigation.navigate("Journal")}
+            onPress={() => navigation.navigate("Journal", { screen: "JournalEntry", params: { presetTag: 'Quick Idea', presetTitle: 'Quick Idea' } })}
           >
             <Text style={[styles.buttonText, { color: colors.text }]}>💡 Quick Idea</Text>
           </TouchableOpacity>

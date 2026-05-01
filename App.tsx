@@ -14,8 +14,6 @@ import JournalScreen from './src/screens/JournalScreen';
 import JournalEntryScreen from './src/screens/JournalEntryScreen';
 import MoodScreen from './src/screens/MoodScreen';
 import RubberDuckScreen from './src/screens/RubberDuckScreen';
-import TestingScreen from './src/screens/Testing';
-import HistoryScreen from './src/screens/HistoryScreen';
 import TitleScreen from './src/screens/TitleScreen';
 import LoginScreenTest from './src/screens/LoginScreenTest';
 
@@ -26,6 +24,8 @@ import AccountSettings from './src/screens/settings/AccountSettings';
 import AppearanceSettings from './src/screens/settings/AppearanceSettings';
 import NotificationsSettings from './src/screens/settings/NotificationsSettings';
 import PrivacySecuritySettings from './src/screens/settings/PrivacySecuritySettings';
+import PrivacyPolicyScreen from './src/screens/settings/PrivacyPolicyScreen';
+import TermsOfServiceScreen from './src/screens/settings/TermsOfServiceScreen';
 import HelpSupportSettings from './src/screens/settings/HelpSupportSettings';
 import AboutAppSettings from './src/screens/settings/AboutAppSettings';
 import StorageSettings from './src/screens/settings/StorageSettings';
@@ -38,7 +38,7 @@ const JournalStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="JournalList" component={JournalScreen} options={{ title: 'My Journal' }} />
-      <Stack.Screen name="JournalEntry" component={JournalEntryScreen} options={{ title: 'New Entry' }} />
+      <Stack.Screen name="JournalEntry" component={JournalEntryScreen} options={{ title: 'New Journal Entry' }} />
     </Stack.Navigator>
   );
 };
@@ -70,12 +70,11 @@ const SettingsStack = () => {
       <Stack.Screen name="AppearanceSettings" component={AppearanceSettings} options={{ title: 'Appearance Settings' }} />
       <Stack.Screen name="NotificationsSettings" component={NotificationsSettings} options={{ title: 'Notifications Settings' }} />
       <Stack.Screen name="PrivacySecuritySettings" component={PrivacySecuritySettings} options={{ title: 'Privacy & Security Settings' }} />
+      <Stack.Screen name="PrivacyPolicyScreen" component={PrivacyPolicyScreen} options={{ title: 'Privacy Policy' }} />
+      <Stack.Screen name="TermsOfServiceScreen" component={TermsOfServiceScreen} options={{ title: 'Terms of Service' }} />
       <Stack.Screen name="HelpSupportSettings" component={HelpSupportSettings} options={{ title: 'Help & Support Settings' }} />
       <Stack.Screen name="AboutAppSettings" component={AboutAppSettings} options={{ title: 'About App Settings' }} />
       <Stack.Screen name="StorageSettings" component={StorageSettings} options={{ title: 'Storage Settings' }} />
-      {/* Commenting out Testing for now since it has a feature skeleton and is not fully implemented, but we can easily add it back to the stack when needed.
-      {/* <Stack.Screen name="Testing" component={TestingScreen} options={{ title: 'Testing' }} /> */}
-      <Stack.Screen name="HistoryScreen" component={HistoryScreen} options={{ title: 'History' }} />
       <Stack.Screen name="TitleScreen" component={TitleScreen} options={{ title: 'Title' }} />
     </Stack.Navigator>
   );
@@ -101,10 +100,7 @@ const MainTabs = () => {
       <Tab.Screen name="Mood" component={MoodScreen} options={{ headerShown: true }} />
       <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} options={{ headerShown: true }} />
       <Tab.Screen name="Settings" component={SettingsStack} options={{ headerShown: true }} />
-      {/* <Tab.Screen name="Testing" component={TestingScreen} options={{ headerShown: true }} /> */}
-      {/* <Tab.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} /> */}
-      {/* <Tab.Screen name="Title" component={TitleScreen} options={{ headerShown: true }} /> */}
-      {/* <Tab.Screen name="LoginScreenTest" component={LoginScreenTest} options={{ headerShown: true }} /> */}
+      {/* <Tab.Screen name="LoginScreenTest" component={LoginScreenTest} options={{ headerShown: true }} / >*/}
     </Tab.Navigator>
   );
 };
@@ -126,7 +122,12 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Title">
+        <Stack.Screen
+          name="Title"
+          component={TitleScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Login"
           component={LoginScreen}

@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image} from 'react-native';
+import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image, Modal, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { launchImageLibrary, ImagePickerResponse } from 'react-native-image-picker';
 import { getDuckResponse, ChatHistoryEntry } from '../lib/gemini';
@@ -11,6 +11,8 @@ interface Message {
   suggestion?: string;
   isUser: boolean;
   imageUri?: string;
+  imageBase64?: string;
+  imageType?: string;
 }
 
 const RubberDuckScreen = () => {
@@ -20,9 +22,13 @@ const RubberDuckScreen = () => {
     { id: '1', text: "Quack! I'm your debugging assistant. Tell me about the bug you're chasing.", isUser: false },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [debugModalVisible, setDebugModalVisible] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<string>('');
+
   const flatListRef = useRef<FlatList>(null);
   const { colors } = useTheme();
   const hasUserMessages = messages.some(m => m.isUser);
+
 
   const pickImage = () => {
     launchImageLibrary({
@@ -43,31 +49,31 @@ const RubberDuckScreen = () => {
       id: Date.now().toString(),
       text: input,
       isUser: true,
-      imageUri: selectedImage?.uri
+      imageUri: selectedImage?.uri,
+      imageBase64: selectedImage?.base64,
+      imageType: selectedImage?.type
     };
 
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
 
     setInput('');
-    const currentImage = selectedImage;
     setSelectedImage(null);
     setIsLoading(true);
 
     try {
-      // Convert history to Gemini format
       const history: ChatHistoryEntry[] = newMessages.map(m => ({
         role: m.isUser ? "user" : "model",
         parts: [
           ...(m.text ? [{ text: m.text }] : []),
-          ...(m.imageUri && currentImage?.base64 ? [{
+          ...(m.imageBase64 ? [{
             inlineData: {
-              mimeType: currentImage.type || 'image/jpeg',
-              data: currentImage.base64
+              mimeType: m.imageType || 'image/jpeg',
+              data: m.imageBase64
             }
           }] : [])
         ]
-      }));
+      })).filter(entry => entry.parts.length > 0);
 
       const response = await getDuckResponse(history);
 
@@ -101,12 +107,11 @@ const RubberDuckScreen = () => {
       >
         <View style={[styles.header, { borderBottomColor: colors.border, backgroundColor: colors.card }]}>
           <Image source={require('../assets/images/Wade_no-bg.png')} style={styles.headerIcon} />
-          <View>
+          <View style={{ flex: 1 }}>
             <Text style={[styles.headerTitle, { color: colors.text }]}>Wade</Text>
             <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>The Rubber Duck Assistant</Text>
           </View>
         </View>
-
         {!hasUserMessages && (
           <View style={styles.emptyState}>
             <Image source={require('../assets/images/Wade_no-bg.png')} style={styles.emptyStateDuck} />
@@ -120,15 +125,20 @@ const RubberDuckScreen = () => {
           keyExtractor={item => item.id}
           contentContainerStyle={styles.chatContainer}
           renderItem={({item}) => (
-            <View style={[styles.messageBubble, item.isUser ? { alignSelf: 'flex-end', backgroundColor: colors.primary } : { alignSelf: 'flex-start', backgroundColor: colors.card }]}>
-              {item.imageUri && <Image source={{ uri: item.imageUri }} style={styles.messageImage} />}
-              <Text style={[styles.messageText, { color: item.isUser ? '#fff' : colors.text }]}>{item.text}</Text>
-              {item.suggestion && (
-                <View style={[styles.suggestionBox, { borderTopColor: colors.border }]}>
-                  <Text style={[styles.suggestionLabel, { color: colors.primary }]}>Suggestion:</Text>
-                  <Text style={[styles.suggestionText, { color: colors.textSecondary }]}>{item.suggestion}</Text>
-                </View>
+            <View style={[styles.messageRow, item.isUser ? { justifyContent: 'flex-end' } : { justifyContent: 'flex-start' }]}>
+              {!item.isUser && (
+                <Image source={require('../assets/images/Wade_no-bg.png')} style={styles.messageIcon} />
               )}
+              <View style={[styles.messageBubble, item.isUser ? { alignSelf: 'flex-end', backgroundColor: colors.primary, borderBottomRightRadius: 2 } : { alignSelf: 'flex-start', backgroundColor: colors.card, borderBottomLeftRadius: 2 }]}>
+                {item.imageUri && <Image source={{ uri: item.imageUri }} style={styles.messageImage} />}
+                <Text style={[styles.messageText, { color: item.isUser ? '#fff' : colors.text }]}>{item.text}</Text>
+                {item.suggestion && (
+                  <View style={[styles.suggestionBox, { borderTopColor: colors.border }]}>
+                    <Text style={[styles.suggestionLabel, { color: colors.primary }]}>Suggestion:</Text>
+                    <Text style={[styles.suggestionText, { color: colors.textSecondary }]}>{item.suggestion}</Text>
+                  </View>
+                )}
+              </View>
             </View>
           )}
         />
@@ -146,7 +156,6 @@ const RubberDuckScreen = () => {
           <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.background }]} onPress={pickImage}>
             <Text style={styles.actionButtonText}>🖼️</Text>
           </TouchableOpacity>
-
           <TextInput
             style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.text }]}
             placeholder="Talk to the duck..."
@@ -160,6 +169,7 @@ const RubberDuckScreen = () => {
             {isLoading ? <ActivityIndicator size="small" color={colors.primary} /> : <Text style={[styles.sendButtonText, { color: colors.primary }]}>Send</Text>}
           </TouchableOpacity>
         </View>
+
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -169,11 +179,14 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1 },
   container: { flex: 1 },
   header: { flexDirection: 'row', alignItems: 'center', padding: 15, borderBottomWidth: 1 },
-  headerIcon: { width: 50, height: 50, marginRight: 15 },
+  headerIcon: { width: 50, height: 50, marginRight: 15, resizeMode: 'contain' },
   headerTitle: { fontSize: 20, fontWeight: 'bold' },
   headerSubtitle: { fontSize: 12 },
+  debugButton: { padding: 10 },
   chatContainer: { padding: 20 },
-  messageBubble: { padding: 12, borderRadius: 15, marginBottom: 15, maxWidth: '85%' },
+  messageRow: { flexDirection: 'row', alignItems: 'flex-end', marginBottom: 15 },
+  messageIcon: { width: 35, height: 35, marginRight: 8, resizeMode: 'contain' },
+  messageBubble: { padding: 12, borderRadius: 15, maxWidth: '80%' },
   messageText: { fontSize: 16, lineHeight: 22 },
   messageImage: { width: 200, height: 200, borderRadius: 10, marginBottom: 8, resizeMode: 'cover' },
   suggestionBox: { marginTop: 10, paddingTop: 10, borderTopWidth: 1 },
