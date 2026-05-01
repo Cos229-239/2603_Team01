@@ -1,26 +1,111 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
 import { SettingsCard, SectionHeader, DescriptionText } from './components/SettingsComponents';
 
 const StorageSettings = () => {
   const { colors, getFontSize } = useTheme();
+  const isFocused = useIsFocused();
+
+  const [journalSize, setJournalSize] = useState('0 MB');
+  const [moodSize, setMoodSize] = useState('0 MB');
+  const [cacheSize, setCacheSize] = useState('0 MB');
+  const [totalSize, setTotalSize] = useState('0 MB');
+
+  useEffect(() => {
+    if (isFocused) {
+      calculateStorageSizes();
+    }
+  }, [isFocused]);
+
+  const calculateStorageSizes = async () => {
+    try {
+      let journalBytes = 0;
+      let moodBytes = 0;
+      let cacheBytes = 0;
+
+      // Calculate Journal Entries size
+      const journalEntries = await AsyncStorage.getItem('journal_entries');
+      if (journalEntries) {
+        journalBytes = new Blob([journalEntries]).size;
+      }
+
+      // Calculate Mood Data size (stored in Supabase, but local last_mood exists)
+      const lastMood = await AsyncStorage.getItem('last_mood');
+      if (lastMood) {
+        moodBytes = new Blob([lastMood]).size;
+      }
+
+      // Calculate Cache Data size (theme, font, other preferences)
+      const themeData = await AsyncStorage.getItem('app_theme');
+      const accentData = await AsyncStorage.getItem('app_accent_color');
+      const fontData = await AsyncStorage.getItem('app_font_size');
+      const biometricData = await AsyncStorage.getItem('biometricAuthenticationEnabled');
+      const analyticsData = await AsyncStorage.getItem('anonymousAnalyticsEnabled');
+
+      if (themeData) cacheBytes += new Blob([themeData]).size;
+      if (accentData) cacheBytes += new Blob([accentData]).size;
+      if (fontData) cacheBytes += new Blob([fontData]).size;
+      if (biometricData) cacheBytes += new Blob([biometricData]).size;
+      if (analyticsData) cacheBytes += new Blob([analyticsData]).size;
+
+      // Convert bytes to MB
+      const toMB = (bytes: number) => (bytes / (1024 * 1024)).toFixed(2);
+
+      setJournalSize(`${toMB(journalBytes)} MB`);
+      setMoodSize(`${toMB(moodBytes)} MB`);
+      setCacheSize(`${toMB(cacheBytes)} MB`);
+      setTotalSize(`${toMB(journalBytes + moodBytes + cacheBytes)} MB`);
+    } catch (error) {
+      console.error('Failed to calculate storage sizes:', error);
+      Alert.alert('Error', 'Failed to calculate storage usage.');
+    }
+  };
 
   const handleClearCache = () => {
     Alert.alert(
       'Clear Cache',
-      'Are you sure you want to clear the cache? This will free up space but may slow down the app temporarily.',
+      'Are you sure you want to clear the cache? This will remove app preferences like theme and font size, but will not delete journal entries or mood data.',
       [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Clear', onPress: () => {
-          Alert.alert('Success', 'Cache cleared successfully!');
-        }}
+        { 
+          text: 'Clear', 
+          onPress: async () => {
+            try {
+              // Safe cache-related keys to remove
+              const cacheKeys = [
+                'app_theme',
+                'app_accent_color',
+                'app_font_size',
+                'biometricAuthenticationEnabled',
+                'anonymousAnalyticsEnabled',
+              ];
+
+              // Remove only cache keys
+              await Promise.all(cacheKeys.map(key => AsyncStorage.removeItem(key)));
+
+              // Recalculate storage sizes
+              await calculateStorageSizes();
+
+              Alert.alert('Success', 'Cache cleared successfully! App preferences have been reset to defaults.');
+            } catch (error) {
+              console.error('Failed to clear cache:', error);
+              Alert.alert('Error', 'Failed to clear cache. Please try again.');
+            }
+          }
+        }
       ]
     );
   };
 
   const handleOptimizeStorage = () => {
-    Alert.alert('Optimize Storage', 'This feature will be implemented soon.');
+    Alert.alert(
+      'Optimize Storage',
+      'Storage optimization is a planned feature that will compress older journal entries and mood data to save space.\n\nThis feature will be available in a future update.',
+      [{ text: 'OK' }]
+    );
   };
 
   return (
@@ -41,25 +126,25 @@ const StorageSettings = () => {
         
         <StorageItem
           label="Journal Entries"
-          size="0 MB"
+          size={journalSize}
           colors={colors}
           fontSize={getFontSize}
         />
         <StorageItem
           label="Mood Data"
-          size="0 MB"
+          size={moodSize}
           colors={colors}
           fontSize={getFontSize}
         />
         <StorageItem
           label="Cached Data"
-          size="0 MB"
+          size={cacheSize}
           colors={colors}
           fontSize={getFontSize}
         />
         <StorageItem
           label="Total Used"
-          size="0 MB"
+          size={totalSize}
           colors={colors}
           fontSize={getFontSize}
           isLast
