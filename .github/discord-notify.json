@@ -13,7 +13,7 @@
     "timestamp": true,
     "timestamp_date": true,
     "timestamp_time": false,
-    "timestamp_date_label": true,
+    "timestamp_date_label": false,
     "timestamp_time_label": false,
     "repo": false,
     "push_size": true,
