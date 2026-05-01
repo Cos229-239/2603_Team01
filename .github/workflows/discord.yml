@@ -222,6 +222,12 @@ jobs:
           include_push_size = bool(include.get("push_size", True))
           include_commit_author = bool(include.get("commit_author", True))
           include_footer_timestamp = bool(include.get("footer_timestamp", True))
+          def part_on(key: str, fallback: str, default: bool = True) -> bool:
+              if key in include:
+                  return bool(include[key])
+              if fallback:
+                  return bool(include.get(fallback, default))
+              return default
 
           def infer_cycle_label(repo_name: str) -> str:
               text = str(repo_name or "").strip()
@@ -427,9 +433,28 @@ jobs:
               head_author = str((head.get("author") or {}).get("name") or actor).strip() or actor
               commit_total = len(commits)
               push_size = f"{commit_total} commit{'s' if commit_total != 1 else ''}"
-              commit_message = f"`{head_sha}` {head_message}" if head_sha and head_message else (head_message or (f"`{head_sha}`" if head_sha else "No commit message"))
+              cm_hash_on = part_on("p_hash2", "commit_message")
+              cm_rest_on = part_on("b_cm_rest", "commit_message")
+              commit_message = " ".join(
+                  part for part in (
+                      f"`{head_sha}`" if cm_hash_on and head_sha else "",
+                      head_message if cm_rest_on and head_message else "",
+                  ) if part
+              ).strip() or "No commit message"
 
-              description = "\n".join(lines) if lines else "A new push was received."
+              if lines:
+                  description = "\n".join(lines)
+              else:
+                  desc_hash_on = part_on("p_hash1", "description")
+                  desc_rest_on = part_on("p_sumrest", "description")
+                  if desc_hash_on and head_sha and commit_url.startswith("http"):
+                      head_part = f"[`{head_sha}`]({commit_url})"
+                  elif desc_hash_on and head_sha:
+                      head_part = f"`{head_sha}`"
+                  else:
+                      head_part = ""
+                  tail_part = f"{head_message} — {head_author}".strip(" —") if desc_rest_on else ""
+                  description = " ".join(part for part in (head_part, tail_part) if part).strip() or "A new push was received."
               embed_object = {"color": 5814783}
               if include_title_team and include_title_action:
                   embed_object["title"] = f"{repo} · Push on {branch}"
@@ -444,28 +469,43 @@ jobs:
                   embed_object["description"] = description
               zw = "\u200b"
               embed_fields = []
-              embed_fields.extend([{"name": "Actor", "value": actor or "Unknown", "inline": True}] if include_actor else [])
+              def append_field(label_key: str, value_key: str, fallback: str, label_text: str, value_text: str, inline: bool) -> None:
+                  show_label = part_on(label_key, fallback)
+                  show_value = part_on(value_key, fallback)
+                  if not show_label and not show_value:
+                      return
+                  embed_fields.append({
+                      "name": label_text if show_label else zw,
+                      "value": (str(value_text or "").strip() or zw) if show_value else zw,
+                      "inline": bool(inline and show_label and show_value),
+                  })
+
+              append_field("g_actor_k", "g_actor_v", "actor", "Actor", actor or "Unknown", True)
               if include_timestamp_date:
                   embed_fields.append(
-                      {"name": "Date" if include_timestamp_date_label else zw, "value": date_part, "inline": True}
+                      {
+                          "name": "Date" if include_timestamp_date_label else zw,
+                          "value": date_part,
+                          "inline": bool(include_timestamp_date_label),
+                      }
                   )
               if include_timestamp_time:
                   embed_fields.append(
-                      {"name": "Time" if include_timestamp_time_label else zw, "value": time_part, "inline": True}
+                      {
+                          "name": "Time" if include_timestamp_time_label else zw,
+                          "value": time_part,
+                          "inline": bool(include_timestamp_time_label),
+                      }
                   )
-              embed_fields.extend([{"name": "Branch Name", "value": branch or "Unknown", "inline": True}] if include_branch_name else [])
-              embed_fields.extend(
-                  [{"name": "Status", "value": str(branch_compare.get("state", "Unknown") or "Unknown"), "inline": True}] if include_status else []
-              )
-              embed_fields.extend(
-                  [{"name": "Ahead / Behind", "value": str(branch_compare.get("ahead_behind", "—") or "—"), "inline": True}] if include_ahead_behind else []
-              )
-              embed_fields.extend([{"name": "Repo", "value": repo or "Unknown", "inline": True}] if include_repo else [])
-              embed_fields.extend([{"name": "Push Size", "value": push_size, "inline": True}] if include_push_size else [])
-              embed_fields.extend([{"name": "Commit Message", "value": commit_message, "inline": False}] if include_commit_message else [])
-              embed_fields.extend([{"name": "Commit Author", "value": head_author or "Unknown", "inline": True}] if include_commit_author else [])
-              if file_lines and include_files_changed:
-                  embed_fields.append({"name": "Files changed", "value": "\n".join(file_lines), "inline": False})
+              append_field("g_branch_k", "g_branch_v", "branch_name", "Branch Name", branch or "Unknown", True)
+              append_field("g_status_k", "g_status_v", "status", "Status", str(branch_compare.get("state", "Unknown") or "Unknown"), True)
+              append_field("g_ab_k", "g_ab_v", "ahead_behind", "Ahead / Behind", str(branch_compare.get("ahead_behind", "—") or "—"), True)
+              append_field("g_repo_k", "g_repo_v", "repo", "Repo", repo or "Unknown", True)
+              append_field("b_ps_k", "b_ps_v", "push_size", "Push Size", push_size, True)
+              append_field("b_cm_k", "b_cm_rest" if cm_rest_on else "p_hash2", "commit_message", "Commit Message", commit_message, False)
+              append_field("b_ca_k", "b_ca_v", "commit_author", "Commit Author", head_author or "Unknown", True)
+              if file_lines and (part_on("b_fc_k", "files_changed") or part_on("b_fc_v", "files_changed")):
+                  append_field("b_fc_k", "b_fc_v", "files_changed", "Files changed", "\n".join(file_lines), False)
               embed_object["fields"] = embed_fields
               if include_footer_timestamp:
                   embed_object["timestamp"] = timestamp
