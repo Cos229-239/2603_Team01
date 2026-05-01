@@ -200,13 +200,16 @@ jobs:
           include_files_changed = bool(include.get("files_changed", True))
           include_commit_message = bool(include.get("commit_message", True))
           include_actor = bool(include.get("actor", True))
-          def incl_ts_fallback(key_prim: str) -> bool:
+          def incl_ts_field(key_prim: str) -> bool:
               if key_prim in include:
                   return bool(include[key_prim])
-              return bool(include.get("timestamp", True))
+              granular_stored = ("timestamp_date" in include) or ("timestamp_time" in include)
+              if not granular_stored:
+                  return bool(include.get("timestamp", True))
+              return False
 
-          include_timestamp_date = incl_ts_fallback("timestamp_date")
-          include_timestamp_time = incl_ts_fallback("timestamp_time")
+          include_timestamp_date = incl_ts_field("timestamp_date")
+          include_timestamp_time = incl_ts_field("timestamp_time")
 
           def incl_ts_label(key_lab: str) -> bool:
               if key_lab in include:
@@ -429,13 +432,13 @@ jobs:
               description = "\n".join(lines) if lines else "A new push was received."
               embed_object = {"color": 5814783}
               if include_title_team and include_title_action:
-                  embed_object["title"] = f"{repo} · push on {branch}"
+                  embed_object["title"] = f"{repo} · Push on {branch}"
                   embed_object["url"] = compare_url
               elif include_title_team:
                   embed_object["title"] = repo
                   embed_object["url"] = compare_url
               elif include_title_action:
-                  embed_object["title"] = f"push on {branch}"
+                  embed_object["title"] = f"Push on {branch}"
                   embed_object["url"] = compare_url
               if include_description:
                   embed_object["description"] = description
