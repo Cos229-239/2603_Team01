@@ -32,7 +32,7 @@
     "g_ts_time_k": false,
     "g_ts_date": true,
     "g_ts_time": false,
-    "g_status_k": false,
+    "g_status_k": true,
     "g_status_v": true,
     "g_ab_k": false,
     "g_ab_v": false,
