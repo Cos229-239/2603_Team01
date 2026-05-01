@@ -2,7 +2,7 @@ import React, {useState, useRef} from 'react';
 import {View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Image, Modal, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { launchImageLibrary, ImagePickerResponse } from 'react-native-image-picker';
-import { getDuckResponse, ChatHistoryEntry, listAvailableModels } from '../lib/gemini';
+import { getDuckResponse, ChatHistoryEntry } from '../lib/gemini';
 import { useTheme } from '../context/ThemeContext';
 
 interface Message {
