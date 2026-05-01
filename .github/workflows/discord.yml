@@ -200,7 +200,21 @@ jobs:
           include_files_changed = bool(include.get("files_changed", True))
           include_commit_message = bool(include.get("commit_message", True))
           include_actor = bool(include.get("actor", True))
-          include_timestamp = bool(include.get("timestamp", True))
+          def incl_ts_fallback(key_prim: str) -> bool:
+              if key_prim in include:
+                  return bool(include[key_prim])
+              return bool(include.get("timestamp", True))
+
+          include_timestamp_date = incl_ts_fallback("timestamp_date")
+          include_timestamp_time = incl_ts_fallback("timestamp_time")
+
+          def incl_ts_label(key_lab: str) -> bool:
+              if key_lab in include:
+                  return bool(include[key_lab])
+              return True
+
+          include_timestamp_date_label = incl_ts_label("timestamp_date_label")
+          include_timestamp_time_label = incl_ts_label("timestamp_time_label")
           include_repo = bool(include.get("repo", True))
           include_push_size = bool(include.get("push_size", True))
           include_commit_author = bool(include.get("commit_author", True))
@@ -341,6 +355,19 @@ jobs:
               timestamp = (head.get("timestamp") or datetime.now(timezone.utc).isoformat()).replace("+00:00", "Z")
               eastern = ZoneInfo("America/New_York")
               date_part, time_part = "Unknown", "Unknown"
+
+              def discord_push_et_abbr(local_dt):
+                  off = local_dt.utcoffset()
+                  if off is None:
+                      return "ET"
+                  h = off.total_seconds() / 3600.0
+                  if abs(h + 5) < 0.02:
+                      return "EST"
+                  if abs(h + 4) < 0.02:
+                      return "EDT"
+                  tzname = local_dt.strftime("%Z") or ""
+                  return tzname.strip() or "ET"
+
               if timestamp:
                   try:
                       raw_ts = timestamp.replace("Z", "+00:00")
@@ -348,8 +375,9 @@ jobs:
                       if parsed.tzinfo is None:
                           parsed = parsed.replace(tzinfo=timezone.utc)
                       local_et = parsed.astimezone(eastern)
-                      date_part = local_et.strftime("%Y-%m-%d")
-                      time_part = local_et.strftime("%H:%M:%S")
+                      tz_abbr = discord_push_et_abbr(local_et)
+                      date_part = local_et.strftime("%m/%d/%Y")
+                      time_part = f"{local_et.strftime('%H:%M:%S')} {tz_abbr}"
                   except ValueError:
                       date_part, time_part = "Unknown", "Unknown"
               branch_compare = fetch_branch_compare(repo, "dev", branch)
@@ -411,12 +439,18 @@ jobs:
                   embed_object["url"] = compare_url
               if include_description:
                   embed_object["description"] = description
+              zw = "\u200b"
               embed_fields = []
               embed_fields.extend([{"name": "Actor", "value": actor or "Unknown", "inline": True}] if include_actor else [])
+              if include_timestamp_date:
+                  embed_fields.append(
+                      {"name": "Date" if include_timestamp_date_label else zw, "value": date_part, "inline": True}
+                  )
+              if include_timestamp_time:
+                  embed_fields.append(
+                      {"name": "Time" if include_timestamp_time_label else zw, "value": time_part, "inline": True}
+                  )
               embed_fields.extend([{"name": "Branch Name", "value": branch or "Unknown", "inline": True}] if include_branch_name else [])
-              if include_timestamp:
-                  embed_fields.append({"name": "Date", "value": date_part, "inline": True})
-                  embed_fields.append({"name": "Time", "value": time_part, "inline": True})
               embed_fields.extend(
                   [{"name": "Status", "value": str(branch_compare.get("state", "Unknown") or "Unknown"), "inline": True}] if include_status else []
               )
