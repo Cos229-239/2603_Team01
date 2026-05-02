@@ -1,114 +1,83 @@
-       import React, {useState, useEffect} from 'react';
-       import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Pressable, Image } from 'react-native';
-       import AsyncStorage from '@react-native-async-storage/async-storage';
-       import { useIsFocused } from '@react-navigation/native';
-       import Slider from '@react-native-community/slider';
-       import { supabase } from '../lib/supabase';
-       import { useTheme } from '../context/ThemeContext';
-       import { useNavigation } from '@react-navigation/native';
-       import {Image} from 'react-native'
+import React, {useState, useEffect} from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Pressable, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
+import Slider from '@react-native-community/slider';
+import { supabase } from '../lib/supabase';
+import { useTheme } from '../context/ThemeContext';
+import { useNavigation } from '@react-navigation/native';
 
-       const HomeScreen = () => {
-         const [lastEntry, setLastEntry] = useState<any>(null);
-         const [lastMood, setLastMood] = useState<any>(null);
-         const [username, setUsername] = useState<string>('');
-         const [sliderValue, setSliderValue] = useState(0);
-         const [userMood, setMood] = useState('');
-         const isFocused = useIsFocused();
-         const { colors } = useTheme();
-         const navigation = useNavigation<any>();
-         const [AngrySize, setAngrySize] = useState(45);
-         const [FrustratedSize, setFrustratedSize] = useState(45);
-         const [NeutralSize, setNeutralSize] = useState(45);
-         const [GoodSize, setGoodSize] = useState(45);
-         const [AmazingSize, setAmazingSize] = useState(45);
-         const [modalVisible, setModalVisible] = useState(false);// for pop up
-         const [selectedMoodData, setSelectedMoodData] = useState<any>(null);// for pop up
-         const  moodSpecs: Record<string, any> = {
-             'Angry': { color: '#E00C0C', options: [{ label: 'Nothing Matters', sub: '[No Motivation]' }, { label: 'Enraged', sub: '[Breaking Things]' }, { label: 'Fuming', sub: '[Stuck + Angry]' }] },
-             'Frustrated': { color: '#E6A23C', options: [{ label: 'Imposter Syndrome', sub: '[Not Enough]' }, { label: 'Agitated', sub: "[can't Focus]" }, { label: 'Confused', sub: '[Lost in Code]' }] },
-             'Neutral': { color: '#909399', options: [{ label: 'Detached', sub: '[Not Engaged]' }, { label: 'Drained', sub: '[No energy]' }, { label: 'Autopilot', sub: '[Mindless Coding]' }] },
-             'Good': { color: '#67C23A', options: [{ label: 'Invincible', sub: '[Everything works]' }, { label: 'Drained', sub: '[Problem Solved]' }, { label: 'Flow State', sub: '[Deep Focus]' }] },
-             'Amazing': { color: '#B37FEB', options: [{ label: 'Everything Clicks', sub: '[Effortless Program]' }, { label: 'Locked In', sub: '[Fully Immersed]' }, { label: 'ON Fire', sub: '[High momentum]' }] }
-               };
+const HomeScreen = () => {
+  const [lastEntry, setLastEntry] = useState<any>(null);
+  const [lastMood, setLastMood] = useState<any>(null);
+  const [username, setUsername] = useState<string>('');
+  const [sliderValue, setSliderValue] = useState(0);
+  const [userMood, setMood] = useState('');
+  const isFocused = useIsFocused();
+  const { colors } = useTheme();
+  const navigation = useNavigation<any>();
 
-        //Function that opens the window
-        const openMoodDetail = (mood: string) => {
-            setMood(mood);
-            handleMoods(mood);
-            if (moodSpecs[mood]) {
-                setSelectedMoodData({ name: mood, ...moodSpecs[mood]});
-                setModalVisible(true);
-                }
-            }
-        // function that saves the choices to supabase
-        const saveMoodToSupabase = async (subCategory: string) => {
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user && selectedMoodData) {
-                    await supabase.from('mood_entries').insert([{
-                        user_id: user.id,
-                        mood_label: selectedMoodData.name,
-                        sub_category: subCategory,
-                        stress_level: sliderValue
-                        }])
-                        setModalVisible(false); //close window
-                        alert("Mood Logged!");
-                    }
-                }catch (error) {
-                 console.error("Save error:", error);
-                }
-            }
-  const handleMoods = (mood : string) => {
-      if (mood === "Angry") {
-          setAngrySize(75)
-          setFrustratedSize(45)
-          setNeutralSize(45)
-          setGoodSize(45)
-          setAmazingSize(45)
-      } else if (mood === "Frustrated") {
-          setAngrySize(45)
-          setFrustratedSize(75)
-          setNeutralSize(45)
-          setGoodSize(45)
-          setAmazingSize(45)
-      } else if (mood === "Neutral") {
-          setAngrySize(45)
-          setFrustratedSize(45)
-          setNeutralSize(75)
-          setGoodSize(45)
-          setAmazingSize(45)
-      } else if (mood === "Good") {
-          setAngrySize(45)
-          setFrustratedSize(45)
-          setNeutralSize(45)
-          setGoodSize(75)
-          setAmazingSize(45)
-      } else if (mood === "Amazing") {
-          setAngrySize(45)
-          setFrustratedSize(45)
-          setNeutralSize(45)
-          setGoodSize(45)
-          setAmazingSize(75)
+  const [AngrySize, setAngrySize] = useState(45);
+  const [FrustratedSize, setFrustratedSize] = useState(45);
+  const [NeutralSize, setNeutralSize] = useState(45);
+  const [GoodSize, setGoodSize] = useState(45);
+  const [AmazingSize, setAmazingSize] = useState(45);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedMoodData, setSelectedMoodData] = useState<any>(null);
+
+  const moodSpecs: Record<string, any> = {
+    'Angry': { color: '#E00C0C', options: [{ label: 'Nothing Matters', sub: '[No Motivation]' }, { label: 'Enraged', sub: '[Breaking Things]' }, { label: 'Fuming', sub: '[Stuck + Angry]' }] },
+    'Frustrated': { color: '#E6A23C', options: [{ label: 'Imposter Syndrome', sub: '[Not Enough]' }, { label: 'Agitated', sub: "[can't Focus]" }, { label: 'Confused', sub: '[Lost in Code]' }] },
+    'Neutral': { color: '#909399', options: [{ label: 'Detached', sub: '[Not Engaged]' }, { label: 'Drained', sub: '[No energy]' }, { label: 'Autopilot', sub: '[Mindless Coding]' }] },
+    'Good': { color: '#67C23A', options: [{ label: 'Invincible', sub: '[Everything works]' }, { label: 'Drained', sub: '[Problem Solved]' }, { label: 'Flow State', sub: '[Deep Focus]' }] },
+    'Amazing': { color: '#B37FEB', options: [{ label: 'Everything Clicks', sub: '[Effortless Program]' }, { label: 'Locked In', sub: '[Fully Immersed]' }, { label: 'ON Fire', sub: '[High momentum]' }] }
+  };
+
+  const handleMoods = (mood: string) => {
+    setAngrySize(mood === "Angry" ? 75 : 45);
+    setFrustratedSize(mood === "Frustrated" ? 75 : 45);
+    setNeutralSize(mood === "Neutral" ? 75 : 45);
+    setGoodSize(mood === "Good" ? 75 : 45);
+    setAmazingSize(mood === "Amazing" ? 75 : 45);
+  };
+
+  const openMoodDetail = (mood: string) => {
+    setMood(mood);
+    handleMoods(mood);
+    if (moodSpecs[mood]) {
+      setSelectedMoodData({ name: mood, ...moodSpecs[mood] });
+      setModalVisible(true);
+    }
+  };
+
+  const saveMoodToSupabase = async (subCategory: string) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user && selectedMoodData) {
+        await supabase.from('mood_entries').insert([{
+          user_id: user.id,
+          mood_label: selectedMoodData.name,
+          sub_category: subCategory,
+          stress_level: sliderValue
+        }]);
+        setModalVisible(false);
+        alert("Mood Logged!");
       }
-  }
-
-
+    } catch (error) {
+      console.error("Save error:", error);
+    }
+  };
 
   const loadData = async () => {
     try {
       const savedEntries = await AsyncStorage.getItem('journal_entries');
       if (savedEntries) {
         const entries = JSON.parse(savedEntries);
-        if (entries.length > 0) {
-          setLastEntry(entries[0]); // Most recent entry
-        }
+        if (entries.length > 0) setLastEntry(entries[0]);
       }
-
       const savedMood = await AsyncStorage.getItem('last_mood');
-      if (savedMood) {
-        setLastMood(JSON.parse(savedMood));
-      }
+      if (savedMood) setLastMood(JSON.parse(savedMood));
     } catch (error) {
       console.error('Failed to load home data', error);
     }
@@ -117,41 +86,18 @@
   const fetchUser = async () => {
     try {
       const { data, error } = await supabase.auth.getUser();
-      if (error) {
-        console.error('Error fetching user:', error);
-        setUsername('');
-        return;
-      }
-
+      if (error) { setUsername(''); return; }
       if (data?.user) {
-        // Priority 1: Check if username exists in user_metadata
-        let displayUsername = data.user.user_metadata?.username;
-
-        // Priority 2: Fallback to email-based username
-        if (!displayUsername && data.user.email) {
-          displayUsername = data.user.email.split('@')[0];
-        }
-
+        let displayUsername = data.user.user_metadata?.username || data.user.email?.split('@')[0];
         setUsername(displayUsername || '');
-      } else {
-        setUsername('');
       }
     } catch (error) {
       console.error('Failed to fetch user', error);
-      setUsername('');
     }
   };
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
-    if (isFocused) {
-      loadData();
-      fetchUser();
-    }
-  }, [isFocused]);
+  useEffect(() => { fetchUser(); }, []);
+  useEffect(() => { if (isFocused) { loadData(); fetchUser(); } }, [isFocused]);
 
   const aiPrompts: Record<string, string> = {
     'Stuck': "Have you tried taking a 15-minute break? Sometimes a fresh pair of eyes is all you need.",
@@ -163,25 +109,24 @@
 
   return (
     <View style={[styles.wrapper, { backgroundColor: colors.background }]}>
-      {/* New modal block */}
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
-       <Pressable style={styles.modalOverlay} onPress={ () => setModalVisible(false)}>
-        <View style={[styles.modalContent, {backgroundColor: colors.card}]}>
-         <Text style={[styles.modalTitle, { color: selectedMoodData?.color }]}>
-         {selectedMoodData?.name} Details
-         </Text>
-         {selectedMoodData?.options.map((item: any, index: number) => (
-             <TouchableOpacity key={index} style={styles.bulletItem} onPress={() => saveMoodToSupabase(item.label)}>
-              <View style={[styles.bullet, { backgroundColor: selectedMoodData.color}]} />
-              <View>
-                <Text style={{ color: colors.text, fontWeight: 'bold'}}>{item.label}</Text>
-                <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{item.sub}</Text>
-               </View>
-               </TouchableOpacity>
-               ))}
-              </View>
-             </Pressable>
-            </Modal>
+        <Pressable style={styles.modalOverlay} onPress={() => setModalVisible(false)}>
+          <View style={[styles.modalContent, { backgroundColor: colors.card }]}>
+            <Text style={[styles.modalTitle, { color: selectedMoodData?.color }]}>
+              {selectedMoodData?.name} Details
+            </Text>
+            {selectedMoodData?.options.map((item: any, index: number) => (
+              <TouchableOpacity key={index} style={styles.bulletItem} onPress={() => saveMoodToSupabase(item.label)}>
+                <View style={[styles.bullet, { backgroundColor: selectedMoodData.color }]} />
+                <View>
+                  <Text style={{ color: colors.text, fontWeight: 'bold' }}>{item.label}</Text>
+                  <Text style={{ color: colors.textSecondary, fontSize: 12 }}>{item.sub}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </Pressable>
+      </Modal>
 
       <ScrollView style={styles.container}>
         <Text style={[styles.title, { color: colors.text }]}>
@@ -192,6 +137,7 @@
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Today's Mood</Text>
           <View style={styles.currentMood}>
             <TouchableOpacity onPress={() => openMoodDetail('Angry')}>
+<<<<<<< HEAD
                 <Text style={{ fontSize: AngrySize }}>😡</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => openMoodDetail('Frustrated')}>
@@ -205,6 +151,21 @@
             </TouchableOpacity>
             <TouchableOpacity onPress={() => openMoodDetail('Amazing')}>
                 <Text style={{ fontSize: AmazingSize }}>🤩</Text>
+=======
+              <Text style={{ fontSize: AngrySize }}>😡</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => openMoodDetail('Frustrated')}>
+              <Text style={{ fontSize: FrustratedSize }}>☹️</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => openMoodDetail('Neutral')}>
+              <Text style={{ fontSize: NeutralSize }}>😐</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => openMoodDetail('Good')}>
+              <Text style={{ fontSize: GoodSize }}>😁</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => openMoodDetail('Amazing')}>
+              <Text style={{ fontSize: AmazingSize }}>🤩</Text>
+>>>>>>> dev
             </TouchableOpacity>
           </View>
           {userMood && (
@@ -222,37 +183,38 @@
             minimumTrackTintColor="#E00C0C"
             maximumTrackTintColor="#00FF00"
             thumbTintColor={colors.primary}
-            onValueChange={(value) => setSliderValue(value)}
+            onValueChange={setSliderValue}
             value={sliderValue}
           />
         </View>
 
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Recent Journal Entry</Text>
-          <View style={[styles.card, { backgroundColor: colors.card }]}>
-            {lastEntry ? (
-              <>
-                <Text style={[styles.cardTitle, { color: colors.text }]}>{lastEntry.title}</Text>
-                <Text style={[styles.cardText, { color: colors.textSecondary }]} numberOfLines={2}>{lastEntry.solution}</Text>
-              </>
-            ) : (
-              <>
-                <Image
-                    source={require('../../assets/images/Wade.png')}
-                    style={{ width: 100, height: 100 }}
-                />
-                <Text style={[styles.cardText, { color: colors.textSecondary }]}>No Reflections Yet</Text>
-                <Text style={[styles.reflectionTitle, { color: colors.textSecondary }]}>Start logging your first thoughts</Text>
-                <TouchableOpacity
-                    style={[styles.reflectionButton, { backgroundColor: colors.textSecondary }]}
-                    onPress={() => navigation.navigate("Journal")}
-                >
-                    <Text style={[styles.reflectionTitle, { color: colors.card }]}>+ New Reflection</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </View>
-        </View>
+                 <Text style={[styles.sectionTitle, { color: colors.text }]}>Recent Journal Entry</Text>
+                 <View style={[styles.card, { backgroundColor: colors.card }]}>
+                   {lastEntry ? (
+                     <>
+                       <Text style={[styles.cardTitle, { color: colors.text }]}>{lastEntry.title}</Text>
+                       <Text style={[styles.cardText, { color: colors.textSecondary }]} numberOfLines={2}>{lastEntry.solution}</Text>
+                     </>
+                   ) : (
+                     <>
+                       <Image
+                           source={require('../../assets/images/Wade.png')}
+                           style={{ width: 100, height: 100 }}
+                       />
+                       <Text style={[styles.cardText, { color: colors.textSecondary }]}>No Reflections Yet</Text>
+                       <Text style={[styles.reflectionSubtitle, { color: colors.textSecondary }]}>Start logging your first thoughts</Text>
+                       <TouchableOpacity
+                           style={[styles.reflectionButton, { backgroundColor: colors.textSecondary }]}
+                            onPress={() => navigation.navigate('Reflections', { screen: 'JournalEntry' })}
+                       >
+                           <Text style={[styles.cardTitle, { color: colors.card }]}>+ New Reflection</Text>
+                       </TouchableOpacity>
+                     </>
+                   )}
+                 </View>
+               </View>
+
 
         {lastMood && (
           <View style={styles.section}>
@@ -267,30 +229,18 @@
         )}
 
         <View style={styles.buttonSection}>
-            <TouchableOpacity
-                style={[styles.button, { backgroundColor: colors.card }]}
-                onPress={() => navigation.navigate("Journal")}
-            >
-                <Text style={[styles.buttonText, { color: colors.text }]}>🪳 Log a bug</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[styles.button, { backgroundColor: colors.card }]}
-                onPress={() => navigation.navigate("Rubber Duck")}
-            >
-                <Text style={[styles.buttonText, { color: colors.text }]}>🐤 Duck Mode</Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, { backgroundColor: colors.card }]} onPress={() => navigation.navigate("Reflections", { screen: "JournalEntry", params: { presetTag: 'Bug' } })}>
+            <Text style={[styles.buttonText, { color: colors.text }]}>🪳 Log a bug</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, { backgroundColor: colors.card }]} onPress={() => navigation.navigate("Rubber Duck", { presetTag: 'Debugging' })}>
+            <Text style={[styles.buttonText, { color: colors.text }]}>🐤 Duck Mode</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.buttonSection}>
-            <TouchableOpacity
-                style={[styles.button, { backgroundColor: colors.card }]}
-                onPress={() => navigation.navigate("Mood")}
-             >
+          <TouchableOpacity style={[styles.button, { backgroundColor: colors.card }]} onPress={() => navigation.navigate("Mood")}>
             <Text style={[styles.buttonText, { color: colors.text }]}>🌙 End of day</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: colors.card }]}
-            onPress={() => navigation.navigate("Journal")}
-          >
+          <TouchableOpacity style={[styles.button, { backgroundColor: colors.card }]} onPress={() => navigation.navigate("Reflections", { screen: "JournalEntry", params: { presetTag: 'Quick Idea', presetTitle: 'Quick Idea' } })}>
             <Text style={[styles.buttonText, { color: colors.text }]}>💡 Quick Idea</Text>
           </TouchableOpacity>
         </View>
@@ -312,13 +262,17 @@ const styles = StyleSheet.create({
   slider: { width: '100%', minHeight: 10 },
   stressTitle: { fontSize: 18, fontWeight: '600', marginBottom: 10, textAlign: 'center' },
   currentMood: { justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row', marginBottom: 5 },
-  emoji: { fontSize: 50 },
-  selectedMood: { textAlign: 'center', fontSize: 16, marginTop: 5},
+  selectedMood: { textAlign: 'center', fontSize: 16, marginTop: 5 },
   buttonSection: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15 },
   button: { padding: 15, borderRadius: 10, alignItems: 'center', width: '48%', elevation: 2 },
   buttonText: { fontSize: 16 },
-  reflectionTitle: { fontSize: 14, marginTop: 5 },
-  reflectionButton: { padding: 10, borderRadius: 10, alignItems: 'center', width: 150, marginTop: 5 },
+  reflectionSubtitle: { fontSize: 14, marginTop: 5 },
+  reflectionButton: { padding: 10, borderRadius: 10, alignItems: 'center', width: 150, marginTop: 10 },
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
+  modalContent: { width: '85%', padding: 20, borderRadius: 15, elevation: 5 },
+  modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 15, textAlign: 'center' },
+  bulletItem: { flexDirection: 'row', alignItems: 'center', marginBottom: 15, paddingVertical: 5 },
+  bullet: { width: 12, height: 12, borderRadius: 6, marginRight: 15 }
 });
 
 export default HomeScreen;

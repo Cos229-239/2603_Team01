@@ -1,4 +1,5 @@
 import React from 'react';
+import { Image } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -11,11 +12,9 @@ import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import LoginScreen from './src/screens/LoginScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import JournalScreen from './src/screens/JournalScreen';
-import JournalEntryScreen from './src/screens/Testing';
+import JournalEntryScreen from './src/screens/JournalEntryScreen';
 import MoodScreen from './src/screens/MoodScreen';
 import RubberDuckScreen from './src/screens/RubberDuckScreen';
-import TestingScreen from './src/screens/Testing';
-import HistoryScreen from './src/screens/HistoryScreen';
 import TitleScreen from './src/screens/TitleScreen';
 import LoginScreenTest from './src/screens/LoginScreenTest';
 
@@ -32,6 +31,10 @@ import HelpSupportSettings from './src/screens/settings/HelpSupportSettings';
 import AboutAppSettings from './src/screens/settings/AboutAppSettings';
 import StorageSettings from './src/screens/settings/StorageSettings';
 
+// Import Help & Support Screens
+import UserGuideScreen from './src/screens/settings/UserGuideScreen';
+import FAQScreen from './src/screens/settings/FAQScreen';
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,8 +42,8 @@ const Tab = createBottomTabNavigator();
 const JournalStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="JournalList" component={JournalScreen} options={{ title: 'My Journal' }} />
-      <Stack.Screen name="JournalEntry" component={JournalEntryScreen} options={{ title: 'New Journal Entry' }} />
+      <Stack.Screen name="JournalList" component={JournalScreen} options={{ title: 'My Reflections' }} />
+      <Stack.Screen name="JournalEntry" component={JournalEntryScreen} options={{ title: 'New Reflection' }} />
     </Stack.Navigator>
   );
 };
@@ -77,10 +80,9 @@ const SettingsStack = () => {
       <Stack.Screen name="HelpSupportSettings" component={HelpSupportSettings} options={{ title: 'Help & Support Settings' }} />
       <Stack.Screen name="AboutAppSettings" component={AboutAppSettings} options={{ title: 'About App Settings' }} />
       <Stack.Screen name="StorageSettings" component={StorageSettings} options={{ title: 'Storage Settings' }} />
-      {/* Commenting out Testing for now since it has a feature skeleton and is not fully implemented, but we can easily add it back to the stack when needed.
-      {/* <Stack.Screen name="Testing" component={TestingScreen} options={{ title: 'Testing' }} /> */}
-      <Stack.Screen name="HistoryScreen" component={HistoryScreen} options={{ title: 'History' }} />
       <Stack.Screen name="TitleScreen" component={TitleScreen} options={{ title: 'Title' }} />
+      <Stack.Screen name="UserGuide" component={UserGuideScreen} options={{ title: 'User Guide' }} />
+      <Stack.Screen name="FAQs" component={FAQScreen} options={{ title: 'FAQs' }} />
     </Stack.Navigator>
   );
 };
@@ -100,14 +102,78 @@ const MainTabs = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: true }} />
-      <Tab.Screen name="Journal" component={JournalStack} />
-      <Tab.Screen name="Mood" component={MoodScreen} options={{ headerShown: true }} />
-      <Tab.Screen name="Rubber Duck" component={RubberDuckScreen} options={{ headerShown: true }} />
-      <Tab.Screen name="Settings" component={SettingsStack} options={{ headerShown: true }} />
-      {/* <Tab.Screen name="Testing" component={TestingScreen} options={{ headerShown: true }} /> */}
-      {/* <Tab.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} /> */}
-      {/* <Tab.Screen name="Title" component={TitleScreen} options={{ headerShown: true }} /> */}
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerShown: true,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./src/assets/images/home_icon_no-bg.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Reflections"
+        component={JournalStack}
+        options={{
+          unmountOnBlur: true, // Reset stack when switching away from this tab
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./src/assets/images/journal_icon_no-bg.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            // Prevent default behavior and manually navigate to the root list
+            e.preventDefault();
+            navigation.navigate('Reflections', { screen: 'JournalList' });
+          },
+        })}
+      />
+      <Tab.Screen
+        name="Mood"
+        component={MoodScreen}
+        options={{
+          headerShown: true,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./src/assets/images/mood_icon_no-bg.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Rubber Duck"
+        component={RubberDuckScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./src/assets/images/Wade_no-bg.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsStack}
+        options={{
+          headerShown: true,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./src/assets/images/settings_icon_no-bg.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
+      />
       {/* <Tab.Screen name="LoginScreenTest" component={LoginScreenTest} options={{ headerShown: true }} / >*/}
     </Tab.Navigator>
   );
@@ -130,7 +196,12 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Title">
+        <Stack.Screen
+          name="Title"
+          component={TitleScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Login"
           component={LoginScreen}

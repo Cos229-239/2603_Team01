@@ -2,20 +2,109 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Linking, Alert } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import { SettingsCard, SectionHeader, DescriptionText } from './components/SettingsComponents';
+import { useNavigation } from '@react-navigation/native';
 
 const HelpSupportSettings = () => {
   const { colors, getFontSize } = useTheme();
+  const navigation = useNavigation<any>();
 
-  const handleContactSupport = () => {
-    Alert.alert('Contact Support', 'Email us at support@devreflect.app');
+  const handleContactSupport = async () => {
+    console.log('Contact Support pressed');
+    const email = 'support@devreflect.app';
+    const subject = 'Support Request';
+    const body = 'Hello DevReflect Support Team,\n\nI need assistance with:\n\n[Please describe your issue here]\n\nThank you!';
+    const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    try {
+      const canOpen = await Linking.canOpenURL(url);
+      console.log('Can open URL:', canOpen);
+      if (canOpen) {
+        await Linking.openURL(url);
+      } else {
+        Alert.alert('Error', 'Unable to open email client');
+      }
+    } catch (error) {
+      console.error('Email error:', error);
+      Alert.alert('Error', 'Failed to open email client');
+    }
   };
 
-  const handleReportBug = () => {
-    Alert.alert('Report a Bug', 'This feature will be implemented soon.');
+  const handleReportBug = async () => {
+    console.log('Report Bug pressed');
+    const email = 'support@devreflect.app';
+    const subject = 'Bug Report';
+    const body = `Bug Report for DevReflect
+
+Description:
+[Describe the bug you encountered]
+
+Steps to Reproduce:
+1. [First step]
+2. [Second step]
+3. [And so on...]
+
+Expected Behavior:
+[What you expected to happen]
+
+Actual Behavior:
+[What actually happened]
+
+Device Information:
+[Your device model and OS version]
+
+Thank you for helping us improve DevReflect!`;
+
+    const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    try {
+      const canOpen = await Linking.canOpenURL(url);
+      console.log('Can open URL:', canOpen);
+      if (canOpen) {
+        await Linking.openURL(url);
+      } else {
+        Alert.alert('Error', 'Unable to open email client');
+      }
+    } catch (error) {
+      console.error('Email error:', error);
+      Alert.alert('Error', 'Failed to open email client');
+    }
   };
 
-  const handleFeedback = () => {
-    Alert.alert('Send Feedback', 'This feature will be implemented soon.');
+  const handleFeedback = async () => {
+    console.log('Send Feedback pressed');
+    const email = 'support@devreflect.app';
+    const subject = 'Feedback';
+    const body = `Hello DevReflect Team,
+
+I'd like to share my thoughts about the app:
+
+[Please share your feedback, suggestions, or ideas here]
+
+Thank you for creating DevReflect!`;
+
+    const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    try {
+      const canOpen = await Linking.canOpenURL(url);
+      console.log('Can open URL:', canOpen);
+      if (canOpen) {
+        await Linking.openURL(url);
+      } else {
+        Alert.alert('Error', 'Unable to open email client');
+      }
+    } catch (error) {
+      console.error('Email error:', error);
+      Alert.alert('Error', 'Failed to open email client');
+    }
+  };
+
+  const handleCommunityForum = () => {
+    console.log('Community Forum pressed');
+    Alert.alert(
+      'Coming Soon',
+      'The Community Forum will be available in a future update. Stay tuned!',
+      [{ text: 'OK' }]
+    );
   };
 
   return (
@@ -39,19 +128,15 @@ const HelpSupportSettings = () => {
           description="Learn how to use all features of DevReflect"
           colors={colors}
           fontSize={getFontSize}
+          onPress={() => navigation.navigate('UserGuide')}
         />
         <HelpItem
           title="FAQs"
           description="Find answers to commonly asked questions"
           colors={colors}
           fontSize={getFontSize}
-        />
-        <HelpItem
-          title="Video Tutorials"
-          description="Watch step-by-step guides and tips"
-          colors={colors}
-          fontSize={getFontSize}
           isLast
+          onPress={() => navigation.navigate('FAQs')}
         />
       </SettingsCard>
 
@@ -62,6 +147,7 @@ const HelpSupportSettings = () => {
         <TouchableOpacity 
           style={[styles.supportButton, { backgroundColor: colors.background, borderColor: colors.border }]} 
           onPress={handleContactSupport}
+          activeOpacity={0.7}
         >
           <Text style={[styles.supportButtonText, { color: colors.text, fontSize: getFontSize(15) }]}>Contact Support</Text>
         </TouchableOpacity>
@@ -69,6 +155,7 @@ const HelpSupportSettings = () => {
         <TouchableOpacity 
           style={[styles.supportButton, { backgroundColor: colors.background, borderColor: colors.border }]} 
           onPress={handleReportBug}
+          activeOpacity={0.7}
         >
           <Text style={[styles.supportButtonText, { color: colors.text, fontSize: getFontSize(15) }]}>Report a Bug</Text>
         </TouchableOpacity>
@@ -76,6 +163,7 @@ const HelpSupportSettings = () => {
         <TouchableOpacity 
           style={[styles.supportButton, { backgroundColor: colors.primary }]} 
           onPress={handleFeedback}
+          activeOpacity={0.7}
         >
           <Text style={[styles.supportButtonText, { color: '#fff', fontSize: getFontSize(15) }]}>Send Feedback</Text>
         </TouchableOpacity>
@@ -89,7 +177,11 @@ const HelpSupportSettings = () => {
           colors={colors}
           fontSize={getFontSize}
         />
-        <TouchableOpacity style={styles.communityLink}>
+        <TouchableOpacity 
+          style={styles.communityLink} 
+          onPress={handleCommunityForum}
+          activeOpacity={0.7}
+        >
           <Text style={[styles.communityLinkText, { color: colors.primary, fontSize: getFontSize(15) }]}>
             Visit Community Forum →
           </Text>
@@ -108,17 +200,20 @@ const HelpItem = ({
   colors,
   fontSize,
   isLast = false,
+  onPress,
 }: {
   title: string;
   description: string;
   colors: any;
   fontSize: (size: number) => number;
   isLast?: boolean;
+  onPress?: () => void;
 }) => {
   return (
     <TouchableOpacity 
-      style={[styles.helpItem, !isLast && { borderBottomWidth: 1, borderBottomColor: colors.border }]
-    }
+      style={[styles.helpItem, !isLast && { borderBottomWidth: 1, borderBottomColor: colors.border }]} 
+      onPress={onPress}
+      activeOpacity={0.7}
     >
       <View style={[styles.helpBullet, { backgroundColor: colors.primary }]} />
       <View style={styles.helpContent}>

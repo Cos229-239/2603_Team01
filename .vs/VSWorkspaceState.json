@@ -1,18 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\android",
-    "\\android\\app",
-    "\\android\\app\\src",
-    "\\android\\app\\src\\main",
-    "\\android\\app\\src\\main\\res",
-    "\\android\\app\\src\\main\\res\\values",
-    "\\my-app",
+    "\\ios",
     "\\src",
     "\\src\\lib",
     "\\src\\screens",
-    "\\src\\screens\\settings"
+    "\\src\\screens\\settings",
+    "\\src\\screens\\settings\\components"
   ],
-  "SelectedNode": "\\src\\screens\\HomeScreen.tsx",
+  "SelectedNode": "\\src\\screens\\RubberDuckScreen.tsx",
   "PreviewInSolutionExplorer": false
 }
