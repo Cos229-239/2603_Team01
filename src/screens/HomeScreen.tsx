@@ -137,22 +137,7 @@ const HomeScreen = () => {
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Today's Mood</Text>
           <View style={styles.currentMood}>
             <TouchableOpacity onPress={() => openMoodDetail('Angry')}>
-<<<<<<< HEAD
                 <Text style={{ fontSize: AngrySize }}>😡</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => openMoodDetail('Frustrated')}>
-                <Text style={{ fontSize: FrustratedSize }}>☹️</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => openMoodDetail('Neutral')}>
-                <Text style={{ fontSize: NeutralSize }}>😐</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => openMoodDetail('Good')}>
-                <Text style={{ fontSize: GoodSize }}>😁</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => openMoodDetail('Amazing')}>
-                <Text style={{ fontSize: AmazingSize }}>🤩</Text>
-=======
-              <Text style={{ fontSize: AngrySize }}>😡</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => openMoodDetail('Frustrated')}>
               <Text style={{ fontSize: FrustratedSize }}>☹️</Text>
@@ -165,7 +150,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity onPress={() => openMoodDetail('Amazing')}>
               <Text style={{ fontSize: AmazingSize }}>🤩</Text>
->>>>>>> dev
+
             </TouchableOpacity>
           </View>
           {userMood && (
@@ -268,11 +253,12 @@ const styles = StyleSheet.create({
   buttonText: { fontSize: 16 },
   reflectionSubtitle: { fontSize: 14, marginTop: 5 },
   reflectionButton: { padding: 10, borderRadius: 10, alignItems: 'center', width: 150, marginTop: 10 },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
-  modalContent: { width: '85%', padding: 20, borderRadius: 15, elevation: 5 },
-  modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 15, textAlign: 'center' },
-  bulletItem: { flexDirection: 'row', alignItems: 'center', marginBottom: 15, paddingVertical: 5 },
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center' },
+  modalContent: { width: '85%', padding: 20, borderRadius: 20, elevation: 10 },
+  modalTitle: { fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginBottom: 20},
+  bulletItem: { flexDirection: 'row', alignItems: 'center', marginBottom: 15, padding: 5 },
   bullet: { width: 12, height: 12, borderRadius: 6, marginRight: 15 }
 });
 
 export default HomeScreen;
+
