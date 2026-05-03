@@ -1,113 +1,86 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Slider from '@react-native-community/slider';
 import { useTheme } from '../context/ThemeContext';
-
 import { BarChart } from "react-native-gifted-charts";
+import { useRoute } from '@react-navigation/native';
 
 
 const MoodScreen = () => {
-  const [currentMood, setCurrentMood] = useState<string | null>(null);
-  const [sliderValue, setSliderValue] = useState(0);
-  const [stressTips, setStressTips] = useState('');
   const { colors } = useTheme();
+  const route = useRoute();
+  const { userMood = ''} = route.params || {};
+  const { newStress = 2 } = route.params || {};
+  const numericDay = new Date().getDay();
 
-
-  const data = [{ value: 3, label: 'Mon', frontColor: '#00FF00' }, { value: 4, label: 'Tues', frontColor: '#AAA7AD' }, { value: 7, label: 'Wed', frontColor: '#E00C0C' }, { value: 10, label: 'Thurs', frontColor: '#E00C0C' }, { value: 5, label: 'Fri', frontColor: '#AAA7AD' }, { value: 2, label: 'Sat', frontColor: '#00FF00' }, { value: 1, label: 'Sun', frontColor: '#00FF00'}];
-
-
-  const moods = [
-    { label: 'Productive', icon: '🚀' },
-    { label: 'Stuck', icon: '🧱' },
-    { label: 'Burned Out', icon: '🔥' },
-    { label: 'Focused', icon: '🎯' },
-    { label: 'Frustrated', icon: '😤' },
-  ];
-
-  const aiPrompts: Record<string, string> = {
-    'Stuck': "Have you tried taking a 15-minute break? Sometimes a fresh pair of eyes is all you need.",
-    'Burned Out': "It looks like you've been working hard. Have you eaten anything today or taken a walk?",
-    'Focused': "You're in the zone! Keep going, but remember to stretch every hour.",
-    'Frustrated': "Deep breaths. Maybe try explaining the problem out loud to a rubber duck?",
-    };
-
-  const handleSlidingComplete = (value: number) => {
-    setSliderValue(value)
-    if (value <= 0) {
-      setStressTips('Stress Level 0: Doing Great\nKeep up the good work!')
-    } else if (value <= 1) {
-      setStressTips('Stress Level 1: Feeling Anxious\nTry playing some instrumental music to help soothe your nerves.')
-    } else if (value <= 2) {
-      setStressTips("Stress Level 2: Building Uncertainty\nDon't be afraid to ask for help from your peers if you begin to feel lost or confused.")
-    } else if (value <= 3) {
-      setStressTips('Stress Level 3: Mentally Struggling\nMake sure you develop a healthy work-life balance to prevent your stress from increasing')
-    } else if (value <= 4) {
-      setStressTips('Stress Level 4: Stressed Out\nSplitting your tasks into smaller parts can make a large workload easier to manage.')
-    } else if (value <= 5) {
-      setStressTips('Stress Level 5: Completely Overwhelmed\nTaking a break from your work will help you reset, recharge, and approach the sitaution from a different angle. ')
+    let dataTest = [];
+    if (numericDay == 0) {
+        dataTest.push({ value: 3, label: 'Mon', frontColor: '#00FF00' }, { value: 4, label: 'Tues', frontColor: '#AAA7AD' }, { value: 7, label: 'Wed', frontColor: '#E00C0C' }, { value: 10, label: 'Thurs', frontColor: '#E00C0C' }, { value: 5, label: 'Fri', frontColor: '#AAA7AD' }, { value: 1, label: 'Sat', frontColor: '#00FF00' }, { value: newStress, label: 'Sun', frontColor: '#00FF00' });
+    } else if (numericDay == 1) {
+        dataTest.push({ value: newStress, label: 'Mon', frontColor: '#00FF00' }, { value: 4, label: 'Tues', frontColor: '#AAA7AD' }, { value: 7, label: 'Wed', frontColor: '#E00C0C' }, { value: 10, label: 'Thurs', frontColor: '#E00C0C' }, { value: 5, label: 'Fri', frontColor: '#AAA7AD' }, { value: 1, label: 'Sat', frontColor: '#00FF00' }, { value: 2, label: 'Sun', frontColor: '#00FF00' });
+    } else if (numericDay == 2) {
+        dataTest.push({ value: 3, label: 'Mon', frontColor: '#00FF00' }, { value: newStress, label: 'Tues', frontColor: '#AAA7AD' }, { value: 7, label: 'Wed', frontColor: '#E00C0C' }, { value: 10, label: 'Thurs', frontColor: '#E00C0C' }, { value: 5, label: 'Fri', frontColor: '#AAA7AD' }, { value: 1, label: 'Sat', frontColor: '#00FF00' }, { value: 2, label: 'Sun', frontColor: '#00FF00' });
+    } else if (numericDay == 3) {
+        dataTest.push({ value: 3, label: 'Mon', frontColor: '#00FF00' }, { value: 4, label: 'Tues', frontColor: '#AAA7AD' }, { value: newStress, label: 'Wed', frontColor: '#E00C0C' }, { value: 10, label: 'Thurs', frontColor: '#E00C0C' }, { value: 5, label: 'Fri', frontColor: '#AAA7AD' }, { value: 1, label: 'Sat', frontColor: '#00FF00' }, { value: 2, label: 'Sun', frontColor: '#00FF00' });
+    } else if (numericDay == 4) {
+        dataTest.push({ value: 3, label: 'Mon', frontColor: '#00FF00' }, { value: 4, label: 'Tues', frontColor: '#AAA7AD' }, { value: 7, label: 'Wed', frontColor: '#E00C0C' }, { value: newStress, label: 'Thurs', frontColor: '#E00C0C' }, { value: 5, label: 'Fri', frontColor: '#AAA7AD' }, { value: 1, label: 'Sat', frontColor: '#00FF00' }, { value: 2, label: 'Sun', frontColor: '#00FF00' });
+    } else if (numericDay == 5) {
+        dataTest.push({ value: 3, label: 'Mon', frontColor: '#00FF00' }, { value: 4, label: 'Tues', frontColor: '#AAA7AD' }, { value: 7, label: 'Wed', frontColor: '#E00C0C' }, { value: 10, label: 'Thurs', frontColor: '#E00C0C' }, { value: newStress, label: 'Fri', frontColor: '#AAA7AD' }, { value: 1, label: 'Sat', frontColor: '#00FF00' }, { value: 2, label: 'Sun', frontColor: '#00FF00' });
+    } else {
+        dataTest.push({ value: 3, label: 'Mon', frontColor: '#00FF00' }, { value: 4, label: 'Tues', frontColor: '#AAA7AD' }, { value: 7, label: 'Wed', frontColor: '#E00C0C' }, { value: 10, label: 'Thurs', frontColor: '#E00C0C' }, { value: 5, label: 'Fri', frontColor: '#AAA7AD' }, { value: newStress, label: 'Sat', frontColor: '#00FF00' }, { value: 2, label: 'Sun', frontColor: '#00FF00' });
     }
+
+  const MoodAdvice: Record<string, string> = {
+     '': "Select a mood from the home screen!",
+     'Angry': "Working while angry not only results in worse work, but will negatively impact your mental and physical health in the long run. Taking an extended break from your work will help you relax, refresh, and refocus!",
+     'Frustrated': "Frustration is a very common feeling but can start to worsen if left unchecked. Don't be afraid to ask for help from peers in person or online if you can't seem to find a solution to your problem!",
+     'Neutral': "You're not feeling too stressed but not feeling too great either. Sometimes days are just ok, but planning ahead can help make tomorrow a better day!", 
+     'Good': "You're on the right track! Just need small adjustments to reach maximum potential!",
+     'Amazing': "You're doing great! Keep up the good work!"
   };
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
       <ScrollView style={styles.container}>
-      <Text style={[styles.title, { color: colors.text }]}>How are you feeling, Dev?</Text>
-
-              <BarChart
-                  data={data}
+        <Text style={[styles.title, { color: colors.text }]}>Weekly Stress Level</Text>
+            <BarChart
+                  data={dataTest}
                   barWidth={20}
                   maxValue={10}
                   noOfSections={5}
                   stepValue={2}
-
+                  showValuesAsTopLabel={true}
+                  overflowTop={10}
               />
-
-
+              <View style={styles.todaysStress}>
+                  <Text>
+                      <Text style={styles.moodSectionBoldText}>Today's Stress Level: </Text>
+                      <Text style={styles.moodSectionText}>{newStress}</Text>
+                  </Text>
+              </View>
               <View style={styles.burnout}>
                   <Text style={[styles.title, { color: colors.text }]}>Burnout Monitor:</Text>
                   <Text style={[styles.stressText, { color: colors.text }]}>High stress levels logged for middle of the week - Try breaking down tasks and spreading them evenly across the week to prevent a full burnout.</Text>
               </View>
-              
-        <View style={styles.moodGrid}>
-          {moods.map(mood => (
-            <TouchableOpacity
-              key={mood.label}
-              style={[
-                styles.moodCard,
-                { backgroundColor: colors.card },
-                currentMood === mood.label && { borderColor: colors.primary, borderWidth: 2 }
-              ]}
-              onPress={() => setCurrentMood(mood.label)}
-            >
-              <Text style={styles.moodIcon}>{mood.icon}</Text>
-              <Text style={[styles.moodLabel, { color: colors.text }]}>{mood.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {currentMood && aiPrompts[currentMood] && (
-          <View style={[styles.aiCard, { backgroundColor: colors.card, borderLeftColor: colors.primary }]}>
-            <Text style={[styles.aiTitle, { color: colors.primary }]}>AI Stability Assistant</Text>
-            <Text style={[styles.aiText, { color: colors.text }]}>{aiPrompts[currentMood]}</Text>
-          </View>
-        )}
-
-        <Text style={[styles.stressTitle, { color: colors.text }]}>Stress Level: {sliderValue}</Text>
-
-        <Slider
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={5}
-          step={.25}
-          minimumTrackTintColor="#E00C0C"
-          maximumTrackTintColor="#00FF00"
-          thumbTintColor={colors.primary}
-          onValueChange={(value) => setSliderValue(value)}
-          value={sliderValue}
-          onSlidingComplete={handleSlidingComplete}
-        />
-        <Text style={[styles.stressText, { color: colors.text }]}>{stressTips}</Text>
+      <Text style={[styles.title, { color: colors.text }]}>Weekly Mood</Text>
+      <View style={[styles.newMoodSection, { backgroundColor: colors.card }]}>
+             <Text style={styles.moodSectionBoldText }>
+                <Text style={styles.moodSectionBoldText}>Days Logged: </Text>
+                <Text style={styles.moodSectionText}> 7</Text>
+             </Text>
+             <Text>
+                <Text style={styles.moodSectionBoldText}>Most Logged Mood:</Text>
+                <Text style={styles.moodSectionText }> ☹️ - Frustrated</Text>
+             </Text>
+             <Text>
+                <Text style={styles.moodSectionBoldText}>Today's Mood: </Text>
+                <Text style={styles.moodSectionText}>{userMood}</Text>
+             </Text>
+             <Text>
+                <Text style={styles.moodSectionBoldText}>Today's Mood Advice: </Text>
+                <Text style={styles.moodSectionText}>{MoodAdvice[userMood]}</Text>
+             </Text>
+      </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -122,12 +95,17 @@ const styles = StyleSheet.create({
   moodIcon: { fontSize: 32 },
   moodLabel: { marginTop: 10, fontWeight: '600' },
   aiCard: { padding: 20, borderRadius: 12, marginTop: 20, borderLeftWidth: 5 },
-    burnout: { padding: 20, borderRadius: 12, marginTop: 20, borderLeftWidth: 5, backgroundColor: '#FFADB0'},
+  burnout: { padding: 20, borderRadius: 12, marginTop: 20, borderLeftWidth: 5, backgroundColor: '#FFADB0', marginBottom: 20},
   aiTitle: { fontWeight: 'bold', marginBottom: 5 },
   aiText: { fontSize: 16, lineHeight: 22 },
   stressTitle: { fontSize: 24, fontWeight: 'bold', marginTop: 20, textAlign: 'center' },
   stressText: { fontSize: 16, textAlign: 'center' },
-  slider: { width: '100%', minHeight: 50 }
+  slider: { width: '100%', minHeight: 50 },
+  newMoodSection: { justifyContent: 'space-evenly', borderRadius: 12, height: '20%', alignItems: 'center', marginBottom: 80 },
+  moodRows: { flexDirection: 'row'},
+  moodSectionText: { fontSize: 15, textAlign: 'center' },
+  moodSectionBoldText: { fontSize: 18, textAlign: 'center', fontWeight: 'bold' },
+  todaysStress: {padding: 15, borderRadius: 12, alignItems: 'center', marginTop: 10}
 });
 
 export default MoodScreen;
